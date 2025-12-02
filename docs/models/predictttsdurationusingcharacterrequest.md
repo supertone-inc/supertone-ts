@@ -1,0 +1,23 @@
+# PredictTTSDurationUsingCharacterRequest
+
+## Example Usage
+
+```typescript
+import { PredictTTSDurationUsingCharacterRequest } from "supertone/models";
+
+let value: PredictTTSDurationUsingCharacterRequest = {
+  text: "<value>",
+  language: "en",
+};
+```
+
+## Fields
+
+| Field                                                                                                                          | Type                                                                                                                           | Required                                                                                                                       | Description                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| `text`                                                                                                                         | *string*                                                                                                                       | :heavy_check_mark:                                                                                                             | The text to convert to speech. Max length is 300 characters.                                                                   |
+| `language`                                                                                                                     | [models.PredictTTSDurationUsingCharacterRequestLanguage](../models/predictttsdurationusingcharacterrequestlanguage.md)         | :heavy_check_mark:                                                                                                             | Language code of the voice                                                                                                     |
+| `style`                                                                                                                        | *string*                                                                                                                       | :heavy_minus_sign:                                                                                                             | The style of character to use for the text-to-speech conversion                                                                |
+| `model`                                                                                                                        | *string*                                                                                                                       | :heavy_minus_sign:                                                                                                             | The model type to use for the text-to-speech conversion                                                                        |
+| `outputFormat`                                                                                                                 | [models.PredictTTSDurationUsingCharacterRequestOutputFormat](../models/predictttsdurationusingcharacterrequestoutputformat.md) | :heavy_minus_sign:                                                                                                             | The desired output format of the audio file (wav, mp3). Default is wav.                                                        |
+| `voiceSettings`                                                                                                                | [models.ConvertTextToSpeechParameters](../models/converttexttospeechparameters.md)                                             | :heavy_minus_sign:                                                                                                             | N/A                                                                                                                            |

@@ -1,0 +1,57 @@
+/.speakeasy/reports
+# TypeScript Build Output
+/models
+/models/errors
+/types
+/lib
+/sdk
+/funcs
+/react-query
+/mcp-server
+/hooks
+/index.*
+/core.*
+/bin
+/cjs
+/esm
+/dist
+/.tsbuildinfo
+/.eslintcache
+/.tshy
+/.tshy-*
+/__tests__
+# Dependencies
+/node_modules
+/examples/node_modules
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+# OS
+.DS_Store
+Thumbs.db
+*.bak
+# Environment variables
+.env
+.env.local
+.env.*.local
+custom_test/.env
+# Serena (MCP tool)
+.serena/
+# Speakeasy
+**/.speakeasy/temp/
+**/.speakeasy/logs/
+.speakeasy/reports
+# Test outputs
+custom_test/*.wav
+custom_test/*.mp3
+custom_test/*.json
+!custom_test/voice_sample.wav
+# Backup files
+*_backup_*/
+*.backup

@@ -1,0 +1,16 @@
+# PayloadTooLargeErrorResponse
+
+## Example Usage
+
+```typescript
+import { PayloadTooLargeErrorResponse } from "supertone/models/errors";
+
+// No examples available for this model
+```
+
+## Fields
+
+| Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       | Example                                                                                           |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `status`                                                                                          | *string*                                                                                          | :heavy_check_mark:                                                                                | Response status                                                                                   | error                                                                                             |
+| `message`                                                                                         | [models.PayloadTooLargeErrorResponseMessage](../../models/payloadtoolargeerrorresponsemessage.md) | :heavy_check_mark:                                                                                | Payload too large error details                                                                   | {<br/>"message": "File too large",<br/>"error": "Payload Too Large",<br/>"statusCode": 413<br/>}  |

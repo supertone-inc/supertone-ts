@@ -76,14 +76,14 @@ For supported JavaScript runtimes, please consult [RUNTIMES.md](RUNTIMES.md).
 ### Example
 
 ```typescript
-import { Supertone } from "supertone";
+import { SDK } from "openapi";
 
-const supertone = new Supertone({
+const sdk = new SDK({
   apiKey: "<YOUR_API_KEY_HERE>",
 });
 
 async function run() {
-  const result = await supertone.textToSpeech.createSpeech({
+  const result = await sdk.textToSpeech.createSpeech({
     voiceId: "<id>",
     apiConvertTextToSpeechUsingCharacterRequest: {
       text: "<value>",
@@ -112,14 +112,14 @@ This SDK supports the following security scheme globally:
 
 To authenticate with the API the `apiKey` parameter must be set when initializing the SDK client instance. For example:
 ```typescript
-import { Supertone } from "supertone";
+import { SDK } from "openapi";
 
-const supertone = new Supertone({
+const sdk = new SDK({
   apiKey: "<YOUR_API_KEY_HERE>",
 });
 
 async function run() {
-  const result = await supertone.textToSpeech.createSpeech({
+  const result = await sdk.textToSpeech.createSpeech({
     voiceId: "<id>",
     apiConvertTextToSpeechUsingCharacterRequest: {
       text: "<value>",
@@ -222,14 +222,14 @@ Certain SDK methods accept files as part of a multi-part request. It is possible
 
 ```typescript
 import { openAsBlob } from "node:fs";
-import { Supertone } from "supertone";
+import { SDK } from "openapi";
 
-const supertone = new Supertone({
+const sdk = new SDK({
   apiKey: "<YOUR_API_KEY_HERE>",
 });
 
 async function run() {
-  const result = await supertone.customVoices.createClonedVoice({
+  const result = await sdk.customVoices.createClonedVoice({
     files: await openAsBlob("example.file"),
     name: "<value>",
   });
@@ -249,14 +249,14 @@ Some of the endpoints in this SDK support retries.  If you use the SDK without a
 
 To change the default retry strategy for a single API call, simply provide a retryConfig object to the call:
 ```typescript
-import { Supertone } from "supertone";
+import { SDK } from "openapi";
 
-const supertone = new Supertone({
+const sdk = new SDK({
   apiKey: "<YOUR_API_KEY_HERE>",
 });
 
 async function run() {
-  const result = await supertone.textToSpeech.createSpeech({
+  const result = await sdk.textToSpeech.createSpeech({
     voiceId: "<id>",
     apiConvertTextToSpeechUsingCharacterRequest: {
       text: "<value>",
@@ -284,9 +284,9 @@ run();
 
 If you'd like to override the default retry strategy for all operations that support retries, you can provide a retryConfig at SDK initialization:
 ```typescript
-import { Supertone } from "supertone";
+import { SDK } from "openapi";
 
-const supertone = new Supertone({
+const sdk = new SDK({
   retryConfig: {
     strategy: "backoff",
     backoff: {
@@ -301,7 +301,7 @@ const supertone = new Supertone({
 });
 
 async function run() {
-  const result = await supertone.textToSpeech.createSpeech({
+  const result = await sdk.textToSpeech.createSpeech({
     voiceId: "<id>",
     apiConvertTextToSpeechUsingCharacterRequest: {
       text: "<value>",
@@ -320,7 +320,7 @@ run();
 <!-- Start Error Handling [errors] -->
 ## Error Handling
 
-[`SupertoneError`](./src/models/errors/supertoneerror.ts) is the base class for all HTTP error responses. It has the following properties:
+[`SDKError`](./src/models/errors/sdkerror.ts) is the base class for all HTTP error responses. It has the following properties:
 
 | Property            | Type       | Description                                                                             |
 | ------------------- | ---------- | --------------------------------------------------------------------------------------- |
@@ -333,16 +333,16 @@ run();
 
 ### Example
 ```typescript
-import { Supertone } from "supertone";
-import * as errors from "supertone/models/errors";
+import { SDK } from "openapi";
+import * as errors from "openapi/models/errors";
 
-const supertone = new Supertone({
+const sdk = new SDK({
   apiKey: "<YOUR_API_KEY_HERE>",
 });
 
 async function run() {
   try {
-    const result = await supertone.textToSpeech.createSpeech({
+    const result = await sdk.textToSpeech.createSpeech({
       voiceId: "<id>",
       apiConvertTextToSpeechUsingCharacterRequest: {
         text: "<value>",
@@ -353,7 +353,7 @@ async function run() {
     console.log(result);
   } catch (error) {
     // The base class for HTTP error responses
-    if (error instanceof errors.SupertoneError) {
+    if (error instanceof errors.SDKError) {
       console.log(error.message);
       console.log(error.statusCode);
       console.log(error.body);
@@ -374,7 +374,7 @@ run();
 
 ### Error Classes
 **Primary error:**
-* [`SupertoneError`](./src/models/errors/supertoneerror.ts): The base class for HTTP error responses.
+* [`SDKError`](./src/models/errors/sdkerror.ts): The base class for HTTP error responses.
 
 <details><summary>Less common errors (16)</summary>
 
@@ -388,7 +388,7 @@ run();
 * [`UnexpectedClientError`](./src/models/errors/httpclienterrors.ts): Unrecognised or unexpected error.
 
 
-**Inherit from [`SupertoneError`](./src/models/errors/supertoneerror.ts)**:
+**Inherit from [`SDKError`](./src/models/errors/sdkerror.ts)**:
 * [`UnauthorizedErrorResponse`](./src/models/errors/unauthorizederrorresponse.ts): Unauthorized: Invalid API key. Status code `401`. Applicable to 10 of 15 methods.*
 * [`InternalServerErrorResponse`](./src/models/errors/internalservererrorresponse.ts): Status code `500`. Applicable to 10 of 15 methods.*
 * [`NotFoundErrorResponse`](./src/models/errors/notfounderrorresponse.ts): Status code `404`. Applicable to 9 of 15 methods.*
@@ -413,15 +413,15 @@ run();
 
 The default server can be overridden globally by passing a URL to the `serverURL: string` optional parameter when initializing the SDK client instance. For example:
 ```typescript
-import { Supertone } from "supertone";
+import { SDK } from "openapi";
 
-const supertone = new Supertone({
+const sdk = new SDK({
   serverURL: "https://supertoneapi.com",
   apiKey: "<YOUR_API_KEY_HERE>",
 });
 
 async function run() {
-  const result = await supertone.textToSpeech.createSpeech({
+  const result = await sdk.textToSpeech.createSpeech({
     voiceId: "<id>",
     apiConvertTextToSpeechUsingCharacterRequest: {
       text: "<value>",
@@ -455,8 +455,8 @@ custom header and a timeout to requests and how to use the `"requestError"` hook
 to log errors:
 
 ```typescript
-import { Supertone } from "supertone";
-import { HTTPClient } from "supertone/lib/http";
+import { SDK } from "openapi";
+import { HTTPClient } from "openapi/lib/http";
 
 const httpClient = new HTTPClient({
   // fetcher takes a function that has the same signature as native `fetch`.
@@ -482,7 +482,7 @@ httpClient.addHook("requestError", (error, request) => {
   console.groupEnd();
 });
 
-const sdk = new Supertone({ httpClient });
+const sdk = new SDK({ httpClient });
 ```
 <!-- End Custom HTTP Client [http-client] -->
 
@@ -497,9 +497,9 @@ You can pass a logger that matches `console`'s interface as an SDK option.
 > Beware that debug logging will reveal secrets, like API tokens in headers, in log messages printed to a console or files. It's recommended to use this feature only during local development and not in production.
 
 ```typescript
-import { Supertone } from "supertone";
+import { SDK } from "openapi";
 
-const sdk = new Supertone({ debugLogger: console });
+const sdk = new SDK({ debugLogger: console });
 ```
 <!-- End Debugging [debug] -->
 

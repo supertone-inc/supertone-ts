@@ -1,0 +1,19 @@
+# CreateClonedVoiceRequest
+
+Audio file and voice metadata
+
+## Example Usage
+
+```typescript
+import { CreateClonedVoiceRequest } from "supertone/models/operations";
+
+// No examples available for this model
+```
+
+## Fields
+
+| Field                                                                                                                                                                                | Type                                                                                                                                                                                 | Required                                                                                                                                                                             | Description                                                                                                                                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `files`                                                                                                                                                                              | [File](https://developer.mozilla.org/en-US/docs/Web/API/File) \| [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) \| [operations.Files](../../models/operations/files.md) | :heavy_check_mark:                                                                                                                                                                   | Audio file to clone voice from (WAV/MP3 format, max 3MB)                                                                                                                             |
+| `name`                                                                                                                                                                               | *string*                                                                                                                                                                             | :heavy_check_mark:                                                                                                                                                                   | Name of the cloned voice                                                                                                                                                             |
+| `description`                                                                                                                                                                        | *string*                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                   | Description of the cloned voice                                                                                                                                                      |

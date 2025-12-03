@@ -197,7 +197,7 @@ run();
 
 \* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
 
-### Example
+### Error Handling Example
 ```typescript
 import { Supertone } from "supertone";
 import * as errors from "supertone/models/errors";

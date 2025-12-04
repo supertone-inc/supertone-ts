@@ -5,15 +5,11 @@
  * This example demonstrates how to retrieve detailed information about a custom voice.
  */
 
-import { Supertone } from "../../src/index.js";
+import { Supertone } from "@supertone/supertone";
 import * as dotenv from "dotenv";
-import * as path from "path";
-import { fileURLToPath } from "url";
 
 // Load environment variables
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.join(__dirname, "../.env") });
+dotenv.config();
 
 const API_KEY = process.env.SUPERTONE_API_KEY;
 const CUSTOM_VOICE_ID =
@@ -66,4 +62,3 @@ async function main() {
 }
 
 main();
-

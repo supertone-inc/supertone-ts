@@ -6,16 +6,12 @@
  * Useful for resource planning and UI pre-calculations.
  */
 
-import { Supertone } from "../../src/index.js";
-import * as models from "../../src/models/index.js";
+import { Supertone } from "@supertone/supertone";
+import * as models from "@supertone/supertone/models";
 import * as dotenv from "dotenv";
-import * as path from "path";
-import { fileURLToPath } from "url";
 
 // Load environment variables
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.join(__dirname, "../.env") });
+dotenv.config();
 
 const API_KEY = process.env.SUPERTONE_API_KEY;
 const VOICE_ID = process.env.VOICE_ID || "your-voice-id-here";

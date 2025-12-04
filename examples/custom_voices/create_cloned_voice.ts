@@ -6,16 +6,18 @@
  * ⚠️ This consumes API credits and creates a permanent custom voice!
  */
 
-import { Supertone } from "../../src/index.js";
+import { Supertone } from "@supertone/supertone";
 import * as fs from "fs";
 import * as dotenv from "dotenv";
 import * as path from "path";
 import { fileURLToPath } from "url";
 
 // Load environment variables
+dotenv.config();
+
+// For resolving relative file paths
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.join(__dirname, "../.env") });
 
 const API_KEY = process.env.SUPERTONE_API_KEY;
 
@@ -113,4 +115,3 @@ async function main() {
 }
 
 main();
-

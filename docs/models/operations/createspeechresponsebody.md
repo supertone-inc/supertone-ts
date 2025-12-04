@@ -5,7 +5,7 @@ JSON response with base64 audio and phoneme data (when include_phonemes=true)
 ## Example Usage
 
 ```typescript
-import { CreateSpeechResponseBody } from "supertone/models/operations";
+import { CreateSpeechResponseBody } from "@supertone/supertone/models/operations";
 
 let value: CreateSpeechResponseBody = {
   audioBase64:

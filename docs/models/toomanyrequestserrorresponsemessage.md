@@ -5,7 +5,7 @@ Too many requests error details
 ## Example Usage
 
 ```typescript
-import { TooManyRequestsErrorResponseMessage } from "supertone/models";
+import { TooManyRequestsErrorResponseMessage } from "@supertone/supertone/models";
 
 let value: TooManyRequestsErrorResponseMessage = {
   message: "rate limit exceeded",

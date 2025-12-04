@@ -19,7 +19,7 @@ Gets a paginated list of voices available to the user based on internal group lo
 
 <!-- UsageSnippet language="typescript" operationID="list_voices" method="get" path="/v1/voices" -->
 ```typescript
-import { Supertone } from "supertone";
+import { Supertone } from "@supertone/supertone";
 
 const supertone = new Supertone({
   apiKey: "<YOUR_API_KEY_HERE>",
@@ -39,8 +39,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { SupertoneCore } from "supertone/core.js";
-import { voicesListVoices } from "supertone/funcs/voicesListVoices.js";
+import { SupertoneCore } from "@supertone/supertone/core.js";
+import { voicesListVoices } from "@supertone/supertone/funcs/voicesListVoices.js";
 
 // Use `SupertoneCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -88,7 +88,7 @@ Search and filter voices based on various parameters.
 
 <!-- UsageSnippet language="typescript" operationID="search_voices" method="get" path="/v1/voices/search" -->
 ```typescript
-import { Supertone } from "supertone";
+import { Supertone } from "@supertone/supertone";
 
 const supertone = new Supertone({
   apiKey: "<YOUR_API_KEY_HERE>",
@@ -108,8 +108,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { SupertoneCore } from "supertone/core.js";
-import { voicesSearchVoices } from "supertone/funcs/voicesSearchVoices.js";
+import { SupertoneCore } from "@supertone/supertone/core.js";
+import { voicesSearchVoices } from "@supertone/supertone/funcs/voicesSearchVoices.js";
 
 // Use `SupertoneCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -157,7 +157,7 @@ Gets detailed information about a specific voice by its voice ID. Only supports 
 
 <!-- UsageSnippet language="typescript" operationID="get_voice" method="get" path="/v1/voices/{voice_id}" -->
 ```typescript
-import { Supertone } from "supertone";
+import { Supertone } from "@supertone/supertone";
 
 const supertone = new Supertone({
   apiKey: "<YOUR_API_KEY_HERE>",
@@ -179,8 +179,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { SupertoneCore } from "supertone/core.js";
-import { voicesGetVoice } from "supertone/funcs/voicesGetVoice.js";
+import { SupertoneCore } from "@supertone/supertone/core.js";
+import { voicesGetVoice } from "@supertone/supertone/funcs/voicesGetVoice.js";
 
 // Use `SupertoneCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.

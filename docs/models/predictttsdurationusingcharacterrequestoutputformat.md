@@ -5,7 +5,7 @@ The desired output format of the audio file (wav, mp3). Default is wav.
 ## Example Usage
 
 ```typescript
-import { PredictTTSDurationUsingCharacterRequestOutputFormat } from "supertone/models";
+import { PredictTTSDurationUsingCharacterRequestOutputFormat } from "@supertone/supertone/models";
 
 let value: PredictTTSDurationUsingCharacterRequestOutputFormat = "mp3";
 ```

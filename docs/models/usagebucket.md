@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { UsageBucket } from "supertone/models";
+import { UsageBucket } from "@supertone/supertone/models";
 
 let value: UsageBucket = {
   startingAt: "2024-01-01T00:00:00+09:00",

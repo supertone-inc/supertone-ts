@@ -5,7 +5,7 @@ Payload too large error details
 ## Example Usage
 
 ```typescript
-import { PayloadTooLargeErrorResponseMessage } from "supertone/models";
+import { PayloadTooLargeErrorResponseMessage } from "@supertone/supertone/models";
 
 let value: PayloadTooLargeErrorResponseMessage = {
   message: "File too large",

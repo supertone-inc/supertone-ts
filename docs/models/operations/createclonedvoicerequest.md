@@ -5,7 +5,7 @@ Audio file and voice metadata
 ## Example Usage
 
 ```typescript
-import { CreateClonedVoiceRequest } from "supertone/models/operations";
+import { CreateClonedVoiceRequest } from "@supertone/supertone/models/operations";
 
 // No examples available for this model
 ```

@@ -19,7 +19,7 @@ Retrieves a list of all TTS API usage records filtered by a specified date range
 
 <!-- UsageSnippet language="typescript" operationID="get_voice_usage" method="get" path="/v1/voice-usage" -->
 ```typescript
-import { Supertone } from "supertone";
+import { Supertone } from "@supertone/supertone";
 
 const supertone = new Supertone({
   apiKey: "<YOUR_API_KEY_HERE>",
@@ -42,8 +42,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { SupertoneCore } from "supertone/core.js";
-import { usageGetVoiceUsage } from "supertone/funcs/usageGetVoiceUsage.js";
+import { SupertoneCore } from "@supertone/supertone/core.js";
+import { usageGetVoiceUsage } from "@supertone/supertone/funcs/usageGetVoiceUsage.js";
 
 // Use `SupertoneCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -94,7 +94,7 @@ Retrieves API usage data with advanced features including time bucketing, multi-
 
 <!-- UsageSnippet language="typescript" operationID="get_usage" method="get" path="/v1/usage" -->
 ```typescript
-import { Supertone } from "supertone";
+import { Supertone } from "@supertone/supertone";
 
 const supertone = new Supertone({
   apiKey: "<YOUR_API_KEY_HERE>",
@@ -120,8 +120,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { SupertoneCore } from "supertone/core.js";
-import { usageGetUsage } from "supertone/funcs/usageGetUsage.js";
+import { SupertoneCore } from "@supertone/supertone/core.js";
+import { usageGetUsage } from "@supertone/supertone/funcs/usageGetUsage.js";
 
 // Use `SupertoneCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -179,7 +179,7 @@ Retrieves credit balance of the user.
 
 <!-- UsageSnippet language="typescript" operationID="get_credit_balance" method="get" path="/v1/credits" -->
 ```typescript
-import { Supertone } from "supertone";
+import { Supertone } from "@supertone/supertone";
 
 const supertone = new Supertone({
   apiKey: "<YOUR_API_KEY_HERE>",
@@ -199,8 +199,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { SupertoneCore } from "supertone/core.js";
-import { usageGetCreditBalance } from "supertone/funcs/usageGetCreditBalance.js";
+import { SupertoneCore } from "@supertone/supertone/core.js";
+import { usageGetCreditBalance } from "@supertone/supertone/funcs/usageGetCreditBalance.js";
 
 // Use `SupertoneCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.

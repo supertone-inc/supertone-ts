@@ -284,9 +284,9 @@ if [ $START_INDEX -le 7 ]; then
         fi
         
         if [ "$PACKAGE_MANAGER" = "yarn" ]; then
-            yarn publish
+            yarn publish --access public
         else
-            npm publish
+            npm publish --access public
         fi
         
         if [ $? -eq 0 ]; then

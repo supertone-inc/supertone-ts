@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { PredictTTSDurationUsingCharacterRequest } from "supertone/models";
+import { PredictTTSDurationUsingCharacterRequest } from "@supertone/supertone/models";
 
 let value: PredictTTSDurationUsingCharacterRequest = {
   text: "<value>",

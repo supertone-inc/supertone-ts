@@ -5,7 +5,7 @@ Request timeout error details
 ## Example Usage
 
 ```typescript
-import { RequestTimeoutErrorResponseMessage } from "supertone/models";
+import { RequestTimeoutErrorResponseMessage } from "@supertone/supertone/models";
 
 let value: RequestTimeoutErrorResponseMessage = {
   message: "Request timed out",

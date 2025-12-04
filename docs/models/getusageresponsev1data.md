@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetUsageResponseV1Data } from "supertone/models";
+import { GetUsageResponseV1Data } from "@supertone/supertone/models";
 
 let value: GetUsageResponseV1Data = {
   date: "2024-12-14",

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ForbiddenErrorResponse } from "supertone/models/errors";
+import { ForbiddenErrorResponse } from "@supertone/supertone/models/errors";
 
 // No examples available for this model
 ```

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { StreamSpeechRequest } from "supertone/models/operations";
+import { StreamSpeechRequest } from "@supertone/supertone/models/operations";
 
 let value: StreamSpeechRequest = {
   voiceId: "<id>",

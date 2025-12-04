@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetUsageRequest } from "supertone/models/operations";
+import { GetUsageRequest } from "@supertone/supertone/models/operations";
 
 let value: GetUsageRequest = {
   startTime: "2024-01-01T00:00:00+09:00",

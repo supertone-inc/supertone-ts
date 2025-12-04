@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { BreakdownType } from "supertone/models/operations";
+import { BreakdownType } from "@supertone/supertone/models/operations";
 
 let value: BreakdownType = "voice_id";
 ```

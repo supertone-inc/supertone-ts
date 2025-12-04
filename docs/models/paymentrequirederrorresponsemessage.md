@@ -5,7 +5,7 @@ Payment required error details
 ## Example Usage
 
 ```typescript
-import { PaymentRequiredErrorResponseMessage } from "supertone/models";
+import { PaymentRequiredErrorResponseMessage } from "@supertone/supertone/models";
 
 let value: PaymentRequiredErrorResponseMessage = {
   message: "Not enough credits",

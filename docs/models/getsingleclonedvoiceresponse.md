@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetSingleClonedVoiceResponse } from "supertone/models";
+import { GetSingleClonedVoiceResponse } from "@supertone/supertone/models";
 
 let value: GetSingleClonedVoiceResponse = {
   voiceId: "voice_123456789",

@@ -5,7 +5,7 @@ Unauthorized error details
 ## Example Usage
 
 ```typescript
-import { UnauthorizedErrorResponseMessage } from "supertone/models";
+import { UnauthorizedErrorResponseMessage } from "@supertone/supertone/models";
 
 let value: UnauthorizedErrorResponseMessage = {
   message: "Invalid API Key",

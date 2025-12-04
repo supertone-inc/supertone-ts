@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { UnsupportedMediaTypeErrorResponse } from "supertone/models/errors";
+import { UnsupportedMediaTypeErrorResponse } from "@supertone/supertone/models/errors";
 
 // No examples available for this model
 ```

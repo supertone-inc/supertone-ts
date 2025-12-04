@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetCreditBalanceResponse } from "supertone/models";
+import { GetCreditBalanceResponse } from "@supertone/supertone/models";
 
 let value: GetCreditBalanceResponse = {
   balance: 2654.91,

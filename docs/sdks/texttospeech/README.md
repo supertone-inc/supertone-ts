@@ -19,7 +19,7 @@ Convert text to speech using the specified voice
 
 <!-- UsageSnippet language="typescript" operationID="create_speech" method="post" path="/v1/text-to-speech/{voice_id}" -->
 ```typescript
-import { Supertone } from "supertone";
+import { Supertone } from "@supertone/supertone";
 
 const supertone = new Supertone({
   apiKey: "<YOUR_API_KEY_HERE>",
@@ -45,8 +45,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { SupertoneCore } from "supertone/core.js";
-import { textToSpeechCreateSpeech } from "supertone/funcs/textToSpeechCreateSpeech.js";
+import { SupertoneCore } from "@supertone/supertone/core.js";
+import { textToSpeechCreateSpeech } from "@supertone/supertone/funcs/textToSpeechCreateSpeech.js";
 
 // Use `SupertoneCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -108,7 +108,7 @@ Convert text to speech using the specified voice with streaming response. Return
 
 <!-- UsageSnippet language="typescript" operationID="stream_speech" method="post" path="/v1/text-to-speech/{voice_id}/stream" -->
 ```typescript
-import { Supertone } from "supertone";
+import { Supertone } from "@supertone/supertone";
 
 const supertone = new Supertone({
   apiKey: "<YOUR_API_KEY_HERE>",
@@ -134,8 +134,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { SupertoneCore } from "supertone/core.js";
-import { textToSpeechStreamSpeech } from "supertone/funcs/textToSpeechStreamSpeech.js";
+import { SupertoneCore } from "@supertone/supertone/core.js";
+import { textToSpeechStreamSpeech } from "@supertone/supertone/funcs/textToSpeechStreamSpeech.js";
 
 // Use `SupertoneCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -197,7 +197,7 @@ Predict the duration of text-to-speech conversion without generating audio
 
 <!-- UsageSnippet language="typescript" operationID="predict_duration" method="post" path="/v1/predict-duration/{voice_id}" -->
 ```typescript
-import { Supertone } from "supertone";
+import { Supertone } from "@supertone/supertone";
 
 const supertone = new Supertone({
   apiKey: "<YOUR_API_KEY_HERE>",
@@ -223,8 +223,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { SupertoneCore } from "supertone/core.js";
-import { textToSpeechPredictDuration } from "supertone/funcs/textToSpeechPredictDuration.js";
+import { SupertoneCore } from "@supertone/supertone/core.js";
+import { textToSpeechPredictDuration } from "@supertone/supertone/funcs/textToSpeechPredictDuration.js";
 
 // Use `SupertoneCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ConvertTextToSpeechParameters } from "supertone/models";
+import { ConvertTextToSpeechParameters } from "@supertone/supertone/models";
 
 let value: ConvertTextToSpeechParameters = {};
 ```

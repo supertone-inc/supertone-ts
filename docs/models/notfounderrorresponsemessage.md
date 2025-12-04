@@ -5,7 +5,7 @@ Not found error details
 ## Example Usage
 
 ```typescript
-import { NotFoundErrorResponseMessage } from "supertone/models";
+import { NotFoundErrorResponseMessage } from "@supertone/supertone/models";
 
 let value: NotFoundErrorResponseMessage = {
   message: "Voice not found",

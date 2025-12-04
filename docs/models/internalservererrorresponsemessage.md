@@ -5,7 +5,7 @@ Internal server error details
 ## Example Usage
 
 ```typescript
-import { InternalServerErrorResponseMessage } from "supertone/models";
+import { InternalServerErrorResponseMessage } from "@supertone/supertone/models";
 
 let value: InternalServerErrorResponseMessage = {
   message: "Failed to convert text to speech",

@@ -5,13 +5,13 @@
 import dotenv from "dotenv";
 dotenv.config();
 /**
- * Example usage of the supertone SDK
+ * Example usage of the @supertone/supertone SDK
  *
  * To run this example from the examples directory:
  * npm run build && npx tsx textToSpeechCreateSpeech.example.ts
  */
 
-import { Supertone } from "supertone";
+import { Supertone } from "@supertone/supertone";
 
 const supertone = new Supertone({
   apiKey: "<YOUR_API_KEY_HERE>",

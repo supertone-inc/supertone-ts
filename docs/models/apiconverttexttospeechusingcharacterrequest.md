@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { APIConvertTextToSpeechUsingCharacterRequest } from "supertone/models";
+import { APIConvertTextToSpeechUsingCharacterRequest } from "@supertone/supertone/models";
 
 let value: APIConvertTextToSpeechUsingCharacterRequest = {
   text: "<value>",

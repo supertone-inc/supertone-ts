@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { APISampleData } from "supertone/models";
+import { APISampleData } from "@supertone/supertone/models";
 
 let value: APISampleData = {
   language: "ko",

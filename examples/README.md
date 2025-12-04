@@ -1,6 +1,6 @@
-# supertone Examples
+# @supertone/supertone Examples
 
-This directory contains example scripts demonstrating how to use the supertone SDK.
+This directory contains example scripts demonstrating how to use the @supertone/supertone SDK.
 
 ## Prerequisites
 

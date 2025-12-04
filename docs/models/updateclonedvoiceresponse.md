@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { UpdateClonedVoiceResponse } from "supertone/models";
+import { UpdateClonedVoiceResponse } from "@supertone/supertone/models";
 
 let value: UpdateClonedVoiceResponse = {
   voiceId: "voice_123456789",

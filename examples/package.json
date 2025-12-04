@@ -1,5 +1,5 @@
 {
-  "name": "supertone-examples",
+  "name": "@supertone/supertone-examples",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -13,6 +13,6 @@
     "tsx": "^4.19.2"
   },
   "dependencies": {
-    "supertone": "file:.."
+    "@supertone/supertone": "file:.."
   }
 }

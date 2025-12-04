@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { PayloadTooLargeErrorResponse } from "supertone/models/errors";
+import { PayloadTooLargeErrorResponse } from "@supertone/supertone/models/errors";
 
 // No examples available for this model
 ```

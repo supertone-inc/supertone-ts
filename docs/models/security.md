@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { Security } from "supertone/models";
+import { Security } from "@supertone/supertone/models";
 
 let value: Security = {
   apiKey: "<value>",

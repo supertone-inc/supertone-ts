@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { SearchVoicesRequest } from "supertone/models/operations";
+import { SearchVoicesRequest } from "@supertone/supertone/models/operations";
 
 let value: SearchVoicesRequest = {};
 ```

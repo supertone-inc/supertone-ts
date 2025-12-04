@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { DeleteCustomVoiceRequest } from "supertone/models/operations";
+import { DeleteCustomVoiceRequest } from "@supertone/supertone/models/operations";
 
 let value: DeleteCustomVoiceRequest = {
   voiceId: "<id>",

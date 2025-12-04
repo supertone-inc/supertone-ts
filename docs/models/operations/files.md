@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { Files } from "supertone/models/operations";
+import { Files } from "@supertone/supertone/models/operations";
 
 // No examples available for this model
 ```

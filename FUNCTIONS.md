@@ -19,8 +19,8 @@ specific category of applications.
 ## Example
 
 ```typescript
-import { SupertoneCore } from "supertone/core.js";
-import { textToSpeechCreateSpeech } from "supertone/funcs/textToSpeechCreateSpeech.js";
+import { SupertoneCore } from "@supertone/supertone/core.js";
+import { textToSpeechCreateSpeech } from "@supertone/supertone/funcs/textToSpeechCreateSpeech.js";
 
 // Use `SupertoneCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.

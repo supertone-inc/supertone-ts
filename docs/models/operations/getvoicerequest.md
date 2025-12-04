@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetVoiceRequest } from "supertone/models/operations";
+import { GetVoiceRequest } from "@supertone/supertone/models/operations";
 
 let value: GetVoiceRequest = {
   voiceId: "<id>",

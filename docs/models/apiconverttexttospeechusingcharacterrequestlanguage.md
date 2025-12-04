@@ -5,7 +5,7 @@ The language code of the text
 ## Example Usage
 
 ```typescript
-import { APIConvertTextToSpeechUsingCharacterRequestLanguage } from "supertone/models";
+import { APIConvertTextToSpeechUsingCharacterRequestLanguage } from "@supertone/supertone/models";
 
 let value: APIConvertTextToSpeechUsingCharacterRequestLanguage = "ko";
 ```

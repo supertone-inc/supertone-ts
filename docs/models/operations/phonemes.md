@@ -5,7 +5,7 @@ Phoneme timing data with IPA symbols
 ## Example Usage
 
 ```typescript
-import { Phonemes } from "supertone/models/operations";
+import { Phonemes } from "@supertone/supertone/models/operations";
 
 let value: Phonemes = {
   symbols: [

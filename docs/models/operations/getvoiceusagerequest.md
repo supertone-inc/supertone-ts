@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetVoiceUsageRequest } from "supertone/models/operations";
+import { GetVoiceUsageRequest } from "@supertone/supertone/models/operations";
 
 let value: GetVoiceUsageRequest = {
   startDate: "2024-11-01",

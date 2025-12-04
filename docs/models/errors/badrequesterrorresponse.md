@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { BadRequestErrorResponse } from "supertone/models/errors";
+import { BadRequestErrorResponse } from "@supertone/supertone/models/errors";
 
 // No examples available for this model
 ```

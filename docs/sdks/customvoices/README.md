@@ -22,8 +22,8 @@ Creates a custom (cloned) voice from uploaded audio files.
 
 <!-- UsageSnippet language="typescript" operationID="create_cloned_voice" method="post" path="/v1/custom-voices/cloned-voice" -->
 ```typescript
+import { Supertone } from "@supertone/supertone";
 import { openAsBlob } from "node:fs";
-import { Supertone } from "supertone";
 
 const supertone = new Supertone({
   apiKey: "<YOUR_API_KEY_HERE>",
@@ -46,9 +46,9 @@ run();
 The standalone function version of this method:
 
 ```typescript
+import { SupertoneCore } from "@supertone/supertone/core.js";
+import { customVoicesCreateClonedVoice } from "@supertone/supertone/funcs/customVoicesCreateClonedVoice.js";
 import { openAsBlob } from "node:fs";
-import { SupertoneCore } from "supertone/core.js";
-import { customVoicesCreateClonedVoice } from "supertone/funcs/customVoicesCreateClonedVoice.js";
 
 // Use `SupertoneCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -107,7 +107,7 @@ Gets a paginated list of custom (cloned) voices available to the user, using tok
 
 <!-- UsageSnippet language="typescript" operationID="list_custom_voices" method="get" path="/v1/custom-voices" -->
 ```typescript
-import { Supertone } from "supertone";
+import { Supertone } from "@supertone/supertone";
 
 const supertone = new Supertone({
   apiKey: "<YOUR_API_KEY_HERE>",
@@ -127,8 +127,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { SupertoneCore } from "supertone/core.js";
-import { customVoicesListCustomVoices } from "supertone/funcs/customVoicesListCustomVoices.js";
+import { SupertoneCore } from "@supertone/supertone/core.js";
+import { customVoicesListCustomVoices } from "@supertone/supertone/funcs/customVoicesListCustomVoices.js";
 
 // Use `SupertoneCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -179,7 +179,7 @@ Search and filter custom (cloned) voices based on various parameters. Space-sepa
 
 <!-- UsageSnippet language="typescript" operationID="search_custom_voices" method="get" path="/v1/custom-voices/search" -->
 ```typescript
-import { Supertone } from "supertone";
+import { Supertone } from "@supertone/supertone";
 
 const supertone = new Supertone({
   apiKey: "<YOUR_API_KEY_HERE>",
@@ -199,8 +199,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { SupertoneCore } from "supertone/core.js";
-import { customVoicesSearchCustomVoices } from "supertone/funcs/customVoicesSearchCustomVoices.js";
+import { SupertoneCore } from "@supertone/supertone/core.js";
+import { customVoicesSearchCustomVoices } from "@supertone/supertone/funcs/customVoicesSearchCustomVoices.js";
 
 // Use `SupertoneCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -251,7 +251,7 @@ Gets details of a specific custom (cloned) voice by ID.
 
 <!-- UsageSnippet language="typescript" operationID="get_custom_voice" method="get" path="/v1/custom-voices/{voice_id}" -->
 ```typescript
-import { Supertone } from "supertone";
+import { Supertone } from "@supertone/supertone";
 
 const supertone = new Supertone({
   apiKey: "<YOUR_API_KEY_HERE>",
@@ -273,8 +273,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { SupertoneCore } from "supertone/core.js";
-import { customVoicesGetCustomVoice } from "supertone/funcs/customVoicesGetCustomVoice.js";
+import { SupertoneCore } from "@supertone/supertone/core.js";
+import { customVoicesGetCustomVoice } from "@supertone/supertone/funcs/customVoicesGetCustomVoice.js";
 
 // Use `SupertoneCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -327,7 +327,7 @@ Partially updates properties of a custom (cloned) voice by ID.
 
 <!-- UsageSnippet language="typescript" operationID="edit_custom_voice" method="patch" path="/v1/custom-voices/{voice_id}" -->
 ```typescript
-import { Supertone } from "supertone";
+import { Supertone } from "@supertone/supertone";
 
 const supertone = new Supertone({
   apiKey: "<YOUR_API_KEY_HERE>",
@@ -353,8 +353,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { SupertoneCore } from "supertone/core.js";
-import { customVoicesEditCustomVoice } from "supertone/funcs/customVoicesEditCustomVoice.js";
+import { SupertoneCore } from "@supertone/supertone/core.js";
+import { customVoicesEditCustomVoice } from "@supertone/supertone/funcs/customVoicesEditCustomVoice.js";
 
 // Use `SupertoneCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -411,7 +411,7 @@ Deletes a custom (cloned) voice by ID.
 
 <!-- UsageSnippet language="typescript" operationID="delete_custom_voice" method="delete" path="/v1/custom-voices/{voice_id}" -->
 ```typescript
-import { Supertone } from "supertone";
+import { Supertone } from "@supertone/supertone";
 
 const supertone = new Supertone({
   apiKey: "<YOUR_API_KEY_HERE>",
@@ -433,8 +433,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { SupertoneCore } from "supertone/core.js";
-import { customVoicesDeleteCustomVoice } from "supertone/funcs/customVoicesDeleteCustomVoice.js";
+import { SupertoneCore } from "@supertone/supertone/core.js";
+import { customVoicesDeleteCustomVoice } from "@supertone/supertone/funcs/customVoicesDeleteCustomVoice.js";
 
 // Use `SupertoneCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.

@@ -5,7 +5,7 @@ Forbidden error details
 ## Example Usage
 
 ```typescript
-import { ForbiddenErrorResponseMessage } from "supertone/models";
+import { ForbiddenErrorResponseMessage } from "@supertone/supertone/models";
 
 let value: ForbiddenErrorResponseMessage = {
   message: "Permission denied",

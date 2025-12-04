@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetAPICharacterListResponse } from "supertone/models";
+import { GetAPICharacterListResponse } from "@supertone/supertone/models";
 
 let value: GetAPICharacterListResponse = {
   items: [

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { UsageResult } from "supertone/models";
+import { UsageResult } from "@supertone/supertone/models";
 
 let value: UsageResult = {
   minutesUsed: 9691.33,

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { UsageAnalyticsResponse } from "supertone/models";
+import { UsageAnalyticsResponse } from "@supertone/supertone/models";
 
 let value: UsageAnalyticsResponse = {
   data: [],

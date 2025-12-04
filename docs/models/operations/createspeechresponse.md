@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { CreateSpeechResponse } from "supertone/models/operations";
+import { CreateSpeechResponse } from "@supertone/supertone/models/operations";
 
 // No examples available for this model
 ```

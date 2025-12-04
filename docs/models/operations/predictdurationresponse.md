@@ -5,7 +5,7 @@ Returns predicted duration of the audio in seconds
 ## Example Usage
 
 ```typescript
-import { PredictDurationResponse } from "supertone/models/operations";
+import { PredictDurationResponse } from "@supertone/supertone/models/operations";
 
 let value: PredictDurationResponse = {};
 ```

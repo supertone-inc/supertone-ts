@@ -8,6 +8,94 @@
 import { DEFAULT_MAX_TEXT_LENGTH } from "./constants.js";
 
 /**
+ * Check if text contains spaces (to determine if word-based splitting is possible)
+ *
+ * @param text - Text to check
+ * @returns true if text contains spaces
+ */
+function hasSpaces(text: string): boolean {
+	return /\s/.test(text);
+}
+
+/**
+ * Split text by words, ensuring each chunk is under maxLength.
+ * Used for languages with spaces (English, Korean, etc.)
+ *
+ * @param text - Text to split
+ * @param maxLength - Maximum length of each chunk
+ * @returns Array of text chunks
+ */
+function splitByWords(text: string, maxLength: number): string[] {
+	const words = text.split(/(\s+)/);
+	const chunks: string[] = [];
+	let currentChunk = "";
+
+	for (const word of words) {
+		if (currentChunk.length + word.length <= maxLength) {
+			currentChunk += word;
+		} else {
+			if (currentChunk.trim()) {
+				chunks.push(currentChunk.trim());
+			}
+			// If a single word exceeds maxLength, split by characters
+			if (word.trim().length > maxLength) {
+				const charChunks = splitByCharacters(word.trim(), maxLength);
+				chunks.push(...charChunks);
+				currentChunk = "";
+			} else {
+				currentChunk = word;
+			}
+		}
+	}
+
+	if (currentChunk.trim()) {
+		chunks.push(currentChunk.trim());
+	}
+
+	return chunks;
+}
+
+/**
+ * Split text by characters, ensuring each chunk is under maxLength.
+ * Used for languages without spaces (Japanese, Chinese, etc.)
+ *
+ * @param text - Text to split
+ * @param maxLength - Maximum length of each chunk
+ * @returns Array of text chunks
+ */
+function splitByCharacters(text: string, maxLength: number): string[] {
+	const chunks: string[] = [];
+
+	for (let i = 0; i < text.length; i += maxLength) {
+		chunks.push(text.slice(i, i + maxLength));
+	}
+
+	return chunks;
+}
+
+/**
+ * Split a single chunk that exceeds maxLength into smaller chunks.
+ * Uses word-based splitting for texts with spaces, character-based for texts without.
+ *
+ * @param chunk - Text chunk to split
+ * @param maxLength - Maximum length of each chunk
+ * @returns Array of text chunks, all under maxLength
+ */
+function splitOversizedChunk(chunk: string, maxLength: number): string[] {
+	if (chunk.length <= maxLength) {
+		return [chunk];
+	}
+
+	// Check if text has spaces (word-based splitting possible)
+	if (hasSpaces(chunk)) {
+		return splitByWords(chunk, maxLength);
+	}
+
+	// No spaces: use character-based splitting (Japanese, Chinese, etc.)
+	return splitByCharacters(chunk, maxLength);
+}
+
+/**
  * Split input text into sentence chunks suitable for TTS processing.
  *
  * Enhanced version that implements intelligent text segmentation respecting
@@ -15,9 +103,16 @@ import { DEFAULT_MAX_TEXT_LENGTH } from "./constants.js";
  * It handles various punctuation patterns and provides graceful fallback to
  * word/character boundaries when necessary.
  *
+ * Chunking Strategy:
+ * 1. First, split by sentence boundaries (punctuation: .!?;:)
+ * 2. Merge sentences into chunks up to maxLength
+ * 3. If a sentence exceeds maxLength:
+ *    - For text with spaces: split by words
+ *    - For text without spaces (Japanese, etc.): split by characters
+ *
  * @param text - Input text to be segmented
  * @param maxLength - Maximum length of each chunk
- * @returns Array of text chunks
+ * @returns Array of text chunks, each guaranteed to be <= maxLength
  */
 export function chunkText(
 	text: string,
@@ -27,28 +122,43 @@ export function chunkText(
 		return [text];
 	}
 
-	// Split by sentence boundaries
-	const sentences = text.split(/([.!?;:]+\s*)/);
+	// Step 1: Split by sentence boundaries (including various punctuation marks)
+	// Includes Western punctuation (.!?;:) and CJK punctuation (。！？；：)
+	const sentences = text.split(/([.!?;:。！？；：]+\s*)/);
 
-	const chunks: string[] = [];
+	const preliminaryChunks: string[] = [];
 	let currentChunk = "";
 
+	// Step 2: Merge sentences into chunks up to maxLength
 	for (const sentence of sentences) {
 		if (currentChunk.length + sentence.length <= maxLength) {
 			currentChunk += sentence;
 		} else {
 			if (currentChunk) {
-				chunks.push(currentChunk);
+				preliminaryChunks.push(currentChunk);
 			}
 			currentChunk = sentence;
 		}
 	}
 
 	if (currentChunk) {
-		chunks.push(currentChunk);
+		preliminaryChunks.push(currentChunk);
 	}
 
-	return chunks;
+	// Step 3: Handle oversized chunks (split by words or characters)
+	const finalChunks: string[] = [];
+	for (const chunk of preliminaryChunks) {
+		if (chunk.length <= maxLength) {
+			finalChunks.push(chunk);
+		} else {
+			// Chunk exceeds maxLength, need to split further
+			const subChunks = splitOversizedChunk(chunk, maxLength);
+			finalChunks.push(...subChunks);
+		}
+	}
+
+	// Filter out empty chunks
+	return finalChunks.filter((chunk) => chunk.length > 0);
 }
 
 /**

@@ -937,6 +937,154 @@ async function testCreateSpeechLongText(
 }
 
 /**
+ * Test TTS with long text WITHOUT punctuation (word-based chunking)
+ * This tests the word-based splitting fallback when sentences exceed 300 chars
+ */
+async function testCreateSpeechLongSentenceNoPunctuation(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log(
+		"📜 Long Sentence WITHOUT Punctuation Test (Word-based chunking)"
+	);
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		// Long text without punctuation - forces word-based splitting
+		// This is a single continuous sentence with no periods or other punctuation marks
+		const longSentenceNoPunctuation =
+			"This is a very long sentence without any punctuation marks that is designed to test the word based chunking feature of the SDK when a sentence exceeds the maximum character limit of three hundred characters the system should automatically split this text by word boundaries rather than sentence boundaries to ensure proper processing and this behavior is critical for handling user generated content that may not follow standard punctuation conventions such as chat messages or informal text inputs that users commonly provide in real world applications where grammatically correct sentences are not always guaranteed";
+
+		const actualLength = longSentenceNoPunctuation.length;
+		console.log(
+			`  📏 Text length: ${actualLength} characters (single sentence, no punctuation)`
+		);
+		console.log(`  🔧 Expected behavior: Word-based chunking`);
+		console.log("  ⚠️  This test consumes credits!");
+
+		const response = await client.textToSpeech.createSpeech({
+			voiceId,
+			apiConvertTextToSpeechUsingCharacterRequest: {
+				text: longSentenceNoPunctuation,
+				language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.En,
+				outputFormat:
+					models.APIConvertTextToSpeechUsingCharacterRequestOutputFormat.Wav,
+				style: "neutral",
+				model: "sona_speech_1",
+			},
+		});
+
+		if (response.result) {
+			const audioData = await extractAudioData(response);
+
+			console.log(
+				`  ✅ Word-based chunking TTS success: ${audioData.length} bytes`
+			);
+			console.log(
+				`  🎯 Long sentence without punctuation processed correctly!`
+			);
+
+			const outputFile = "test_word_chunking_speech_output.wav";
+			fs.writeFileSync(outputFile, audioData);
+			console.log(`  💾 Audio saved: ${outputFile}`);
+
+			const estimatedChunks = Math.ceil(actualLength / 300);
+			console.log(`  📊 Estimated chunks: ${estimatedChunks}`);
+		}
+
+		return [true, response];
+	} catch (e: any) {
+		logDetailedError(e, "Long sentence word-based chunking");
+		return [false, e];
+	}
+}
+
+/**
+ * Test TTS with Japanese text (character-based chunking)
+ * Japanese doesn't use spaces, AND this test uses NO punctuation marks (。！？etc)
+ * to ensure the SDK uses character-based splitting
+ */
+async function testCreateSpeechJapaneseNoSpaces(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log("🇯🇵 Japanese Text Test (Character-based chunking)");
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		// Long Japanese text WITHOUT spaces AND WITHOUT punctuation - forces character-based splitting
+		// This text intentionally has NO punctuation marks (。！？etc) to test pure character-based chunking
+		// Text length: ~450 characters (exceeds 300 char limit)
+		const longJapaneseText =
+			"日本語のテキストは通常スペースを含まないため特別な処理が必要です" +
+			"このテストは三百文字を超える長い日本語テキストが正しく処理されることを確認します" +
+			"自然言語処理技術の発展により音声合成の品質は大幅に向上しました" +
+			"特にディープラーニングを活用した最新のテキスト音声変換システムは人間の発話に非常に近い自然な音声を生成できます" +
+			"スペースがない言語では文字単位での分割が必要でありこのSDKはそのような状況を自動的に検出して適切に処理します" +
+			"これにより日本語中国語韓国語などのアジア言語でも問題なく長いテキストを音声に変換することができます" +
+			"音声合成技術は視覚障害者のためのアクセシビリティツールから対話型AIアシスタントまで幅広い用途で活用されています" +
+			"さらにリアルタイムストリーミング技術と組み合わせることで待ち時間を大幅に短縮し優れたユーザー体験を提供することができます" +
+			"最新の音声合成技術は感情や抑揚も自然に表現できるようになりました";
+
+		const actualLength = longJapaneseText.length;
+		console.log(
+			`  📏 Text length: ${actualLength} characters (Japanese, no spaces, no punctuation)`
+		);
+		console.log(
+			`  🔧 Expected behavior: Character-based chunking (300 chars per chunk)`
+		);
+		console.log("  ⚠️  This test consumes credits!");
+
+		const response = await client.textToSpeech.createSpeech({
+			voiceId,
+			apiConvertTextToSpeechUsingCharacterRequest: {
+				text: longJapaneseText,
+				language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.Ja,
+				outputFormat:
+					models.APIConvertTextToSpeechUsingCharacterRequestOutputFormat.Wav,
+				style: "neutral",
+				model: "sona_speech_1",
+			},
+		});
+
+		if (response.result) {
+			const audioData = await extractAudioData(response);
+
+			console.log(
+				`  ✅ Character-based chunking TTS success: ${audioData.length} bytes`
+			);
+			console.log(`  🎯 Japanese text without spaces processed correctly!`);
+
+			const outputFile = "test_japanese_char_chunking_speech_output.wav";
+			fs.writeFileSync(outputFile, audioData);
+			console.log(`  💾 Audio saved: ${outputFile}`);
+
+			const estimatedChunks = Math.ceil(actualLength / 300);
+			console.log(`  📊 Estimated chunks: ${estimatedChunks}`);
+		}
+
+		return [true, response];
+	} catch (e: any) {
+		logDetailedError(e, "Japanese character-based chunking");
+		return [false, e];
+	}
+}
+
+/**
  * Test TTS streaming with long text
  */
 async function testStreamSpeechLongText(
@@ -2413,6 +2561,14 @@ async function main(): Promise<boolean> {
 		[success, result] = await testCreateSpeechLongText(voiceIdForTTS);
 		testResults["create_speech_long_text"] = success;
 
+		[success, result] = await testCreateSpeechLongSentenceNoPunctuation(
+			voiceIdForTTS
+		);
+		testResults["create_speech_long_sentence_no_punctuation"] = success;
+
+		[success, result] = await testCreateSpeechJapaneseNoSpaces(voiceIdForTTS);
+		testResults["create_speech_japanese_no_spaces"] = success;
+
 		[success, result] = await testStreamSpeechLongText(voiceIdForTTS);
 		testResults["stream_speech_long_text"] = success;
 
@@ -2522,6 +2678,9 @@ async function main(): Promise<boolean> {
 		"  • Text-to-Speech: predictDuration, createSpeech, streamSpeech"
 	);
 	console.log("  • TTS Long Text: createSpeechLongText, streamSpeechLongText");
+	console.log(
+		"  • TTS Chunking Strategies: Word-based (no punctuation), Character-based (Japanese)"
+	);
 	console.log(
 		"  • TTS with Voice Settings: createSpeechWithVoiceSettings, predictDurationWithVoiceSettings, streamSpeechWithVoiceSettings"
 	);

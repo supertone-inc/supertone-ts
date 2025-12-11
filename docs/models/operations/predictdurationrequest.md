@@ -9,7 +9,7 @@ let value: PredictDurationRequest = {
   voiceId: "<id>",
   predictTTSDurationUsingCharacterRequest: {
     text: "<value>",
-    language: "ja",
+    language: "nl",
   },
 };
 ```

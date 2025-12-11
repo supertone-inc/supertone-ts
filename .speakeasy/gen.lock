@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 34de9724-4acd-41e6-a7b9-c7d22c117411
 management:
-  docChecksum: 32f96d9f72f3a35354d06972dd072a79
+  docChecksum: d83a03a47cfc199e8df77df14f9942fc
   docVersion: 0.8.69
   speakeasyVersion: 1.606.0
   generationVersion: 2.686.7
-  releaseVersion: 0.1.1
-  configChecksum: 780957f34fe03c4a7809a40e45f41c77
+  releaseVersion: 0.1.2
+  configChecksum: aa28187cd1e233cc108161dd4f5d8b71
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -37,6 +37,7 @@ generatedFiles:
   - docs/lib/utils/retryconfig.md
   - docs/models/apiconverttexttospeechusingcharacterrequest.md
   - docs/models/apiconverttexttospeechusingcharacterrequestlanguage.md
+  - docs/models/apiconverttexttospeechusingcharacterrequestmodel.md
   - docs/models/apiconverttexttospeechusingcharacterrequestoutputformat.md
   - docs/models/apisampledata.md
   - docs/models/converttexttospeechparameters.md
@@ -91,6 +92,7 @@ generatedFiles:
   - docs/models/paymentrequirederrorresponsemessage.md
   - docs/models/predictttsdurationusingcharacterrequest.md
   - docs/models/predictttsdurationusingcharacterrequestlanguage.md
+  - docs/models/predictttsdurationusingcharacterrequestmodel.md
   - docs/models/predictttsdurationusingcharacterrequestoutputformat.md
   - docs/models/requesttimeouterrorresponsemessage.md
   - docs/models/security.md
@@ -315,7 +317,7 @@ examples:
           voice_id: "<id>"
       responses:
         "200":
-          application/json: {"voice_id": "<voice-id>", "name": "Agatha", "description": "", "age": "young-adult", "gender": "female", "use_case": "narration", "use_cases": ["narration", "storytelling"], "language": ["ko", "en", "ja"], "styles": ["kind-default", "normal", "serene"], "models": ["sona_speech_1"], "samples": [{"language": "ko", "style": "kind-default", "model": "sona_speech_1", "url": "https://example.com/samples/sample-audio.wav"}], "thumbnail_image_url": "https://example.com/thumbnails/voice-thumbnail.png"}
+          application/json: {"voice_id": "<voice-id>", "name": "Agatha", "description": "", "age": "young-adult", "gender": "female", "use_case": "narration", "use_cases": ["narration", "storytelling"], "language": ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fi", "fr", "hi", "hu", "id", "it", "ja", "ko", "nl", "pl", "pt", "ro", "ru", "vi"], "styles": ["kind-default", "normal", "serene"], "models": ["sona_speech_1", "sona_speech_2", "supertonic_api_1"], "samples": [{"language": "ko", "style": "kind-default", "model": "sona_speech_1", "url": "https://example.com/samples/sample-audio.wav"}], "thumbnail_image_url": "https://example.com/thumbnails/voice-thumbnail.png"}
   create_cloned_voice:
     speakeasy-default-create-cloned-voice:
       requestBody:

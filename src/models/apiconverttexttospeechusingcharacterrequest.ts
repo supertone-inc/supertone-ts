@@ -22,14 +22,48 @@ export const APIConvertTextToSpeechUsingCharacterRequestLanguage = {
   En: "en",
   Ko: "ko",
   Ja: "ja",
+  Bg: "bg",
+  Cs: "cs",
+  Da: "da",
+  El: "el",
   Es: "es",
+  Et: "et",
+  Fi: "fi",
+  Hu: "hu",
+  It: "it",
+  Nl: "nl",
+  Pl: "pl",
   Pt: "pt",
+  Ro: "ro",
+  Ar: "ar",
+  De: "de",
+  Fr: "fr",
+  Hi: "hi",
+  Id: "id",
+  Ru: "ru",
+  Vi: "vi",
 } as const;
 /**
  * The language code of the text
  */
 export type APIConvertTextToSpeechUsingCharacterRequestLanguage = ClosedEnum<
   typeof APIConvertTextToSpeechUsingCharacterRequestLanguage
+>;
+
+/**
+ * The model type to use for the text-to-speech conversion
+ */
+export const APIConvertTextToSpeechUsingCharacterRequestModel = {
+  SonaSpeech1: "sona_speech_1",
+  SonaSpeech2: "sona_speech_2",
+  SonaSpeech2t: "sona_speech_2t",
+  SupertonicApi1: "supertonic_api_1",
+} as const;
+/**
+ * The model type to use for the text-to-speech conversion
+ */
+export type APIConvertTextToSpeechUsingCharacterRequestModel = ClosedEnum<
+  typeof APIConvertTextToSpeechUsingCharacterRequestModel
 >;
 
 /**
@@ -61,7 +95,7 @@ export type APIConvertTextToSpeechUsingCharacterRequest = {
   /**
    * The model type to use for the text-to-speech conversion
    */
-  model?: string | undefined;
+  model?: APIConvertTextToSpeechUsingCharacterRequestModel | undefined;
   /**
    * The desired output format of the audio file (wav, mp3). Default is wav.
    */
@@ -99,6 +133,29 @@ export namespace APIConvertTextToSpeechUsingCharacterRequestLanguage$ {
 }
 
 /** @internal */
+export const APIConvertTextToSpeechUsingCharacterRequestModel$inboundSchema:
+  z.ZodNativeEnum<typeof APIConvertTextToSpeechUsingCharacterRequestModel> = z
+    .nativeEnum(APIConvertTextToSpeechUsingCharacterRequestModel);
+
+/** @internal */
+export const APIConvertTextToSpeechUsingCharacterRequestModel$outboundSchema:
+  z.ZodNativeEnum<typeof APIConvertTextToSpeechUsingCharacterRequestModel> =
+    APIConvertTextToSpeechUsingCharacterRequestModel$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace APIConvertTextToSpeechUsingCharacterRequestModel$ {
+  /** @deprecated use `APIConvertTextToSpeechUsingCharacterRequestModel$inboundSchema` instead. */
+  export const inboundSchema =
+    APIConvertTextToSpeechUsingCharacterRequestModel$inboundSchema;
+  /** @deprecated use `APIConvertTextToSpeechUsingCharacterRequestModel$outboundSchema` instead. */
+  export const outboundSchema =
+    APIConvertTextToSpeechUsingCharacterRequestModel$outboundSchema;
+}
+
+/** @internal */
 export const APIConvertTextToSpeechUsingCharacterRequestOutputFormat$inboundSchema:
   z.ZodNativeEnum<
     typeof APIConvertTextToSpeechUsingCharacterRequestOutputFormat
@@ -133,7 +190,8 @@ export const APIConvertTextToSpeechUsingCharacterRequest$inboundSchema:
     text: z.string(),
     language: APIConvertTextToSpeechUsingCharacterRequestLanguage$inboundSchema,
     style: z.string().optional(),
-    model: z.string().default("sona_speech_1"),
+    model: APIConvertTextToSpeechUsingCharacterRequestModel$inboundSchema
+      .default("sona_speech_1"),
     output_format:
       APIConvertTextToSpeechUsingCharacterRequestOutputFormat$inboundSchema
         .default("wav"),
@@ -169,7 +227,8 @@ export const APIConvertTextToSpeechUsingCharacterRequest$outboundSchema:
     language:
       APIConvertTextToSpeechUsingCharacterRequestLanguage$outboundSchema,
     style: z.string().optional(),
-    model: z.string().default("sona_speech_1"),
+    model: APIConvertTextToSpeechUsingCharacterRequestModel$outboundSchema
+      .default("sona_speech_1"),
     outputFormat:
       APIConvertTextToSpeechUsingCharacterRequestOutputFormat$outboundSchema
         .default("wav"),

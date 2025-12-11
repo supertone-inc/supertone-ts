@@ -7,11 +7,11 @@ Language code of the voice
 ```typescript
 import { PredictTTSDurationUsingCharacterRequestLanguage } from "@supertone/supertone/models";
 
-let value: PredictTTSDurationUsingCharacterRequestLanguage = "pt";
+let value: PredictTTSDurationUsingCharacterRequestLanguage = "id";
 ```
 
 ## Values
 
 ```typescript
-"en" | "ko" | "ja" | "es" | "pt"
+"en" | "ko" | "ja" | "bg" | "cs" | "da" | "el" | "es" | "et" | "fi" | "hu" | "it" | "nl" | "pl" | "pt" | "ro" | "ar" | "de" | "fr" | "hi" | "id" | "ru" | "vi"
 ```

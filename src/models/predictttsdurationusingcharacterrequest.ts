@@ -22,14 +22,48 @@ export const PredictTTSDurationUsingCharacterRequestLanguage = {
   En: "en",
   Ko: "ko",
   Ja: "ja",
+  Bg: "bg",
+  Cs: "cs",
+  Da: "da",
+  El: "el",
   Es: "es",
+  Et: "et",
+  Fi: "fi",
+  Hu: "hu",
+  It: "it",
+  Nl: "nl",
+  Pl: "pl",
   Pt: "pt",
+  Ro: "ro",
+  Ar: "ar",
+  De: "de",
+  Fr: "fr",
+  Hi: "hi",
+  Id: "id",
+  Ru: "ru",
+  Vi: "vi",
 } as const;
 /**
  * Language code of the voice
  */
 export type PredictTTSDurationUsingCharacterRequestLanguage = ClosedEnum<
   typeof PredictTTSDurationUsingCharacterRequestLanguage
+>;
+
+/**
+ * The model type to use for the text-to-speech conversion
+ */
+export const PredictTTSDurationUsingCharacterRequestModel = {
+  SonaSpeech1: "sona_speech_1",
+  SonaSpeech2: "sona_speech_2",
+  SonaSpeech2t: "sona_speech_2t",
+  SupertonicApi1: "supertonic_api_1",
+} as const;
+/**
+ * The model type to use for the text-to-speech conversion
+ */
+export type PredictTTSDurationUsingCharacterRequestModel = ClosedEnum<
+  typeof PredictTTSDurationUsingCharacterRequestModel
 >;
 
 /**
@@ -62,7 +96,7 @@ export type PredictTTSDurationUsingCharacterRequest = {
   /**
    * The model type to use for the text-to-speech conversion
    */
-  model?: string | undefined;
+  model?: PredictTTSDurationUsingCharacterRequestModel | undefined;
   /**
    * The desired output format of the audio file (wav, mp3). Default is wav.
    */
@@ -93,6 +127,29 @@ export namespace PredictTTSDurationUsingCharacterRequestLanguage$ {
   /** @deprecated use `PredictTTSDurationUsingCharacterRequestLanguage$outboundSchema` instead. */
   export const outboundSchema =
     PredictTTSDurationUsingCharacterRequestLanguage$outboundSchema;
+}
+
+/** @internal */
+export const PredictTTSDurationUsingCharacterRequestModel$inboundSchema:
+  z.ZodNativeEnum<typeof PredictTTSDurationUsingCharacterRequestModel> = z
+    .nativeEnum(PredictTTSDurationUsingCharacterRequestModel);
+
+/** @internal */
+export const PredictTTSDurationUsingCharacterRequestModel$outboundSchema:
+  z.ZodNativeEnum<typeof PredictTTSDurationUsingCharacterRequestModel> =
+    PredictTTSDurationUsingCharacterRequestModel$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace PredictTTSDurationUsingCharacterRequestModel$ {
+  /** @deprecated use `PredictTTSDurationUsingCharacterRequestModel$inboundSchema` instead. */
+  export const inboundSchema =
+    PredictTTSDurationUsingCharacterRequestModel$inboundSchema;
+  /** @deprecated use `PredictTTSDurationUsingCharacterRequestModel$outboundSchema` instead. */
+  export const outboundSchema =
+    PredictTTSDurationUsingCharacterRequestModel$outboundSchema;
 }
 
 /** @internal */
@@ -127,7 +184,9 @@ export const PredictTTSDurationUsingCharacterRequest$inboundSchema: z.ZodType<
   text: z.string(),
   language: PredictTTSDurationUsingCharacterRequestLanguage$inboundSchema,
   style: z.string().optional(),
-  model: z.string().default("sona_speech_1"),
+  model: PredictTTSDurationUsingCharacterRequestModel$inboundSchema.default(
+    "sona_speech_1",
+  ),
   output_format:
     PredictTTSDurationUsingCharacterRequestOutputFormat$inboundSchema.default(
       "wav",
@@ -159,7 +218,9 @@ export const PredictTTSDurationUsingCharacterRequest$outboundSchema: z.ZodType<
   text: z.string(),
   language: PredictTTSDurationUsingCharacterRequestLanguage$outboundSchema,
   style: z.string().optional(),
-  model: z.string().default("sona_speech_1"),
+  model: PredictTTSDurationUsingCharacterRequestModel$outboundSchema.default(
+    "sona_speech_1",
+  ),
   outputFormat:
     PredictTTSDurationUsingCharacterRequestOutputFormat$outboundSchema.default(
       "wav",

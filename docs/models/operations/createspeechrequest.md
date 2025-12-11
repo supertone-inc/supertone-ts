@@ -9,7 +9,7 @@ let value: CreateSpeechRequest = {
   voiceId: "<id>",
   apiConvertTextToSpeechUsingCharacterRequest: {
     text: "<value>",
-    language: "pt",
+    language: "hi",
   },
 };
 ```

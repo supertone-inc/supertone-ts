@@ -9,7 +9,7 @@ let value: StreamSpeechRequest = {
   voiceId: "<id>",
   apiConvertTextToSpeechUsingCharacterRequest: {
     text: "<value>",
-    language: "pt",
+    language: "hi",
   },
 };
 ```

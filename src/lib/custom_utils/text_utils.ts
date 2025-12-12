@@ -8,6 +8,28 @@
 import { DEFAULT_MAX_TEXT_LENGTH } from "./constants.js";
 
 /**
+ * Sentence-ending punctuation pattern for multilingual support.
+ *
+ * Supported languages: English, Korean, Japanese, Bulgarian, Czech, Danish,
+ * Greek, Spanish, Estonian, Finnish, Hungarian, Italian, Dutch, Polish,
+ * Portuguese, Romanian, Arabic, German, French, Hindi, Indonesian, Russian,
+ * Vietnamese, Chinese, Thai, and more.
+ *
+ * Punctuation groups:
+ * - ASCII basics: . ! ? ; :
+ * - Ellipsis: … (U+2026), ‥ (U+2025)
+ * - CJK fullwidth: 。！？；：｡、
+ * - Arabic/Urdu: ؟ ؛ ۔ ،
+ * - Devanagari (Hindi/Sanskrit): । ॥
+ * - Greek question mark: ; (U+037E)
+ */
+const SENTENCE_PUNCTUATION = ".!?;:…‥。！？；：｡、؟؛۔،।॥\u037E";
+const SENTENCE_SPLIT_PATTERN = new RegExp(
+	`([${SENTENCE_PUNCTUATION}]+\\s*)`,
+	"u"
+);
+
+/**
  * Check if text contains spaces (to determine if word-based splitting is possible)
  *
  * @param text - Text to check
@@ -104,7 +126,7 @@ function splitOversizedChunk(chunk: string, maxLength: number): string[] {
  * word/character boundaries when necessary.
  *
  * Chunking Strategy:
- * 1. First, split by sentence boundaries (punctuation: .!?;:)
+ * 1. First, split by sentence boundaries (multilingual punctuation)
  * 2. Merge sentences into chunks up to maxLength
  * 3. If a sentence exceeds maxLength:
  *    - For text with spaces: split by words
@@ -122,9 +144,8 @@ export function chunkText(
 		return [text];
 	}
 
-	// Step 1: Split by sentence boundaries (including various punctuation marks)
-	// Includes Western punctuation (.!?;:) and CJK punctuation (。！？；：)
-	const sentences = text.split(/([.!?;:。！？；：]+\s*)/);
+	// Step 1: Split by sentence boundaries (multilingual punctuation)
+	const sentences = text.split(SENTENCE_SPLIT_PATTERN);
 
 	const preliminaryChunks: string[] = [];
 	let currentChunk = "";

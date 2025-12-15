@@ -387,8 +387,7 @@ async function simpleStreamingTts(
  */
 async function simpleDemo(): Promise<void> {
 	const voiceId = "91992bbd4758bdcf9c9b01";
-	const scenarios: string[] = [];
-	/*[
+	const scenarios: string[] = [
 		"안녕하세요! 심플한 테스트입니다.",
 
 		"실시간 텍스트 음성 변환 기술은 정말 놀랍습니다. 이 기술을 통해 긴 텍스트도 즉시 음성으로 들을 수 있게 되었습니다.",
@@ -403,7 +402,7 @@ async function simpleDemo(): Promise<void> {
 
 		// Scenario 800+ characters (~850 chars)
 		"옛날 한 작은 마을에 천재적인 재능을 가진 젊은 개발자가 살고 있었습니다. 그의 이름은 민준이였고, 어릴 때부터 컴퓨터와 프로그래밍에 남다른 관심을 보였습니다. 대학에서 컴퓨터 과학을 전공한 민준은 졸업 후 스타트업에 입사했습니다. 그곳에서 그는 인공지능과 음성 기술에 대한 깊은 지식을 쌓게 되었습니다. 어느 날, 민준은 시각 장애가 있는 친구 서연을 만났습니다. 서연은 인터넷의 수많은 정보를 텍스트로만 접할 수 있어 많은 불편함을 겪고 있었습니다. 당시의 음성 합성 기술은 로봇 같은 목소리를 내며, 긴 텍스트를 읽어주려면 모든 처리가 끝날 때까지 기다려야 했습니다. 이를 본 민준은 더 자연스럽고 빠른 음성 합성 기술을 만들기로 결심했습니다. 밤낮없이 연구에 매진한 민준은 혁신적인 아이디어를 떠올렸습니다. 긴 텍스트를 작은 단위로 나누어 실시간으로 처리하고, 첫 번째 부분이 완성되는 즉시 재생을 시작하는 스트리밍 방식이었습니다. 이 기술을 구현하기 위해 그는 최신 딥러닝 모델과 신경망 아키텍처를 연구했습니다. 수많은 시행착오를 거쳐 마침내 자연스러운 음성을 실시간으로 생성할 수 있는 시스템을 완성했습니다. 그의 기술은 문장의 문맥과 감정까지 이해하여 적절한 억양과 속도로 읽어주었습니다.",
-	];*/
+	];
 
 	// Additional test scenarios for word-based and character-based chunking
 	const additionalScenarios = [
@@ -423,6 +422,30 @@ async function simpleDemo(): Promise<void> {
 			label:
 				"Japanese text without spaces AND punctuation (Character-based chunking, 450+ chars)",
 			category: "Character-based Chunking Test",
+			language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.Ja,
+		},
+		{
+			// English text with ellipsis punctuation (… ‥) - tests fix/text_utils multilingual punctuation
+			// Text length: ~380 characters (exceeds 300 char limit)
+			text: "Sometimes we need to pause and think… The ellipsis character is used to indicate a trailing thought or a pause in speech… This test verifies that the text chunking system correctly handles Unicode ellipsis characters‥ There are multiple types of ellipsis in Unicode… The horizontal ellipsis and the two dot leader are both supported‥ When processing long texts the SDK should split at these punctuation marks… This ensures natural pauses in the generated speech output‥ Let us verify everything works correctly…",
+			label: "Ellipsis punctuation test (… ‥) - 380+ chars",
+			category: "Multilingual Punctuation Test",
+			language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.En,
+		},
+		{
+			// Korean text with ellipsis (…) - tests Korean with Unicode ellipsis
+			// Text length: ~350 characters (exceeds 300 char limit)
+			text: "한국어 텍스트에서 말줄임표는 생각의 흐름을 나타냅니다… 이 테스트는 유니코드 말줄임표 문자가 올바르게 처리되는지 확인합니다… 인공지능 기술이 발전하면서 음성 합성의 품질도 크게 향상되었습니다… 특히 딥러닝을 활용한 최신 시스템은 매우 자연스러운 음성을 생성할 수 있습니다… 긴 텍스트를 처리할 때 SDK는 이러한 구두점에서 적절히 분할해야 합니다… 이를 통해 자연스러운 음성 출력이 가능해집니다… 실시간 스트리밍 기술과 결합하면 더욱 빠른 응답을 제공할 수 있습니다… 음성 합성 기술은 접근성 도구부터 AI 어시스턴트까지 다양하게 활용됩니다… 모든 것이 제대로 작동하는지 확인해 봅시다…",
+			label: "Korean ellipsis punctuation test (…) - 350+ chars",
+			category: "Multilingual Punctuation Test",
+			language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.Ko,
+		},
+		{
+			// Japanese text WITH CJK punctuation (。！？) - tests CJK punctuation splitting
+			// Text length: ~320 characters (exceeds 300 char limit)
+			text: "日本語のテキストは通常スペースを含まないため特別な処理が必要です。このテストは日本語の句読点で正しく分割されることを確認します。自然言語処理技術の発展により音声合成の品質は大幅に向上しました。特にディープラーニングを活用した最新のテキスト音声変換システムは人間の発話に非常に近い自然な音声を生成できます。スペースがない言語では句読点での分割が重要です。このSDKはそのような状況を自動的に検出して適切に処理します。リアルタイムストリーミング技術と組み合わせることで待ち時間を大幅に短縮できます。これにより日本語でも問題なく長いテキストを音声に変換することができます。音声合成技術の未来はとても明るいです。",
+			label: "Japanese CJK punctuation test (。) - 320+ chars",
+			category: "Multilingual Punctuation Test",
 			language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.Ja,
 		},
 	];
@@ -497,6 +520,10 @@ async function simpleDemo(): Promise<void> {
 	console.log(
 		"   • Character-based chunking: Japanese/Chinese text without spaces"
 	);
+	console.log("\n🌍 Multilingual punctuation tests:");
+	console.log("   • Ellipsis: English (… ‥)");
+	console.log("   • Korean ellipsis: Korean (…)");
+	console.log("   • CJK punctuation: Japanese (。)");
 }
 
 /**

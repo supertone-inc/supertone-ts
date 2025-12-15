@@ -1085,6 +1085,235 @@ async function testCreateSpeechJapaneseNoSpaces(
 }
 
 /**
+ * Test TTS with Arabic text and Arabic punctuation marks (؟ ؛ ۔)
+ * This tests multilingual sentence punctuation support added in fix/text_utils
+ */
+async function testCreateSpeechArabicPunctuation(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log("🇸🇦 Arabic Text with Arabic Punctuation Test");
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		// Arabic text with Arabic punctuation marks (؟ ؛ ۔ ،)
+		// Text length: ~350 characters (exceeds 300 char limit)
+		const arabicText =
+			"مرحبا بكم في اختبار تقنية تحويل النص إلى كلام؟ " +
+			"هذا النظام يدعم اللغة العربية بشكل كامل؛ " +
+			"يمكنه التعرف على علامات الترقيم العربية مثل علامة الاستفهام وعلامة الفاصلة المنقوطة۔ " +
+			"تقنية الذكاء الاصطناعي تتطور بسرعة كبيرة، " +
+			"والآن يمكننا تحويل النصوص الطويلة إلى كلام طبيعي؟ " +
+			"هذا الاختبار يتحقق من أن النظام يقسم النص بشكل صحيح عند علامات الترقيم العربية؛ " +
+			"نأمل أن يعمل كل شيء بشكل مثالي۔";
+
+		const actualLength = arabicText.length;
+		console.log(
+			`  📏 Text length: ${actualLength} characters (Arabic with Arabic punctuation)`
+		);
+		console.log(`  🔧 Expected behavior: Sentence-based chunking with Arabic punctuation (؟ ؛ ۔)`);
+		console.log("  ⚠️  This test consumes credits!");
+
+		if (actualLength <= 300) {
+			console.log(`  ❌ Text length ${actualLength} is <= 300, test may not trigger chunking`);
+		}
+
+		const response = await client.textToSpeech.createSpeech({
+			voiceId,
+			apiConvertTextToSpeechUsingCharacterRequest: {
+				text: arabicText,
+				language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.Ar,
+				outputFormat:
+					models.APIConvertTextToSpeechUsingCharacterRequestOutputFormat.Wav,
+				style: "neutral",
+				model: models.APIConvertTextToSpeechUsingCharacterRequestModel.SonaSpeech2,
+			},
+		});
+
+		if (response.result) {
+			const audioData = await extractAudioData(response);
+
+			console.log(
+				`  ✅ Arabic punctuation chunking TTS success: ${audioData.length} bytes`
+			);
+			console.log(`  🎯 Arabic text with Arabic punctuation processed correctly!`);
+
+			const outputFile = "test_arabic_punctuation_speech_output.wav";
+			fs.writeFileSync(outputFile, audioData);
+			console.log(`  💾 Audio saved: ${outputFile}`);
+
+			const estimatedChunks = Math.ceil(actualLength / 300);
+			console.log(`  📊 Estimated chunks: ${estimatedChunks}`);
+		}
+
+		return [true, response];
+	} catch (e: any) {
+		logDetailedError(e, "Arabic punctuation chunking");
+		return [false, e];
+	}
+}
+
+/**
+ * Test TTS with Hindi text and Devanagari punctuation marks (। ॥)
+ * This tests multilingual sentence punctuation support added in fix/text_utils
+ */
+async function testCreateSpeechHindiPunctuation(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log("🇮🇳 Hindi Text with Devanagari Punctuation Test");
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		// Hindi text with Devanagari punctuation marks (। ॥)
+		// Text length: ~380 characters (exceeds 300 char limit)
+		const hindiText =
+			"नमस्ते और स्वागत है आपका इस परीक्षण में। " +
+			"यह प्रणाली हिंदी भाषा का पूर्ण समर्थन करती है। " +
+			"देवनागरी लिपि में पूर्ण विराम और दोहरा दंड जैसे विराम चिह्न होते हैं॥ " +
+			"कृत्रिम बुद्धिमत्ता की तकनीक बहुत तेजी से विकसित हो रही है। " +
+			"अब हम लंबे पाठों को स्वाभाविक वाणी में बदल सकते हैं। " +
+			"यह परीक्षण जांचता है कि सिस्टम हिंदी विराम चिह्नों पर सही ढंग से पाठ को विभाजित करता है। " +
+			"हमें आशा है कि सब कुछ ठीक से काम करेगा॥";
+
+		const actualLength = hindiText.length;
+		console.log(
+			`  📏 Text length: ${actualLength} characters (Hindi with Devanagari punctuation)`
+		);
+		console.log(`  🔧 Expected behavior: Sentence-based chunking with Devanagari punctuation (। ॥)`);
+		console.log("  ⚠️  This test consumes credits!");
+
+		if (actualLength <= 300) {
+			console.log(`  ❌ Text length ${actualLength} is <= 300, test may not trigger chunking`);
+		}
+
+		const response = await client.textToSpeech.createSpeech({
+			voiceId,
+			apiConvertTextToSpeechUsingCharacterRequest: {
+				text: hindiText,
+				language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.Hi,
+				outputFormat:
+					models.APIConvertTextToSpeechUsingCharacterRequestOutputFormat.Wav,
+				style: "neutral",
+				model: models.APIConvertTextToSpeechUsingCharacterRequestModel.SonaSpeech2,
+			},
+		});
+
+		if (response.result) {
+			const audioData = await extractAudioData(response);
+
+			console.log(
+				`  ✅ Hindi punctuation chunking TTS success: ${audioData.length} bytes`
+			);
+			console.log(`  🎯 Hindi text with Devanagari punctuation processed correctly!`);
+
+			const outputFile = "test_hindi_punctuation_speech_output.wav";
+			fs.writeFileSync(outputFile, audioData);
+			console.log(`  💾 Audio saved: ${outputFile}`);
+
+			const estimatedChunks = Math.ceil(actualLength / 300);
+			console.log(`  📊 Estimated chunks: ${estimatedChunks}`);
+		}
+
+		return [true, response];
+	} catch (e: any) {
+		logDetailedError(e, "Hindi punctuation chunking");
+		return [false, e];
+	}
+}
+
+/**
+ * Test TTS with ellipsis punctuation marks (… ‥)
+ * This tests multilingual sentence punctuation support added in fix/text_utils
+ */
+async function testCreateSpeechEllipsisPunctuation(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log("⏳ Text with Ellipsis Punctuation Test (… ‥)");
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		// Text with ellipsis punctuation marks (… ‥)
+		// Text length: ~380 characters (exceeds 300 char limit)
+		const ellipsisText =
+			"Sometimes we need to pause and think… " +
+			"The ellipsis character is used to indicate a trailing thought or a pause in speech… " +
+			"This test verifies that the text chunking system correctly handles Unicode ellipsis characters‥ " +
+			"There are actually multiple types of ellipsis in Unicode… " +
+			"The horizontal ellipsis U+2026 and the two dot leader U+2025 are both supported‥ " +
+			"When processing long texts the SDK should split at these punctuation marks… " +
+			"This ensures natural pauses in the generated speech output‥ " +
+			"Let us verify that everything works correctly…";
+
+		const actualLength = ellipsisText.length;
+		console.log(
+			`  📏 Text length: ${actualLength} characters (with ellipsis punctuation)`
+		);
+		console.log(`  🔧 Expected behavior: Sentence-based chunking with ellipsis (… ‥)`);
+		console.log("  ⚠️  This test consumes credits!");
+
+		if (actualLength <= 300) {
+			console.log(`  ❌ Text length ${actualLength} is <= 300, test may not trigger chunking`);
+		}
+
+		const response = await client.textToSpeech.createSpeech({
+			voiceId,
+			apiConvertTextToSpeechUsingCharacterRequest: {
+				text: ellipsisText,
+				language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.En,
+				outputFormat:
+					models.APIConvertTextToSpeechUsingCharacterRequestOutputFormat.Wav,
+				style: "neutral",
+				model: models.APIConvertTextToSpeechUsingCharacterRequestModel.SonaSpeech1,
+			},
+		});
+
+		if (response.result) {
+			const audioData = await extractAudioData(response);
+
+			console.log(
+				`  ✅ Ellipsis punctuation chunking TTS success: ${audioData.length} bytes`
+			);
+			console.log(`  🎯 Text with ellipsis punctuation processed correctly!`);
+
+			const outputFile = "test_ellipsis_punctuation_speech_output.wav";
+			fs.writeFileSync(outputFile, audioData);
+			console.log(`  💾 Audio saved: ${outputFile}`);
+
+			const estimatedChunks = Math.ceil(actualLength / 300);
+			console.log(`  📊 Estimated chunks: ${estimatedChunks}`);
+		}
+
+		return [true, response];
+	} catch (e: any) {
+		logDetailedError(e, "Ellipsis punctuation chunking");
+		return [false, e];
+	}
+}
+
+/**
  * Test TTS streaming with long text
  */
 async function testStreamSpeechLongText(
@@ -2569,6 +2798,21 @@ async function main(): Promise<boolean> {
 		[success, result] = await testCreateSpeechJapaneseNoSpaces(voiceIdForTTS);
 		testResults["create_speech_japanese_no_spaces"] = success;
 
+		// 6.5 Multilingual Punctuation Tests (fix/text_utils)
+		console.log("\n🌍 Multilingual Punctuation Chunking Tests");
+		console.log("-".repeat(60));
+		console.log("⚠️  These tests verify multilingual sentence punctuation support!");
+		console.log("");
+
+		[success, result] = await testCreateSpeechArabicPunctuation(voiceIdForTTS);
+		testResults["create_speech_arabic_punctuation"] = success;
+
+		[success, result] = await testCreateSpeechHindiPunctuation(voiceIdForTTS);
+		testResults["create_speech_hindi_punctuation"] = success;
+
+		[success, result] = await testCreateSpeechEllipsisPunctuation(voiceIdForTTS);
+		testResults["create_speech_ellipsis_punctuation"] = success;
+
 		[success, result] = await testStreamSpeechLongText(voiceIdForTTS);
 		testResults["stream_speech_long_text"] = success;
 
@@ -2680,6 +2924,9 @@ async function main(): Promise<boolean> {
 	console.log("  • TTS Long Text: createSpeechLongText, streamSpeechLongText");
 	console.log(
 		"  • TTS Chunking Strategies: Word-based (no punctuation), Character-based (Japanese)"
+	);
+	console.log(
+		"  • Multilingual Punctuation: Arabic (؟ ؛ ۔), Hindi (। ॥), Ellipsis (… ‥)"
 	);
 	console.log(
 		"  • TTS with Voice Settings: createSpeechWithVoiceSettings, predictDurationWithVoiceSettings, streamSpeechWithVoiceSettings"

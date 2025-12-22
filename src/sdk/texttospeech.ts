@@ -21,10 +21,24 @@ import {
   detectAudioFormat,
   mergeMp3Binary,
   mergeWavBinary,
+  applyPronunciationDictionary,
+  type PronunciationDictionaryEntry,
   removeMp3Header,
   removeWavHeader,
 } from "../lib/custom_utils/index.js";
 // #endregion imports
+
+type CreateSpeechOptions = RequestOptions & {
+  acceptHeaderOverride?: CreateSpeechAcceptEnum;
+  maxTextLength?: number;
+  pronunciationDictionary?: PronunciationDictionaryEntry[];
+};
+
+type StreamSpeechOptions = RequestOptions & {
+  acceptHeaderOverride?: StreamSpeechAcceptEnum;
+  maxTextLength?: number;
+  pronunciationDictionary?: PronunciationDictionaryEntry[];
+};
 
 export { CreateSpeechAcceptEnum } from "../funcs/textToSpeechCreateSpeech.js";
 
@@ -51,6 +65,17 @@ export class TextToSpeech extends ClientSDK {
    */
   private shouldChunkText(text: string, maxLength: number): boolean {
     return text.length > maxLength;
+  }
+
+  /**
+   * Apply pronunciation dictionary before chunking (opt-in).
+   */
+  private applyPronunciationDictionary(
+    text: string,
+    pronunciationDictionary?: PronunciationDictionaryEntry[],
+  ): string {
+    if (!pronunciationDictionary) return text;
+    return applyPronunciationDictionary(text, pronunciationDictionary);
   }
 
   /**
@@ -323,28 +348,37 @@ export class TextToSpeech extends ClientSDK {
    */
   private async createSpeechWithChunking(
     request: operations.CreateSpeechRequest,
-    options?: RequestOptions & {
-      acceptHeaderOverride?: CreateSpeechAcceptEnum;
-      maxTextLength?: number;
-    },
+    options?: CreateSpeechOptions,
   ): Promise<operations.CreateSpeechResponse> {
+    const { pronunciationDictionary, ...restOptions } = options ?? {};
     const maxLength = options?.maxTextLength ?? DEFAULT_MAX_TEXT_LENGTH;
-    const text = request.apiConvertTextToSpeechUsingCharacterRequest?.text
-      ?? "";
+    const text = request.apiConvertTextToSpeechUsingCharacterRequest?.text ?? "";
+    const normalizedText = this.applyPronunciationDictionary(
+      text,
+      pronunciationDictionary,
+    );
+
+    const baseRequest: operations.CreateSpeechRequest = {
+      ...request,
+      apiConvertTextToSpeechUsingCharacterRequest: {
+        ...request.apiConvertTextToSpeechUsingCharacterRequest,
+        text: normalizedText,
+      },
+    };
 
     // Short text: call original method directly
-    if (!this.shouldChunkText(text, maxLength)) {
+    if (!this.shouldChunkText(normalizedText, maxLength)) {
       if (!this._createSpeechOriginal) {
         throw new Error("Original createSpeech method not found");
       }
-      return this._createSpeechOriginal(request, options);
+      return this._createSpeechOriginal(baseRequest, restOptions);
     }
 
     // Long text: chunk, process sequentially (to avoid schema parsing issues), and merge
-    const textChunks = chunkText(text, maxLength);
+    const textChunks = chunkText(normalizedText, maxLength);
 
     // Determine Accept header based on output format
-    const outputFormat = request.apiConvertTextToSpeechUsingCharacterRequest
+    const outputFormat = baseRequest.apiConvertTextToSpeechUsingCharacterRequest
       ?.outputFormat;
     const acceptHeader: CreateSpeechAcceptEnum = outputFormat === "mp3"
       ? CreateSpeechAcceptEnum.audioMpeg
@@ -354,9 +388,9 @@ export class TextToSpeech extends ClientSDK {
     const responses: operations.CreateSpeechResponse[] = [];
     for (const chunk of textChunks) {
       const chunkRequest: operations.CreateSpeechRequest = {
-        ...request,
+        ...baseRequest,
         apiConvertTextToSpeechUsingCharacterRequest: {
-          ...request.apiConvertTextToSpeechUsingCharacterRequest,
+          ...baseRequest.apiConvertTextToSpeechUsingCharacterRequest,
           text: chunk,
         },
       };
@@ -364,7 +398,7 @@ export class TextToSpeech extends ClientSDK {
         throw new Error("Original createSpeech method not found");
       }
       const response = await this._createSpeechOriginal(chunkRequest, {
-        ...options,
+        ...restOptions,
         acceptHeaderOverride: acceptHeader,
       });
       responses.push(response);
@@ -378,25 +412,34 @@ export class TextToSpeech extends ClientSDK {
    */
   private async streamSpeechWithChunking(
     request: operations.StreamSpeechRequest,
-    options?: RequestOptions & {
-      acceptHeaderOverride?: StreamSpeechAcceptEnum;
-      maxTextLength?: number;
-    },
+    options?: StreamSpeechOptions,
   ): Promise<operations.StreamSpeechResponse> {
+    const { pronunciationDictionary, ...restOptions } = options ?? {};
     const maxLength = options?.maxTextLength ?? DEFAULT_MAX_TEXT_LENGTH;
-    const text = request.apiConvertTextToSpeechUsingCharacterRequest?.text
-      ?? "";
+    const text = request.apiConvertTextToSpeechUsingCharacterRequest?.text ?? "";
+    const normalizedText = this.applyPronunciationDictionary(
+      text,
+      pronunciationDictionary,
+    );
+
+    const baseRequest: operations.StreamSpeechRequest = {
+      ...request,
+      apiConvertTextToSpeechUsingCharacterRequest: {
+        ...request.apiConvertTextToSpeechUsingCharacterRequest,
+        text: normalizedText,
+      },
+    };
 
     // Short text: call original method directly
-    if (!this.shouldChunkText(text, maxLength)) {
+    if (!this.shouldChunkText(normalizedText, maxLength)) {
       if (!this._streamSpeechOriginal) {
         throw new Error("Original streamSpeech method not found");
       }
-      return this._streamSpeechOriginal(request, options);
+      return this._streamSpeechOriginal(baseRequest, restOptions);
     }
 
     // Long text: chunk and stream sequentially
-    const textChunks = chunkText(text, maxLength);
+    const textChunks = chunkText(normalizedText, maxLength);
 
     if (textChunks.length === 0) {
       throw new Error("No text chunks to process");
@@ -409,9 +452,9 @@ export class TextToSpeech extends ClientSDK {
 
     // Get first response to start streaming
     const firstChunkRequest: operations.StreamSpeechRequest = {
-      ...request,
+      ...baseRequest,
       apiConvertTextToSpeechUsingCharacterRequest: {
-        ...request.apiConvertTextToSpeechUsingCharacterRequest,
+        ...baseRequest.apiConvertTextToSpeechUsingCharacterRequest,
         text: firstChunk,
       },
     };
@@ -421,7 +464,7 @@ export class TextToSpeech extends ClientSDK {
     }
     const firstResponse = await this._streamSpeechOriginal(
       firstChunkRequest,
-      options,
+      restOptions,
     );
 
     // Single chunk: return as-is
@@ -434,8 +477,8 @@ export class TextToSpeech extends ClientSDK {
     return this.createExtendedStreamingResponse(
       firstResponse,
       remainingChunks,
-      request,
-      options,
+      baseRequest,
+      restOptions,
     );
   }
   // #endregion sdk-class-body
@@ -448,9 +491,7 @@ export class TextToSpeech extends ClientSDK {
    */
   async createSpeech(
     request: operations.CreateSpeechRequest,
-    options?: RequestOptions & {
-      acceptHeaderOverride?: CreateSpeechAcceptEnum;
-    },
+    options?: CreateSpeechOptions,
   ): Promise<operations.CreateSpeechResponse> {
     return unwrapAsync(textToSpeechCreateSpeech(
       this,
@@ -467,9 +508,7 @@ export class TextToSpeech extends ClientSDK {
    */
   async streamSpeech(
     request: operations.StreamSpeechRequest,
-    options?: RequestOptions & {
-      acceptHeaderOverride?: StreamSpeechAcceptEnum;
-    },
+    options?: StreamSpeechOptions,
   ): Promise<operations.StreamSpeechResponse> {
     return unwrapAsync(textToSpeechStreamSpeech(
       this,

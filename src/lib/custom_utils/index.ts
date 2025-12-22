@@ -11,6 +11,13 @@ export * from "./constants.js";
 // Export text utilities
 export { chunkText, extractAudioFromNdjson } from "./text_utils.js";
 
+// Export pronunciation utilities
+export {
+	applyPronunciationDictionary,
+	PronunciationDictionaryValidationError,
+	type PronunciationDictionaryEntry,
+} from "./pronunciation_utils.js";
+
 // Export audio utilities
 export {
 	mergeWavBinary,

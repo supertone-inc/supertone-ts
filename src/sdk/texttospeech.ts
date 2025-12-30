@@ -26,7 +26,6 @@ import {
   removeMp3Header,
   removeWavHeader,
 } from "../lib/custom_utils/index.js";
-// #endregion imports
 
 type CreateSpeechOptions = RequestOptions & {
   acceptHeaderOverride?: CreateSpeechAcceptEnum;
@@ -39,6 +38,7 @@ type StreamSpeechOptions = RequestOptions & {
   maxTextLength?: number;
   pronunciationDictionary?: PronunciationDictionaryEntry[];
 };
+// #endregion imports
 
 export { CreateSpeechAcceptEnum } from "../funcs/textToSpeechCreateSpeech.js";
 
@@ -72,7 +72,7 @@ export class TextToSpeech extends ClientSDK {
    */
   private applyPronunciationDictionary(
     text: string,
-    pronunciationDictionary?: PronunciationDictionaryEntry[],
+    pronunciationDictionary?: PronunciationDictionaryEntry[]
   ): string {
     if (!pronunciationDictionary) return text;
     return applyPronunciationDictionary(text, pronunciationDictionary);
@@ -82,7 +82,7 @@ export class TextToSpeech extends ClientSDK {
    * Extract audio data from response
    */
   private async extractAudioFromResponse(
-    response: operations.CreateSpeechResponse | operations.StreamSpeechResponse,
+    response: operations.CreateSpeechResponse | operations.StreamSpeechResponse
   ): Promise<Uint8Array> {
     const result = response.result;
 
@@ -99,9 +99,9 @@ export class TextToSpeech extends ClientSDK {
     }
 
     if (
-      typeof result === "object"
-      && result !== null
-      && "getReader" in result
+      typeof result === "object" &&
+      result !== null &&
+      "getReader" in result
     ) {
       // ReadableStream
       const reader = (result as ReadableStream<Uint8Array>).getReader();
@@ -156,14 +156,15 @@ export class TextToSpeech extends ClientSDK {
     // Enhanced error message with object inspection
     const resultType = typeof result;
     const resultConstructor = result?.constructor?.name || "unknown";
-    const resultKeys = result && typeof result === "object"
-      ? Object.keys(result).join(", ")
-      : "N/A";
+    const resultKeys =
+      result && typeof result === "object"
+        ? Object.keys(result).join(", ")
+        : "N/A";
 
     throw new Error(
-      `Unsupported result type: ${resultType}, `
-        + `constructor: ${resultConstructor}, `
-        + `keys: [${resultKeys}]`,
+      `Unsupported result type: ${resultType}, ` +
+        `constructor: ${resultConstructor}, ` +
+        `keys: [${resultKeys}]`
     );
   }
 
@@ -171,7 +172,7 @@ export class TextToSpeech extends ClientSDK {
    * Merge multiple audio responses into one
    */
   private async mergeAudioResponses(
-    responses: operations.CreateSpeechResponse[],
+    responses: operations.CreateSpeechResponse[]
   ): Promise<operations.CreateSpeechResponse> {
     if (responses.length === 0) {
       throw new Error("No responses to merge");
@@ -188,7 +189,7 @@ export class TextToSpeech extends ClientSDK {
 
     // Extract audio data from all responses
     const audioChunks: Uint8Array[] = await Promise.all(
-      responses.map((r) => this.extractAudioFromResponse(r)),
+      responses.map((r) => this.extractAudioFromResponse(r))
     );
 
     const firstChunk = audioChunks[0];
@@ -233,14 +234,14 @@ export class TextToSpeech extends ClientSDK {
     originalRequest: operations.StreamSpeechRequest,
     options?: RequestOptions & {
       acceptHeaderOverride?: StreamSpeechAcceptEnum;
-    },
+    }
   ): operations.StreamSpeechResponse {
     let audioFormat: "wav" | "mp3" | null = null;
     let isFirstAudioChunk = true;
 
     // Use arrow function to preserve 'this' context
     const processStream = async (
-      controller: ReadableStreamDefaultController<Uint8Array>,
+      controller: ReadableStreamDefaultController<Uint8Array>
     ) => {
       try {
         // Stream first response (first text chunk)
@@ -288,7 +289,7 @@ export class TextToSpeech extends ClientSDK {
           }
           const chunkResponse = await this._streamSpeechOriginal(
             chunkRequest,
-            options,
+            options
           );
 
           // Stream this text chunk's audio
@@ -348,14 +349,15 @@ export class TextToSpeech extends ClientSDK {
    */
   private async createSpeechWithChunking(
     request: operations.CreateSpeechRequest,
-    options?: CreateSpeechOptions,
+    options?: CreateSpeechOptions
   ): Promise<operations.CreateSpeechResponse> {
     const { pronunciationDictionary, ...restOptions } = options ?? {};
     const maxLength = options?.maxTextLength ?? DEFAULT_MAX_TEXT_LENGTH;
-    const text = request.apiConvertTextToSpeechUsingCharacterRequest?.text ?? "";
+    const text =
+      request.apiConvertTextToSpeechUsingCharacterRequest?.text ?? "";
     const normalizedText = this.applyPronunciationDictionary(
       text,
-      pronunciationDictionary,
+      pronunciationDictionary
     );
 
     const baseRequest: operations.CreateSpeechRequest = {
@@ -378,11 +380,12 @@ export class TextToSpeech extends ClientSDK {
     const textChunks = chunkText(normalizedText, maxLength);
 
     // Determine Accept header based on output format
-    const outputFormat = baseRequest.apiConvertTextToSpeechUsingCharacterRequest
-      ?.outputFormat;
-    const acceptHeader: CreateSpeechAcceptEnum = outputFormat === "mp3"
-      ? CreateSpeechAcceptEnum.audioMpeg
-      : CreateSpeechAcceptEnum.audioWav;
+    const outputFormat =
+      baseRequest.apiConvertTextToSpeechUsingCharacterRequest?.outputFormat;
+    const acceptHeader: CreateSpeechAcceptEnum =
+      outputFormat === "mp3"
+        ? CreateSpeechAcceptEnum.audioMpeg
+        : CreateSpeechAcceptEnum.audioWav;
 
     // Process chunks sequentially to avoid race conditions in schema parsing
     const responses: operations.CreateSpeechResponse[] = [];
@@ -412,14 +415,15 @@ export class TextToSpeech extends ClientSDK {
    */
   private async streamSpeechWithChunking(
     request: operations.StreamSpeechRequest,
-    options?: StreamSpeechOptions,
+    options?: StreamSpeechOptions
   ): Promise<operations.StreamSpeechResponse> {
     const { pronunciationDictionary, ...restOptions } = options ?? {};
     const maxLength = options?.maxTextLength ?? DEFAULT_MAX_TEXT_LENGTH;
-    const text = request.apiConvertTextToSpeechUsingCharacterRequest?.text ?? "";
+    const text =
+      request.apiConvertTextToSpeechUsingCharacterRequest?.text ?? "";
     const normalizedText = this.applyPronunciationDictionary(
       text,
-      pronunciationDictionary,
+      pronunciationDictionary
     );
 
     const baseRequest: operations.StreamSpeechRequest = {
@@ -464,7 +468,7 @@ export class TextToSpeech extends ClientSDK {
     }
     const firstResponse = await this._streamSpeechOriginal(
       firstChunkRequest,
-      restOptions,
+      restOptions
     );
 
     // Single chunk: return as-is
@@ -478,7 +482,7 @@ export class TextToSpeech extends ClientSDK {
       firstResponse,
       remainingChunks,
       baseRequest,
-      restOptions,
+      restOptions
     );
   }
   // #endregion sdk-class-body
@@ -491,13 +495,9 @@ export class TextToSpeech extends ClientSDK {
    */
   async createSpeech(
     request: operations.CreateSpeechRequest,
-    options?: CreateSpeechOptions,
+    options?: CreateSpeechOptions
   ): Promise<operations.CreateSpeechResponse> {
-    return unwrapAsync(textToSpeechCreateSpeech(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(textToSpeechCreateSpeech(this, request, options));
   }
 
   /**
@@ -508,13 +508,9 @@ export class TextToSpeech extends ClientSDK {
    */
   async streamSpeech(
     request: operations.StreamSpeechRequest,
-    options?: StreamSpeechOptions,
+    options?: StreamSpeechOptions
   ): Promise<operations.StreamSpeechResponse> {
-    return unwrapAsync(textToSpeechStreamSpeech(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(textToSpeechStreamSpeech(this, request, options));
   }
 
   /**
@@ -525,12 +521,8 @@ export class TextToSpeech extends ClientSDK {
    */
   async predictDuration(
     request: operations.PredictDurationRequest,
-    options?: RequestOptions,
+    options?: RequestOptions
   ): Promise<operations.PredictDurationResponse> {
-    return unwrapAsync(textToSpeechPredictDuration(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(textToSpeechPredictDuration(this, request, options));
   }
 }

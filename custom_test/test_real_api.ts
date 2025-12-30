@@ -2616,6 +2616,304 @@ async function testCreateSpeechWithChunking(
 	}
 }
 
+// =============================================================================
+// Pronunciation Dictionary Tests
+// =============================================================================
+
+/**
+ * Test TTS with pronunciation dictionary (basic test with partial_match=true/false)
+ */
+async function testCreateSpeechWithPronunciationDictionary(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log("📖 TTS with Pronunciation Dictionary Test");
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		// Test text with abbreviations and special terms
+		const testText =
+			"The CEO of OpenAI announced that GPT models are improving. Dr. Smith from MIT said AI research is accelerating.";
+
+		// Pronunciation dictionary with both partial_match=true and partial_match=false cases
+		const pronunciationDictionary = [
+			// partial_match=false: exact word boundary match
+			{ text: "CEO", pronunciation: "Chief Executive Officer", partial_match: false },
+			{ text: "MIT", pronunciation: "Massachusetts Institute of Technology", partial_match: false },
+			{ text: "AI", pronunciation: "Artificial Intelligence", partial_match: false },
+			// partial_match=true: substring match (will match "OpenAI" -> "OpenArtificial Intelligence")
+			{ text: "GPT", pronunciation: "Generative Pre-trained Transformer", partial_match: true },
+			{ text: "Dr.", pronunciation: "Doctor", partial_match: true },
+		];
+
+		console.log(`  🔍 Original text: "${testText}"`);
+		console.log(`  📖 Pronunciation dictionary entries: ${pronunciationDictionary.length}`);
+		console.log(`     - partial_match=false: CEO, MIT, AI (word boundary match)`);
+		console.log(`     - partial_match=true: GPT, Dr. (substring match)`);
+		console.log("  ⚠️  This test consumes credits!");
+
+		const response = await client.textToSpeech.createSpeech(
+			{
+				voiceId,
+				apiConvertTextToSpeechUsingCharacterRequest: {
+					text: testText,
+					language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.En,
+					outputFormat:
+						models.APIConvertTextToSpeechUsingCharacterRequestOutputFormat.Wav,
+					style: "neutral",
+					model: "sona_speech_1",
+				},
+			},
+			{
+				pronunciationDictionary,
+			}
+		);
+
+		console.log(`  ✅ TTS with pronunciation dictionary success`);
+
+		if (response.result) {
+			const audioData = await extractAudioData(response);
+			const outputFile = "test_pronunciation_dictionary_output.wav";
+			fs.writeFileSync(outputFile, audioData);
+			console.log(`  💾 Audio saved: ${outputFile} (${audioData.length} bytes)`);
+		}
+
+		return [true, response];
+	} catch (e: any) {
+		logDetailedError(e, "Pronunciation dictionary TTS");
+		return [false, e];
+	}
+}
+
+/**
+ * Test TTS with pronunciation dictionary causing text to exceed 300 chars (triggers chunking)
+ */
+async function testCreateSpeechWithPronunciationDictionaryLongText(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log("📖 TTS with Pronunciation Dictionary + Long Text Chunking Test");
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		// Short original text (~200 chars) that will exceed 300 chars after pronunciation dictionary expansion
+		const testText =
+			"AI and ML are revolutionizing tech. The CEO of OpenAI discussed GPT advancements. " +
+			"Dr. Kim from MIT explained how NLP and CV work together. AWS and GCP provide cloud AI services.";
+
+		// Pronunciation dictionary that expands abbreviations significantly
+		const pronunciationDictionary = [
+			// partial_match=false: exact word boundary matches
+			{ text: "AI", pronunciation: "Artificial Intelligence", partial_match: false },
+			{ text: "ML", pronunciation: "Machine Learning", partial_match: false },
+			{ text: "CEO", pronunciation: "Chief Executive Officer", partial_match: false },
+			{ text: "MIT", pronunciation: "Massachusetts Institute of Technology", partial_match: false },
+			{ text: "NLP", pronunciation: "Natural Language Processing", partial_match: false },
+			{ text: "CV", pronunciation: "Computer Vision", partial_match: false },
+			{ text: "AWS", pronunciation: "Amazon Web Services", partial_match: false },
+			{ text: "GCP", pronunciation: "Google Cloud Platform", partial_match: false },
+			// partial_match=true: substring matches
+			{ text: "GPT", pronunciation: "Generative Pre-trained Transformer", partial_match: true },
+			{ text: "Dr.", pronunciation: "Doctor", partial_match: true },
+			{ text: "tech", pronunciation: "technology", partial_match: true },
+		];
+
+		const originalLength = testText.length;
+
+		console.log(`  🔍 Original text length: ${originalLength} characters (under 300)`);
+		console.log(`  📖 Pronunciation dictionary entries: ${pronunciationDictionary.length}`);
+		console.log(`     - partial_match=false: AI, ML, CEO, MIT, NLP, CV, AWS, GCP`);
+		console.log(`     - partial_match=true: GPT, Dr., tech`);
+		console.log(`  🔧 Expected: Text will expand to 300+ chars, triggering auto-chunking`);
+		console.log("  ⚠️  This test consumes credits!");
+
+		const response = await client.textToSpeech.createSpeech(
+			{
+				voiceId,
+				apiConvertTextToSpeechUsingCharacterRequest: {
+					text: testText,
+					language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.En,
+					outputFormat:
+						models.APIConvertTextToSpeechUsingCharacterRequestOutputFormat.Wav,
+					style: "neutral",
+					model: "sona_speech_1",
+				},
+			},
+			{
+				pronunciationDictionary,
+			}
+		);
+
+		console.log(`  ✅ TTS with pronunciation dictionary + long text chunking success`);
+		console.log(`  🎯 Auto-chunking was triggered after pronunciation expansion!`);
+
+		if (response.result) {
+			const audioData = await extractAudioData(response);
+			const outputFile = "test_pronunciation_dictionary_long_text_output.wav";
+			fs.writeFileSync(outputFile, audioData);
+			console.log(`  💾 Audio saved: ${outputFile} (${audioData.length} bytes)`);
+		}
+
+		return [true, response];
+	} catch (e: any) {
+		logDetailedError(e, "Pronunciation dictionary long text TTS");
+		return [false, e];
+	}
+}
+
+/**
+ * Test TTS streaming with pronunciation dictionary
+ */
+async function testStreamSpeechWithPronunciationDictionary(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log("📡 TTS Streaming with Pronunciation Dictionary Test");
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		const testText =
+			"The API documentation explains how to use the SDK. " +
+			"Dr. Lee from NASA discussed the new AI system.";
+
+		const pronunciationDictionary = [
+			{ text: "API", pronunciation: "Application Programming Interface", partial_match: false },
+			{ text: "SDK", pronunciation: "Software Development Kit", partial_match: false },
+			{ text: "NASA", pronunciation: "National Aeronautics and Space Administration", partial_match: false },
+			{ text: "AI", pronunciation: "Artificial Intelligence", partial_match: false },
+			{ text: "Dr.", pronunciation: "Doctor", partial_match: true },
+		];
+
+		console.log(`  🔍 Original text: "${testText}"`);
+		console.log(`  📖 Pronunciation dictionary entries: ${pronunciationDictionary.length}`);
+		console.log("  ⚠️  This test consumes credits!");
+
+		const response = await client.textToSpeech.streamSpeech(
+			{
+				voiceId,
+				apiConvertTextToSpeechUsingCharacterRequest: {
+					text: testText,
+					language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.En,
+					outputFormat:
+						models.APIConvertTextToSpeechUsingCharacterRequestOutputFormat.Wav,
+				},
+			},
+			{
+				pronunciationDictionary,
+			}
+		);
+
+		console.log(`  ✅ Stream with pronunciation dictionary started successfully`);
+
+		// Consume the stream and save to file
+		if (response.result) {
+			const audioData = await extractAudioData(response);
+			const outputFile = "test_pronunciation_dictionary_stream_output.wav";
+			fs.writeFileSync(outputFile, audioData);
+			console.log(`  💾 Audio saved: ${outputFile} (${audioData.length} bytes)`);
+		}
+
+		return [true, response];
+	} catch (e: any) {
+		logDetailedError(e, "Pronunciation dictionary streaming TTS");
+		return [false, e];
+	}
+}
+
+/**
+ * Test TTS streaming with pronunciation dictionary + long text (triggers chunking)
+ */
+async function testStreamSpeechWithPronunciationDictionaryLongText(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log("📡 TTS Streaming with Pronunciation Dictionary + Long Text Test");
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		// Short text that will expand after pronunciation dictionary
+		const testText =
+			"AI is everywhere. ML powers many apps. The CEO spoke about GPT. " +
+			"Dr. Smith from MIT and UCLA collaborated on NLP research. AWS and GCP offer AI services.";
+
+		const pronunciationDictionary = [
+			{ text: "AI", pronunciation: "Artificial Intelligence", partial_match: false },
+			{ text: "ML", pronunciation: "Machine Learning", partial_match: false },
+			{ text: "CEO", pronunciation: "Chief Executive Officer", partial_match: false },
+			{ text: "MIT", pronunciation: "Massachusetts Institute of Technology", partial_match: false },
+			{ text: "UCLA", pronunciation: "University of California Los Angeles", partial_match: false },
+			{ text: "NLP", pronunciation: "Natural Language Processing", partial_match: false },
+			{ text: "AWS", pronunciation: "Amazon Web Services", partial_match: false },
+			{ text: "GCP", pronunciation: "Google Cloud Platform", partial_match: false },
+			{ text: "GPT", pronunciation: "Generative Pre-trained Transformer", partial_match: true },
+			{ text: "Dr.", pronunciation: "Doctor", partial_match: true },
+		];
+
+		console.log(`  🔍 Original text length: ${testText.length} characters`);
+		console.log(`  📖 Pronunciation dictionary entries: ${pronunciationDictionary.length}`);
+		console.log(`  🔧 Expected: Text will expand to 300+ chars, triggering stream chunking`);
+		console.log("  ⚠️  This test consumes credits!");
+
+		const response = await client.textToSpeech.streamSpeech(
+			{
+				voiceId,
+				apiConvertTextToSpeechUsingCharacterRequest: {
+					text: testText,
+					language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.En,
+					outputFormat:
+						models.APIConvertTextToSpeechUsingCharacterRequestOutputFormat.Wav,
+				},
+			},
+			{
+				pronunciationDictionary,
+			}
+		);
+
+		console.log(`  ✅ Stream with pronunciation dictionary + long text started successfully`);
+		console.log(`  🎯 Stream chunking was triggered after pronunciation expansion!`);
+
+		if (response.result) {
+			const audioData = await extractAudioData(response);
+			const outputFile = "test_pronunciation_dictionary_stream_long_text_output.wav";
+			fs.writeFileSync(outputFile, audioData);
+			console.log(`  💾 Audio saved: ${outputFile} (${audioData.length} bytes)`);
+		}
+
+		return [true, response];
+	} catch (e: any) {
+		logDetailedError(e, "Pronunciation dictionary streaming long text TTS");
+		return [false, e];
+	}
+}
+
 /**
  * Main test execution
  */
@@ -2865,6 +3163,32 @@ async function main(): Promise<boolean> {
 
 		[success, result] = await testStreamSpeechLongTextMp3(voiceIdForTTS);
 		testResults["stream_speech_long_text_mp3"] = success;
+
+		// 10. Pronunciation Dictionary Tests
+		console.log("\n📖 Pronunciation Dictionary Tests");
+		console.log("-".repeat(60));
+		console.log("⚠️  These tests consume credits!");
+		console.log("");
+
+		[success, result] = await testCreateSpeechWithPronunciationDictionary(
+			voiceIdForTTS
+		);
+		testResults["create_speech_pronunciation_dictionary"] = success;
+
+		[success, result] = await testCreateSpeechWithPronunciationDictionaryLongText(
+			voiceIdForTTS
+		);
+		testResults["create_speech_pronunciation_dictionary_long_text"] = success;
+
+		[success, result] = await testStreamSpeechWithPronunciationDictionary(
+			voiceIdForTTS
+		);
+		testResults["stream_speech_pronunciation_dictionary"] = success;
+
+		[success, result] = await testStreamSpeechWithPronunciationDictionaryLongText(
+			voiceIdForTTS
+		);
+		testResults["stream_speech_pronunciation_dictionary_long_text"] = success;
 	}
 
 	// Results Summary
@@ -2939,6 +3263,15 @@ async function main(): Promise<boolean> {
 	);
 	console.log(
 		"  • Custom Features: Auto-chunking in createSpeech/streamSpeech (transparent)"
+	);
+	console.log(
+		"  • Pronunciation Dictionary: createSpeech/streamSpeech with pronunciationDictionary option"
+	);
+	console.log(
+		"    - partial_match=false (word boundary) and partial_match=true (substring)"
+	);
+	console.log(
+		"    - Long text chunking after pronunciation expansion"
 	);
 	console.log("");
 	console.log("🤖 New Model & Language Tests:");

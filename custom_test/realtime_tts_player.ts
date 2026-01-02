@@ -6,6 +6,7 @@
 import { spawn, ChildProcess } from "child_process";
 import { Supertone } from "../src/index.js";
 import * as models from "../src/models/index.js";
+import type { PronunciationDictionaryEntry } from "../src/lib/custom_utils/index.js";
 import * as dotenv from "dotenv";
 import * as path from "path";
 import { fileURLToPath } from "url";
@@ -277,11 +278,15 @@ async function simpleStreamingTts(
 	voiceId: string,
 	text: string,
 	language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage = models
-		.APIConvertTextToSpeechUsingCharacterRequestLanguage.Ko
+		.APIConvertTextToSpeechUsingCharacterRequestLanguage.Ko,
+	pronunciationDictionary?: PronunciationDictionaryEntry[]
 ): Promise<boolean> {
 	console.log(`📝 "${text.slice(0, 50)}${text.length > 50 ? "..." : ""}"`);
 	console.log(`📏 Text length: ${text.length} characters`);
 	console.log(`🌐 Language: ${language}`);
+	if (pronunciationDictionary && pronunciationDictionary.length > 0) {
+		console.log(`📖 Pronunciation dictionary: ${pronunciationDictionary.length} entries`);
+	}
 
 	const player = new SimpleMpvPlayer();
 
@@ -295,17 +300,20 @@ async function simpleStreamingTts(
 		player.markApiCallStart();
 		console.log("   ⏱️  API call started...");
 
-		const response = await client.textToSpeech.streamSpeech({
-			voiceId: voiceId,
-			apiConvertTextToSpeechUsingCharacterRequest: {
-				text: text,
-				language: language,
-				outputFormat:
-					models.APIConvertTextToSpeechUsingCharacterRequestOutputFormat.Wav,
-				style: "neutral",
-				model: "sona_speech_1",
+		const response = await client.textToSpeech.streamSpeech(
+			{
+				voiceId: voiceId,
+				apiConvertTextToSpeechUsingCharacterRequest: {
+					text: text,
+					language: language,
+					outputFormat:
+						models.APIConvertTextToSpeechUsingCharacterRequestOutputFormat.Wav,
+					style: "neutral",
+					model: "sona_speech_1",
+				},
 			},
-		});
+			pronunciationDictionary ? { pronunciationDictionary } : undefined
+		);
 
 		// Mark API call end (response received)
 		player.markApiCallEnd();
@@ -405,7 +413,13 @@ async function simpleDemo(): Promise<void> {
 	];
 
 	// Additional test scenarios for word-based and character-based chunking
-	const additionalScenarios = [
+	const additionalScenarios: Array<{
+		text: string;
+		label: string;
+		category: string;
+		language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage;
+		pronunciationDictionary?: PronunciationDictionaryEntry[];
+	}> = [
 		{
 			// Korean text WITHOUT punctuation to test word-based chunking
 			// Text length: ~450 characters (exceeds 300 char limit)
@@ -447,6 +461,63 @@ async function simpleDemo(): Promise<void> {
 			label: "Japanese CJK punctuation test (。) - 320+ chars",
 			category: "Multilingual Punctuation Test",
 			language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.Ja,
+		},
+		// Pronunciation Dictionary Tests
+		{
+			// Basic pronunciation dictionary test with partial_match=true/false
+			text: "The CEO of OpenAI announced that GPT models are improving. Dr. Smith from MIT said AI research is accelerating.",
+			label: "Pronunciation dictionary (partial_match=true/false)",
+			category: "Pronunciation Dictionary Test",
+			language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.En,
+			pronunciationDictionary: [
+				// partial_match=false: exact word boundary match
+				{ text: "CEO", pronunciation: "Chief Executive Officer", partial_match: false },
+				{ text: "MIT", pronunciation: "Massachusetts Institute of Technology", partial_match: false },
+				{ text: "AI", pronunciation: "Artificial Intelligence", partial_match: false },
+				// partial_match=true: substring match
+				{ text: "GPT", pronunciation: "Generative Pre-trained Transformer", partial_match: true },
+				{ text: "Dr.", pronunciation: "Doctor", partial_match: true },
+			],
+		},
+		{
+			// Pronunciation dictionary causing text expansion to exceed 300 chars (triggers chunking)
+			// Original text: ~190 chars, After expansion: 400+ chars
+			text: "AI and ML are revolutionizing tech. The CEO discussed GPT advancements. Dr. Kim from MIT explained how NLP and CV work together. AWS and GCP provide cloud AI services.",
+			label: "Pronunciation dictionary + Long text chunking (~190 chars -> 400+ chars)",
+			category: "Pronunciation Dictionary + Chunking Test",
+			language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.En,
+			pronunciationDictionary: [
+				// partial_match=false: exact word boundary matches
+				{ text: "AI", pronunciation: "Artificial Intelligence", partial_match: false },
+				{ text: "ML", pronunciation: "Machine Learning", partial_match: false },
+				{ text: "CEO", pronunciation: "Chief Executive Officer", partial_match: false },
+				{ text: "MIT", pronunciation: "Massachusetts Institute of Technology", partial_match: false },
+				{ text: "NLP", pronunciation: "Natural Language Processing", partial_match: false },
+				{ text: "CV", pronunciation: "Computer Vision", partial_match: false },
+				{ text: "AWS", pronunciation: "Amazon Web Services", partial_match: false },
+				{ text: "GCP", pronunciation: "Google Cloud Platform", partial_match: false },
+				// partial_match=true: substring matches
+				{ text: "GPT", pronunciation: "Generative Pre-trained Transformer", partial_match: true },
+				{ text: "Dr.", pronunciation: "Doctor", partial_match: true },
+				{ text: "tech", pronunciation: "technology", partial_match: true },
+			],
+		},
+		{
+			// Korean pronunciation dictionary test
+			text: "SK와 LG의 CEO가 AI와 ML 기술에 대해 발표했습니다. Dr. 김 박사가 MIT에서 NLP 연구 성과를 공개했습니다.",
+			label: "Korean pronunciation dictionary test",
+			category: "Pronunciation Dictionary Test",
+			language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.Ko,
+			pronunciationDictionary: [
+				{ text: "SK", pronunciation: "에스케이", partial_match: false },
+				{ text: "LG", pronunciation: "엘지", partial_match: false },
+				{ text: "CEO", pronunciation: "최고경영자", partial_match: false },
+				{ text: "AI", pronunciation: "인공지능", partial_match: false },
+				{ text: "ML", pronunciation: "머신러닝", partial_match: false },
+				{ text: "MIT", pronunciation: "매사추세츠 공과대학교", partial_match: false },
+				{ text: "NLP", pronunciation: "자연어처리", partial_match: false },
+				{ text: "Dr.", pronunciation: "닥터", partial_match: true },
+			],
 		},
 	];
 
@@ -495,7 +566,8 @@ async function simpleDemo(): Promise<void> {
 		const success = await simpleStreamingTts(
 			voiceId,
 			scenario.text,
-			scenario.language
+			scenario.language,
+			scenario.pronunciationDictionary
 		);
 
 		if (!success) {
@@ -524,6 +596,11 @@ async function simpleDemo(): Promise<void> {
 	console.log("   • Ellipsis: English (… ‥)");
 	console.log("   • Korean ellipsis: Korean (…)");
 	console.log("   • CJK punctuation: Japanese (。)");
+	console.log("\n📖 Pronunciation dictionary tests:");
+	console.log("   • partial_match=false: Word boundary matching (CEO, MIT, AI)");
+	console.log("   • partial_match=true: Substring matching (GPT, Dr., tech)");
+	console.log("   • Long text chunking: Text expansion exceeding 300 chars");
+	console.log("   • Korean pronunciation: SK, LG, CEO, AI, ML, MIT, NLP");
 }
 
 /**

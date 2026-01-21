@@ -275,6 +275,7 @@ run();
 ## predictDuration
 
 Predict the duration of text-to-speech conversion without generating audio
+Predict duration only supports speed setting.
 
 ### Example Usage
 

@@ -472,9 +472,9 @@ async function testPredictDuration(
 
 		const response = await client.textToSpeech.predictDuration({
 			voiceId,
-			predictTTSDurationUsingCharacterRequest: {
+			predictTTSDurationRequest: {
 				text: testText,
-				language: models.PredictTTSDurationUsingCharacterRequestLanguage.En,
+				language: models.PredictTTSDurationRequestLanguage.En,
 			},
 		});
 
@@ -795,7 +795,7 @@ async function testEditCustomVoice(
 
 		const response = await client.customVoices.editCustomVoice({
 			voiceId,
-			updateClonedVoiceRequest: {
+			updateCustomVoiceRequest: {
 				name: testName,
 				description: testDescription,
 			},
@@ -1562,11 +1562,38 @@ async function testStreamSpeechWithPhonemes(
  * Model-Language compatibility matrix
  * - sona_speech_1: ko, en, ja
  * - sona_speech_2: all languages (23 languages)
+ * - sona_speech_2_flash: all languages (23 languages) - faster inference
+ * - sona_speech_2t: all languages (23 languages) - turbo variant
  * - supertonic_api_1: ko, en, ja, es, pt
  */
 const MODEL_LANGUAGE_MATRIX = {
 	sona_speech_1: ["ko", "en", "ja"],
 	sona_speech_2: [
+		"en",
+		"ko",
+		"ja",
+		"bg",
+		"cs",
+		"da",
+		"el",
+		"es",
+		"et",
+		"fi",
+		"hu",
+		"it",
+		"nl",
+		"pl",
+		"pt",
+		"ro",
+		"ar",
+		"de",
+		"fr",
+		"hi",
+		"id",
+		"ru",
+		"vi",
+	],
+	sona_speech_2_flash: [
 		"en",
 		"ko",
 		"ja",
@@ -1706,6 +1733,64 @@ async function testCreateSpeechWithSupertonicApi1(
 }
 
 /**
+ * Test TTS with sona_speech_2_flash model (faster inference variant)
+ */
+async function testCreateSpeechWithSonaSpeech2Flash(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log("⚡ TTS with sona_speech_2_flash Model Test (Fast Inference)");
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		const testText =
+			"Hello! Testing sona_speech_2_flash model for faster text-to-speech conversion.";
+		console.log(`  🔍 Creating speech with sona_speech_2_flash model`);
+		console.log(`     Voice ID: ${voiceId}`);
+		console.log(`     Model: sona_speech_2_flash (faster inference)`);
+		console.log("  ⚠️  This test consumes credits!");
+
+		const startTime = Date.now();
+		const response = await client.textToSpeech.createSpeech({
+			voiceId,
+			apiConvertTextToSpeechUsingCharacterRequest: {
+				text: testText,
+				language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.En,
+				outputFormat:
+					models.APIConvertTextToSpeechUsingCharacterRequestOutputFormat.Wav,
+				model:
+					models.APIConvertTextToSpeechUsingCharacterRequestModel.SonaSpeech2Flash,
+			},
+		});
+		const elapsed = Date.now() - startTime;
+
+		console.log(`  ✅ sona_speech_2_flash TTS success`);
+		console.log(`  ⏱️  Response time: ${elapsed}ms`);
+
+		if (response.result) {
+			const audioData = await extractAudioData(response);
+			const outputFile = "test_sona_speech_2_flash_output.wav";
+			fs.writeFileSync(outputFile, audioData);
+			console.log(
+				`  💾 Audio saved: ${outputFile} (${audioData.length} bytes)`
+			);
+		}
+
+		return [true, response];
+	} catch (e: any) {
+		logDetailedError(e, "sona_speech_2_flash TTS");
+		return [false, e];
+	}
+}
+
+/**
  * Test TTS with unsupported model (should fail with validation error)
  */
 async function testCreateSpeechWithUnsupportedModel(
@@ -1775,10 +1860,10 @@ async function testPredictDurationWithSonaSpeech2(
 
 		const response = await client.textToSpeech.predictDuration({
 			voiceId,
-			predictTTSDurationUsingCharacterRequest: {
+			predictTTSDurationRequest: {
 				text: testText,
-				language: models.PredictTTSDurationUsingCharacterRequestLanguage.En,
-				model: models.PredictTTSDurationUsingCharacterRequestModel.SonaSpeech2,
+				language: models.PredictTTSDurationRequestLanguage.En,
+				model: models.PredictTTSDurationRequestModel.SonaSpeech2,
 			},
 		});
 
@@ -1815,11 +1900,11 @@ async function testPredictDurationWithSupertonicApi1(
 
 		const response = await client.textToSpeech.predictDuration({
 			voiceId,
-			predictTTSDurationUsingCharacterRequest: {
+			predictTTSDurationRequest: {
 				text: testText,
-				language: models.PredictTTSDurationUsingCharacterRequestLanguage.En,
+				language: models.PredictTTSDurationRequestLanguage.En,
 				model:
-					models.PredictTTSDurationUsingCharacterRequestModel.SupertonicApi1,
+					models.PredictTTSDurationRequestModel.SupertonicApi1,
 			},
 		});
 
@@ -1829,6 +1914,49 @@ async function testPredictDurationWithSupertonicApi1(
 		return [true, response];
 	} catch (e: any) {
 		logDetailedError(e, "supertonic_api_1 duration prediction");
+		return [false, e];
+	}
+}
+
+/**
+ * Test prediction with sona_speech_2_flash model (faster inference variant)
+ */
+async function testPredictDurationWithSonaSpeech2Flash(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log("⏱️  Duration Prediction with sona_speech_2_flash Model Test");
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		const testText = "Testing duration prediction with sona_speech_2_flash model.";
+		console.log(`  🔍 Predicting duration with sona_speech_2_flash model`);
+
+		const startTime = Date.now();
+		const response = await client.textToSpeech.predictDuration({
+			voiceId,
+			predictTTSDurationRequest: {
+				text: testText,
+				language: models.PredictTTSDurationRequestLanguage.En,
+				model: models.PredictTTSDurationRequestModel.SonaSpeech2Flash,
+			},
+		});
+		const elapsed = Date.now() - startTime;
+
+		console.log(
+			`  ✅ sona_speech_2_flash duration prediction: ${response.duration}s`
+		);
+		console.log(`  ⏱️  Response time: ${elapsed}ms`);
+		return [true, response];
+	} catch (e: any) {
+		logDetailedError(e, "sona_speech_2_flash duration prediction");
 		return [false, e];
 	}
 }
@@ -1860,9 +1988,9 @@ async function testPredictDurationWithUnsupportedModel(
 
 		const response = await client.textToSpeech.predictDuration({
 			voiceId,
-			predictTTSDurationUsingCharacterRequest: {
+			predictTTSDurationRequest: {
 				text: testText,
-				language: models.PredictTTSDurationUsingCharacterRequestLanguage.En,
+				language: models.PredictTTSDurationRequestLanguage.En,
 				model: "invalid_model_xyz" as any, // Intentionally invalid model
 			},
 		});
@@ -2277,9 +2405,9 @@ async function testPredictDurationWithVoiceSettings(
 
 		const response = await client.textToSpeech.predictDuration({
 			voiceId,
-			predictTTSDurationUsingCharacterRequest: {
+			predictTTSDurationRequest: {
 				text: "This is a duration test with adjusted speed.",
-				language: models.PredictTTSDurationUsingCharacterRequestLanguage.En,
+				language: models.PredictTTSDurationRequestLanguage.En,
 				voiceSettings,
 			},
 		});
@@ -3030,6 +3158,9 @@ async function main(): Promise<boolean> {
 		[success, result] = await testCreateSpeechWithSupertonicApi1(voiceIdForTTS);
 		testResults["create_speech_supertonic_api_1"] = success;
 
+		[success, result] = await testCreateSpeechWithSonaSpeech2Flash(voiceIdForTTS);
+		testResults["create_speech_sona_speech_2_flash"] = success;
+
 		[success, result] = await testCreateSpeechWithUnsupportedModel(
 			voiceIdForTTS
 		);
@@ -3042,6 +3173,11 @@ async function main(): Promise<boolean> {
 			voiceIdForTTS
 		);
 		testResults["predict_duration_supertonic_api_1"] = success;
+
+		[success, result] = await testPredictDurationWithSonaSpeech2Flash(
+			voiceIdForTTS
+		);
+		testResults["predict_duration_sona_speech_2_flash"] = success;
 
 		[success, result] = await testPredictDurationWithUnsupportedModel(
 			voiceIdForTTS

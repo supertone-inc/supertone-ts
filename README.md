@@ -153,6 +153,7 @@ Supertone’s Text-to-Speech API provides multiple TTS models, each with differe
 | **SONA Speech 1**  | `sona_speech_1`   | ✅ Supported                         | Supports **all** Voice Settings                          |
 | **Supertonic API 1** | `supertonic_api_1` | ❌ Not supported                  | Supports **only** the `speed` setting (others are ignored) |
 | **SONA Speech 2**  | `sona_speech_2`   | ❌ Not supported                     | Supports **all** Voice Settings **except** `subharmonic_amplitude_control` |
+| **SONA Speech 2 Flash**  | `sona_speech_2_flash`   | ❌ Not supported | Supports **all** Voice Settings **except** `similarity`, `text_guidance`,`subharmonic_amplitude_control` |
 
 > [!NOTE]
 > **Streaming Support**
@@ -176,6 +177,10 @@ Supertone’s Text-to-Speech API provides multiple TTS models, each with differe
   - `en`, `ko`, `ja`, `bg`, `cs`, `da`, `el`, `es`, `et`, `fi`, `hu`, `it`, `nl`, `pl`, `pt`, `ro`,  
     `ar`, `de`, `fr`, `hi`, `id`, `ru`, `vi`
 
+- **sona_speech_2_flash**
+  - `en`, `ko`, `ja`, `bg`, `cs`, `da`, `el`, `es`, `et`, `fi`, `hu`, `it`, `nl`, `pl`, `pt`, `ro`,  
+    `ar`, `de`, `fr`, `hi`, `id`, `ru`, `vi`
+
 ---
 
 ### Voice Settings (Optional)
@@ -194,6 +199,9 @@ Some TTS models support optional voice settings that allow fine control over out
 
 - **sona_speech_2**
   - Supports **all** Voice Settings **except** `subharmonic_amplitude_control`.
+
+- **sona_speech_2_flash**
+  - Supports **all** Voice Settings **except** `similarity`, `text_guidance`, `subharmonic_amplitude_control`.
 
 > All Voice Settings are optional. When omitted, each model’s default values will be applied.
 

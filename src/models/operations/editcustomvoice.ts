@@ -11,7 +11,7 @@ import * as models from "../index.js";
 
 export type EditCustomVoiceRequest = {
   voiceId: string;
-  updateClonedVoiceRequest: models.UpdateClonedVoiceRequest;
+  updateCustomVoiceRequest: models.UpdateCustomVoiceRequest;
 };
 
 /** @internal */
@@ -21,18 +21,18 @@ export const EditCustomVoiceRequest$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   voice_id: z.string(),
-  UpdateClonedVoiceRequest: models.UpdateClonedVoiceRequest$inboundSchema,
+  UpdateCustomVoiceRequest: models.UpdateCustomVoiceRequest$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "voice_id": "voiceId",
-    "UpdateClonedVoiceRequest": "updateClonedVoiceRequest",
+    "UpdateCustomVoiceRequest": "updateCustomVoiceRequest",
   });
 });
 
 /** @internal */
 export type EditCustomVoiceRequest$Outbound = {
   voice_id: string;
-  UpdateClonedVoiceRequest: models.UpdateClonedVoiceRequest$Outbound;
+  UpdateCustomVoiceRequest: models.UpdateCustomVoiceRequest$Outbound;
 };
 
 /** @internal */
@@ -42,11 +42,11 @@ export const EditCustomVoiceRequest$outboundSchema: z.ZodType<
   EditCustomVoiceRequest
 > = z.object({
   voiceId: z.string(),
-  updateClonedVoiceRequest: models.UpdateClonedVoiceRequest$outboundSchema,
+  updateCustomVoiceRequest: models.UpdateCustomVoiceRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     voiceId: "voice_id",
-    updateClonedVoiceRequest: "UpdateClonedVoiceRequest",
+    updateCustomVoiceRequest: "UpdateCustomVoiceRequest",
   });
 });
 

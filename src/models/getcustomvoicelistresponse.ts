@@ -8,17 +8,17 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  GetCustomVoiceResponseData,
-  GetCustomVoiceResponseData$inboundSchema,
-  GetCustomVoiceResponseData$Outbound,
-  GetCustomVoiceResponseData$outboundSchema,
-} from "./getcustomvoiceresponsedata.js";
+  GetCustomVoiceResponse,
+  GetCustomVoiceResponse$inboundSchema,
+  GetCustomVoiceResponse$Outbound,
+  GetCustomVoiceResponse$outboundSchema,
+} from "./getcustomvoiceresponse.js";
 
 export type GetCustomVoiceListResponse = {
   /**
    * List of custom voice items
    */
-  items: Array<GetCustomVoiceResponseData>;
+  items: Array<GetCustomVoiceResponse>;
   /**
    * Total number of available custom voices
    */
@@ -35,7 +35,7 @@ export const GetCustomVoiceListResponse$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  items: z.array(GetCustomVoiceResponseData$inboundSchema),
+  items: z.array(GetCustomVoiceResponse$inboundSchema),
   total: z.number(),
   next_page_token: z.string().optional(),
 }).transform((v) => {
@@ -46,7 +46,7 @@ export const GetCustomVoiceListResponse$inboundSchema: z.ZodType<
 
 /** @internal */
 export type GetCustomVoiceListResponse$Outbound = {
-  items: Array<GetCustomVoiceResponseData$Outbound>;
+  items: Array<GetCustomVoiceResponse$Outbound>;
   total: number;
   next_page_token?: string | undefined;
 };
@@ -57,7 +57,7 @@ export const GetCustomVoiceListResponse$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   GetCustomVoiceListResponse
 > = z.object({
-  items: z.array(GetCustomVoiceResponseData$outboundSchema),
+  items: z.array(GetCustomVoiceResponse$outboundSchema),
   total: z.number(),
   nextPageToken: z.string().optional(),
 }).transform((v) => {

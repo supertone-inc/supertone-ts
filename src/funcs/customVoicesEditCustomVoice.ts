@@ -38,7 +38,7 @@ export function customVoicesEditCustomVoice(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    models.UpdateClonedVoiceResponse,
+    models.UpdateCustomVoiceResponse,
     | errors.UnauthorizedErrorResponse
     | errors.NotFoundErrorResponse
     | errors.InternalServerErrorResponse
@@ -66,7 +66,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      models.UpdateClonedVoiceResponse,
+      models.UpdateCustomVoiceResponse,
       | errors.UnauthorizedErrorResponse
       | errors.NotFoundErrorResponse
       | errors.InternalServerErrorResponse
@@ -91,7 +91,7 @@ async function $do(
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = encodeJSON("body", payload.UpdateClonedVoiceRequest, {
+  const body = encodeJSON("body", payload.UpdateCustomVoiceRequest, {
     explode: true,
   });
 
@@ -159,7 +159,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    models.UpdateClonedVoiceResponse,
+    models.UpdateCustomVoiceResponse,
     | errors.UnauthorizedErrorResponse
     | errors.NotFoundErrorResponse
     | errors.InternalServerErrorResponse
@@ -172,7 +172,7 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, models.UpdateClonedVoiceResponse$inboundSchema),
+    M.json(200, models.UpdateCustomVoiceResponse$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedErrorResponse$inboundSchema),
     M.jsonErr(404, errors.NotFoundErrorResponse$inboundSchema),
     M.jsonErr(500, errors.InternalServerErrorResponse$inboundSchema),

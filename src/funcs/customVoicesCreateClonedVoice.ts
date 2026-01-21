@@ -44,7 +44,7 @@ export function customVoicesCreateClonedVoice(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    models.CreateClonedVoiceUploadResponse,
+    models.CreateCustomVoiceResponse,
     | errors.BadRequestErrorResponse
     | errors.UnauthorizedErrorResponse
     | errors.ForbiddenErrorResponse
@@ -77,7 +77,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      models.CreateClonedVoiceUploadResponse,
+      models.CreateCustomVoiceResponse,
       | errors.BadRequestErrorResponse
       | errors.UnauthorizedErrorResponse
       | errors.ForbiddenErrorResponse
@@ -120,10 +120,14 @@ async function $do(
   } else {
     const contentType = getContentTypeFromFileName(payload.files.fileName)
       || "application/octet-stream";
+    // Handle Uint8Array with ArrayBufferLike by copying to ensure ArrayBuffer compatibility
+    const content = payload.files.content instanceof Uint8Array
+      ? new Uint8Array(payload.files.content)
+      : payload.files.content;
     appendForm(
       body,
       "files",
-      new Blob([payload.files.content as BlobPart], { type: contentType }),
+      new Blob([content], { type: contentType }),
       payload.files.fileName,
     );
   }
@@ -199,7 +203,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    models.CreateClonedVoiceUploadResponse,
+    models.CreateCustomVoiceResponse,
     | errors.BadRequestErrorResponse
     | errors.UnauthorizedErrorResponse
     | errors.ForbiddenErrorResponse
@@ -217,7 +221,7 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, models.CreateClonedVoiceUploadResponse$inboundSchema),
+    M.json(200, models.CreateCustomVoiceResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestErrorResponse$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedErrorResponse$inboundSchema),
     M.jsonErr(403, errors.ForbiddenErrorResponse$inboundSchema),

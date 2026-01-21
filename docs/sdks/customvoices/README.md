@@ -83,7 +83,7 @@ run();
 
 ### Response
 
-**Promise\<[models.CreateClonedVoiceUploadResponse](../../models/createclonedvoiceuploadresponse.md)\>**
+**Promise\<[models.CreateCustomVoiceResponse](../../models/createcustomvoiceresponse.md)\>**
 
 ### Errors
 
@@ -308,7 +308,7 @@ run();
 
 ### Response
 
-**Promise\<[models.GetSingleClonedVoiceResponse](../../models/getsingleclonedvoiceresponse.md)\>**
+**Promise\<[models.GetCustomVoiceResponse](../../models/getcustomvoiceresponse.md)\>**
 
 ### Errors
 
@@ -336,7 +336,7 @@ const supertone = new Supertone({
 async function run() {
   const result = await supertone.customVoices.editCustomVoice({
     voiceId: "<id>",
-    updateClonedVoiceRequest: {
+    updateCustomVoiceRequest: {
       name: "My Updated Voice",
       description: "An updated warm and friendly voice for customer service",
     },
@@ -365,7 +365,7 @@ const supertone = new SupertoneCore({
 async function run() {
   const res = await customVoicesEditCustomVoice(supertone, {
     voiceId: "<id>",
-    updateClonedVoiceRequest: {
+    updateCustomVoiceRequest: {
       name: "My Updated Voice",
       description: "An updated warm and friendly voice for customer service",
     },
@@ -392,7 +392,7 @@ run();
 
 ### Response
 
-**Promise\<[models.UpdateClonedVoiceResponse](../../models/updateclonedvoiceresponse.md)\>**
+**Promise\<[models.UpdateCustomVoiceResponse](../../models/updatecustomvoiceresponse.md)\>**
 
 ### Errors
 

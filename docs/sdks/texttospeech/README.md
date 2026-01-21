@@ -82,7 +82,6 @@ run();
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
-
 ### Response
 
 **Promise\<[operations.CreateSpeechResponse](../../models/operations/createspeechresponse.md)\>**
@@ -190,92 +189,9 @@ run();
 | errors.InternalServerErrorResponse  | 500                                 | application/json                    |
 | errors.SupertoneDefaultError        | 4XX, 5XX                            | \*/\*                               |
 
-
-## Pronunciation Dictionary
-
-You can customize how specific words or phrases are spoken by providing a **pronunciation dictionary** in each request.
-
-This is useful for proper nouns, brand names, acronyms, or loanwords that may not be pronounced as intended by default.
-
-The pronunciation dictionary is applied during **text pre-processing**, before the text is sent to the TTS engine.
-
----
-
-### How it works
-
-Each pronunciation rule consists of the following fields:
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `text` | string | :heavy_check_mark: | The target text to replace |
-| `pronunciation` | string | :heavy_check_mark: | The pronunciation that should be spoken |
-| `partial_match` | boolean | :heavy_check_mark: | Whether to allow partial (substring) matching |
-
-### Matching behavior
-
-- **`partial_match = false`**
-    
-    Replaces the text only when it matches a **whole word** (word boundary match).
-    
-- **`partial_match = true`**
-    
-    Replaces **all occurrences** of the text as a substring, regardless of word boundaries.
-    
-
-### Rule order and conflicts
-
-- Rules are applied **in the order they are provided**.
-- If multiple rules target the same text, **the first matching rule takes precedence**.
-- Once text is replaced by a rule, it is not re-replaced by later rules.
-
----
-
-### Example Usage (TypeScript)
-
-```tsx
-import {Supertone }from"@supertone/supertone";
-
-const supertone =newSupertone({
-apiKey:"<YOUR_API_KEY_HERE>",
-});
-
-asyncfunctionrun() {
-const result =await supertone.textToSpeech.createSpeech({
-voiceId:"<id>",
-apiConvertTextToSpeechUsingCharacterRequest: {
-text:"The Supertone API supports TTS and STS.",
-language:"en",
-pronunciationDictionary: [
-        {
-text:"Supertone",
-pronunciation:"super tone",
-partial_match:false,
-        },
-        {
-text:"TTS",
-pronunciation:"text to speech",
-partial_match:true,
-        },
-      ],
-    },
-  });
-
-console.log(result);
-}
-
-run();
-
-```
-
-> The pronunciationDictionary parameter is optional.
-> 
-> If it is not provided, text-to-speech behaves exactly the same as before.
-
-
 ## predictDuration
 
 Predict the duration of text-to-speech conversion without generating audio
-Predict duration only supports speed setting.
 
 ### Example Usage
 
@@ -290,7 +206,7 @@ const supertone = new Supertone({
 async function run() {
   const result = await supertone.textToSpeech.predictDuration({
     voiceId: "<id>",
-    predictTTSDurationUsingCharacterRequest: {
+    predictTTSDurationRequest: {
       text: "<value>",
       language: "ja",
     },
@@ -319,7 +235,7 @@ const supertone = new SupertoneCore({
 async function run() {
   const res = await textToSpeechPredictDuration(supertone, {
     voiceId: "<id>",
-    predictTTSDurationUsingCharacterRequest: {
+    predictTTSDurationRequest: {
       text: "<value>",
       language: "ja",
     },

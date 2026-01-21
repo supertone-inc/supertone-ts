@@ -56,6 +56,7 @@ export type APIConvertTextToSpeechUsingCharacterRequestLanguage = ClosedEnum<
 export const APIConvertTextToSpeechUsingCharacterRequestModel = {
   SonaSpeech1: "sona_speech_1",
   SonaSpeech2: "sona_speech_2",
+  SonaSpeech2Flash: "sona_speech_2_flash",
   SonaSpeech2t: "sona_speech_2t",
   SupertonicApi1: "supertonic_api_1",
 } as const;

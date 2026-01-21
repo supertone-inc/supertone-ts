@@ -100,11 +100,9 @@ async function $do(
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = encodeJSON(
-    "body",
-    payload.PredictTTSDurationUsingCharacterRequest,
-    { explode: true },
-  );
+  const body = encodeJSON("body", payload.PredictTTSDurationRequest, {
+    explode: true,
+  });
 
   const pathParams = {
     voice_id: encodeSimple("voice_id", payload.voice_id, {

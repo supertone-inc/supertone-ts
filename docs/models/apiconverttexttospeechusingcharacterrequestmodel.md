@@ -14,5 +14,5 @@ let value: APIConvertTextToSpeechUsingCharacterRequestModel =
 ## Values
 
 ```typescript
-"sona_speech_1" | "sona_speech_2" | "sona_speech_2t" | "supertonic_api_1"
+"sona_speech_1" | "sona_speech_2" | "sona_speech_2_flash" | "sona_speech_2t" | "supertonic_api_1"
 ```

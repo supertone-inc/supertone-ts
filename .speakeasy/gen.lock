@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 34de9724-4acd-41e6-a7b9-c7d22c117411
 management:
-  docChecksum: d83a03a47cfc199e8df77df14f9942fc
-  docVersion: 0.8.69
+  docChecksum: 44f5c7cda982240a767a63b4e8ac2452
+  docVersion: 0.8.93
   speakeasyVersion: 1.606.0
   generationVersion: 2.686.7
-  releaseVersion: 0.1.4
-  configChecksum: aa28187cd1e233cc108161dd4f5d8b71
+  releaseVersion: 0.1.5
+  configChecksum: adee42f37a2b7436fbc0e37f2236567f
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -41,7 +41,7 @@ generatedFiles:
   - docs/models/apiconverttexttospeechusingcharacterrequestoutputformat.md
   - docs/models/apisampledata.md
   - docs/models/converttexttospeechparameters.md
-  - docs/models/createclonedvoiceuploadresponse.md
+  - docs/models/createcustomvoiceresponse.md
   - docs/models/errors/badrequesterrorresponse.md
   - docs/models/errors/forbiddenerrorresponse.md
   - docs/models/errors/internalservererrorresponse.md
@@ -58,8 +58,7 @@ generatedFiles:
   - docs/models/getcharacterbyidresponse.md
   - docs/models/getcreditbalanceresponse.md
   - docs/models/getcustomvoicelistresponse.md
-  - docs/models/getcustomvoiceresponsedata.md
-  - docs/models/getsingleclonedvoiceresponse.md
+  - docs/models/getcustomvoiceresponse.md
   - docs/models/getusagelistv1response.md
   - docs/models/getusageresponsev1data.md
   - docs/models/internalservererrorresponsemessage.md
@@ -90,16 +89,16 @@ generatedFiles:
   - docs/models/operations/streamspeechresponseresult.md
   - docs/models/payloadtoolargeerrorresponsemessage.md
   - docs/models/paymentrequirederrorresponsemessage.md
-  - docs/models/predictttsdurationusingcharacterrequest.md
-  - docs/models/predictttsdurationusingcharacterrequestlanguage.md
-  - docs/models/predictttsdurationusingcharacterrequestmodel.md
-  - docs/models/predictttsdurationusingcharacterrequestoutputformat.md
+  - docs/models/predictttsdurationrequest.md
+  - docs/models/predictttsdurationrequestlanguage.md
+  - docs/models/predictttsdurationrequestmodel.md
+  - docs/models/predictttsdurationrequestoutputformat.md
   - docs/models/requesttimeouterrorresponsemessage.md
   - docs/models/security.md
   - docs/models/toomanyrequestserrorresponsemessage.md
   - docs/models/unauthorizederrorresponsemessage.md
-  - docs/models/updateclonedvoicerequest.md
-  - docs/models/updateclonedvoiceresponse.md
+  - docs/models/updatecustomvoicerequest.md
+  - docs/models/updatecustomvoiceresponse.md
   - docs/models/usageanalyticsresponse.md
   - docs/models/usagebucket.md
   - docs/models/usageresult.md
@@ -153,7 +152,7 @@ generatedFiles:
   - src/models/apiconverttexttospeechusingcharacterrequest.ts
   - src/models/apisampledata.ts
   - src/models/converttexttospeechparameters.ts
-  - src/models/createclonedvoiceuploadresponse.ts
+  - src/models/createcustomvoiceresponse.ts
   - src/models/errors/badrequesterrorresponse.ts
   - src/models/errors/forbiddenerrorresponse.ts
   - src/models/errors/httpclienterrors.ts
@@ -176,8 +175,7 @@ generatedFiles:
   - src/models/getcharacterbyidresponse.ts
   - src/models/getcreditbalanceresponse.ts
   - src/models/getcustomvoicelistresponse.ts
-  - src/models/getcustomvoiceresponsedata.ts
-  - src/models/getsingleclonedvoiceresponse.ts
+  - src/models/getcustomvoiceresponse.ts
   - src/models/getusagelistv1response.ts
   - src/models/getusageresponsev1data.ts
   - src/models/index.ts
@@ -200,13 +198,13 @@ generatedFiles:
   - src/models/operations/streamspeech.ts
   - src/models/payloadtoolargeerrorresponse.ts
   - src/models/paymentrequirederrorresponse.ts
-  - src/models/predictttsdurationusingcharacterrequest.ts
+  - src/models/predictttsdurationrequest.ts
   - src/models/requesttimeouterrorresponse.ts
   - src/models/security.ts
   - src/models/toomanyrequestserrorresponse.ts
   - src/models/unauthorizederrorresponse.ts
-  - src/models/updateclonedvoicerequest.ts
-  - src/models/updateclonedvoiceresponse.ts
+  - src/models/updatecustomvoicerequest.ts
+  - src/models/updatecustomvoiceresponse.ts
   - src/models/usageanalyticsresponse.ts
   - src/models/usagebucket.ts
   - src/models/usageresult.ts
@@ -317,7 +315,7 @@ examples:
           voice_id: "<id>"
       responses:
         "200":
-          application/json: {"voice_id": "<voice-id>", "name": "Agatha", "description": "", "age": "young-adult", "gender": "female", "use_case": "narration", "use_cases": ["narration", "storytelling"], "language": ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fi", "fr", "hi", "hu", "id", "it", "ja", "ko", "nl", "pl", "pt", "ro", "ru", "vi"], "styles": ["kind-default", "normal", "serene"], "models": ["sona_speech_1", "sona_speech_2", "supertonic_api_1"], "samples": [{"language": "ko", "style": "kind-default", "model": "sona_speech_1", "url": "https://example.com/samples/sample-audio.wav"}], "thumbnail_image_url": "https://example.com/thumbnails/voice-thumbnail.png"}
+          application/json: {"voice_id": "<voice-id>", "name": "Agatha", "description": "", "age": "young-adult", "gender": "female", "use_case": "narration", "use_cases": ["narration", "storytelling"], "language": ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fi", "fr", "hi", "hu", "id", "it", "ja", "ko", "nl", "pl", "pt", "ro", "ru", "vi"], "styles": ["kind-default", "normal", "serene"], "models": ["sona_speech_1", "sona_speech_2", "sona_speech_2_flash", "sona_speech_2t", "supertonic_api_1"], "samples": [{"language": "ko", "style": "kind-default", "model": "sona_speech_1", "url": "https://example.com/samples/sample-audio.wav"}], "thumbnail_image_url": "https://example.com/thumbnails/voice-thumbnail.png"}
   create_cloned_voice:
     speakeasy-default-create-cloned-voice:
       requestBody:

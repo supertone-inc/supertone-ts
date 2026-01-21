@@ -11,8 +11,7 @@ import * as models from "../index.js";
 
 export type PredictDurationRequest = {
   voiceId: string;
-  predictTTSDurationUsingCharacterRequest:
-    models.PredictTTSDurationUsingCharacterRequest;
+  predictTTSDurationRequest: models.PredictTTSDurationRequest;
 };
 
 /**
@@ -29,21 +28,18 @@ export const PredictDurationRequest$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   voice_id: z.string(),
-  PredictTTSDurationUsingCharacterRequest:
-    models.PredictTTSDurationUsingCharacterRequest$inboundSchema,
+  PredictTTSDurationRequest: models.PredictTTSDurationRequest$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "voice_id": "voiceId",
-    "PredictTTSDurationUsingCharacterRequest":
-      "predictTTSDurationUsingCharacterRequest",
+    "PredictTTSDurationRequest": "predictTTSDurationRequest",
   });
 });
 
 /** @internal */
 export type PredictDurationRequest$Outbound = {
   voice_id: string;
-  PredictTTSDurationUsingCharacterRequest:
-    models.PredictTTSDurationUsingCharacterRequest$Outbound;
+  PredictTTSDurationRequest: models.PredictTTSDurationRequest$Outbound;
 };
 
 /** @internal */
@@ -53,13 +49,11 @@ export const PredictDurationRequest$outboundSchema: z.ZodType<
   PredictDurationRequest
 > = z.object({
   voiceId: z.string(),
-  predictTTSDurationUsingCharacterRequest:
-    models.PredictTTSDurationUsingCharacterRequest$outboundSchema,
+  predictTTSDurationRequest: models.PredictTTSDurationRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     voiceId: "voice_id",
-    predictTTSDurationUsingCharacterRequest:
-      "PredictTTSDurationUsingCharacterRequest",
+    predictTTSDurationRequest: "PredictTTSDurationRequest",
   });
 });
 

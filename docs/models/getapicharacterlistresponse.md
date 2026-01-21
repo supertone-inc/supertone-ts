@@ -51,6 +51,8 @@ let value: GetAPICharacterListResponse = {
       models: [
         "sona_speech_1",
         "sona_speech_2",
+        "sona_speech_2_flash",
+        "sona_speech_2t",
         "supertonic_api_1",
       ],
       samples: [

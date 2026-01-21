@@ -8,7 +8,7 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export type UpdateClonedVoiceResponse = {
+export type GetCustomVoiceResponse = {
   /**
    * Unique identifier for the voice
    */
@@ -24,8 +24,8 @@ export type UpdateClonedVoiceResponse = {
 };
 
 /** @internal */
-export const UpdateClonedVoiceResponse$inboundSchema: z.ZodType<
-  UpdateClonedVoiceResponse,
+export const GetCustomVoiceResponse$inboundSchema: z.ZodType<
+  GetCustomVoiceResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -39,17 +39,17 @@ export const UpdateClonedVoiceResponse$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type UpdateClonedVoiceResponse$Outbound = {
+export type GetCustomVoiceResponse$Outbound = {
   voice_id: string;
   name: string;
   description: string;
 };
 
 /** @internal */
-export const UpdateClonedVoiceResponse$outboundSchema: z.ZodType<
-  UpdateClonedVoiceResponse$Outbound,
+export const GetCustomVoiceResponse$outboundSchema: z.ZodType<
+  GetCustomVoiceResponse$Outbound,
   z.ZodTypeDef,
-  UpdateClonedVoiceResponse
+  GetCustomVoiceResponse
 > = z.object({
   voiceId: z.string(),
   name: z.string(),
@@ -64,29 +64,29 @@ export const UpdateClonedVoiceResponse$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace UpdateClonedVoiceResponse$ {
-  /** @deprecated use `UpdateClonedVoiceResponse$inboundSchema` instead. */
-  export const inboundSchema = UpdateClonedVoiceResponse$inboundSchema;
-  /** @deprecated use `UpdateClonedVoiceResponse$outboundSchema` instead. */
-  export const outboundSchema = UpdateClonedVoiceResponse$outboundSchema;
-  /** @deprecated use `UpdateClonedVoiceResponse$Outbound` instead. */
-  export type Outbound = UpdateClonedVoiceResponse$Outbound;
+export namespace GetCustomVoiceResponse$ {
+  /** @deprecated use `GetCustomVoiceResponse$inboundSchema` instead. */
+  export const inboundSchema = GetCustomVoiceResponse$inboundSchema;
+  /** @deprecated use `GetCustomVoiceResponse$outboundSchema` instead. */
+  export const outboundSchema = GetCustomVoiceResponse$outboundSchema;
+  /** @deprecated use `GetCustomVoiceResponse$Outbound` instead. */
+  export type Outbound = GetCustomVoiceResponse$Outbound;
 }
 
-export function updateClonedVoiceResponseToJSON(
-  updateClonedVoiceResponse: UpdateClonedVoiceResponse,
+export function getCustomVoiceResponseToJSON(
+  getCustomVoiceResponse: GetCustomVoiceResponse,
 ): string {
   return JSON.stringify(
-    UpdateClonedVoiceResponse$outboundSchema.parse(updateClonedVoiceResponse),
+    GetCustomVoiceResponse$outboundSchema.parse(getCustomVoiceResponse),
   );
 }
 
-export function updateClonedVoiceResponseFromJSON(
+export function getCustomVoiceResponseFromJSON(
   jsonString: string,
-): SafeParseResult<UpdateClonedVoiceResponse, SDKValidationError> {
+): SafeParseResult<GetCustomVoiceResponse, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => UpdateClonedVoiceResponse$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'UpdateClonedVoiceResponse' from JSON`,
+    (x) => GetCustomVoiceResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetCustomVoiceResponse' from JSON`,
   );
 }

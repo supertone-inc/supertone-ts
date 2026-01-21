@@ -1,13 +1,13 @@
-# PredictTTSDurationUsingCharacterRequestLanguage
+# PredictTTSDurationRequestLanguage
 
 Language code of the voice
 
 ## Example Usage
 
 ```typescript
-import { PredictTTSDurationUsingCharacterRequestLanguage } from "@supertone/supertone/models";
+import { PredictTTSDurationRequestLanguage } from "@supertone/supertone/models";
 
-let value: PredictTTSDurationUsingCharacterRequestLanguage = "id";
+let value: PredictTTSDurationRequestLanguage = "et";
 ```
 
 ## Values

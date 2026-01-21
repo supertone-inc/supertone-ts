@@ -1,11 +1,11 @@
-# UpdateClonedVoiceResponse
+# UpdateCustomVoiceResponse
 
 ## Example Usage
 
 ```typescript
-import { UpdateClonedVoiceResponse } from "@supertone/supertone/models";
+import { UpdateCustomVoiceResponse } from "@supertone/supertone/models";
 
-let value: UpdateClonedVoiceResponse = {
+let value: UpdateCustomVoiceResponse = {
   voiceId: "voice_123456789",
   name: "My Updated Voice",
   description: "An updated warm and friendly voice for customer service",

@@ -1,11 +1,11 @@
-# CreateClonedVoiceUploadResponse
+# CreateCustomVoiceResponse
 
 ## Example Usage
 
 ```typescript
-import { CreateClonedVoiceUploadResponse } from "@supertone/supertone/models";
+import { CreateCustomVoiceResponse } from "@supertone/supertone/models";
 
-let value: CreateClonedVoiceUploadResponse = {
+let value: CreateCustomVoiceResponse = {
   voiceId: "voice_123456789",
 };
 ```

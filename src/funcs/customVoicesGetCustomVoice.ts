@@ -38,7 +38,7 @@ export function customVoicesGetCustomVoice(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    models.GetSingleClonedVoiceResponse,
+    models.GetCustomVoiceResponse,
     | errors.UnauthorizedErrorResponse
     | errors.NotFoundErrorResponse
     | errors.InternalServerErrorResponse
@@ -66,7 +66,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      models.GetSingleClonedVoiceResponse,
+      models.GetCustomVoiceResponse,
       | errors.UnauthorizedErrorResponse
       | errors.NotFoundErrorResponse
       | errors.InternalServerErrorResponse
@@ -156,7 +156,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    models.GetSingleClonedVoiceResponse,
+    models.GetCustomVoiceResponse,
     | errors.UnauthorizedErrorResponse
     | errors.NotFoundErrorResponse
     | errors.InternalServerErrorResponse
@@ -169,7 +169,7 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, models.GetSingleClonedVoiceResponse$inboundSchema),
+    M.json(200, models.GetCustomVoiceResponse$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedErrorResponse$inboundSchema),
     M.jsonErr(404, errors.NotFoundErrorResponse$inboundSchema),
     M.jsonErr(500, errors.InternalServerErrorResponse$inboundSchema),

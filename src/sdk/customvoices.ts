@@ -23,7 +23,7 @@ export class CustomVoices extends ClientSDK {
   async createClonedVoice(
     request: operations.CreateClonedVoiceRequest,
     options?: RequestOptions,
-  ): Promise<models.CreateClonedVoiceUploadResponse> {
+  ): Promise<models.CreateCustomVoiceResponse> {
     return unwrapAsync(customVoicesCreateClonedVoice(
       this,
       request,
@@ -74,7 +74,7 @@ export class CustomVoices extends ClientSDK {
   async getCustomVoice(
     request: operations.GetCustomVoiceRequest,
     options?: RequestOptions,
-  ): Promise<models.GetSingleClonedVoiceResponse> {
+  ): Promise<models.GetCustomVoiceResponse> {
     return unwrapAsync(customVoicesGetCustomVoice(
       this,
       request,
@@ -91,7 +91,7 @@ export class CustomVoices extends ClientSDK {
   async editCustomVoice(
     request: operations.EditCustomVoiceRequest,
     options?: RequestOptions,
-  ): Promise<models.UpdateClonedVoiceResponse> {
+  ): Promise<models.UpdateCustomVoiceResponse> {
     return unwrapAsync(customVoicesEditCustomVoice(
       this,
       request,

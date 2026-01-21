@@ -1,11 +1,11 @@
-# GetSingleClonedVoiceResponse
+# GetCustomVoiceResponse
 
 ## Example Usage
 
 ```typescript
-import { GetSingleClonedVoiceResponse } from "@supertone/supertone/models";
+import { GetCustomVoiceResponse } from "@supertone/supertone/models";
 
-let value: GetSingleClonedVoiceResponse = {
+let value: GetCustomVoiceResponse = {
   voiceId: "voice_123456789",
   name: "My Custom Voice",
   description: "A warm and friendly voice for customer service",

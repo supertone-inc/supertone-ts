@@ -108,6 +108,10 @@ export type APIConvertTextToSpeechUsingCharacterRequest = {
    * Return phoneme timing data with the audio
    */
   includePhonemes?: boolean | undefined;
+  /**
+   * Pre-normalized text for TTS. Only used with sona_speech_2 and sona_speech_2_flash models.
+   */
+  normalizedText?: string | undefined;
 };
 
 /** @internal */
@@ -198,11 +202,13 @@ export const APIConvertTextToSpeechUsingCharacterRequest$inboundSchema:
         .default("wav"),
     voice_settings: ConvertTextToSpeechParameters$inboundSchema.optional(),
     include_phonemes: z.boolean().default(false),
+    normalized_text: z.string().optional(),
   }).transform((v) => {
     return remap$(v, {
       "output_format": "outputFormat",
       "voice_settings": "voiceSettings",
       "include_phonemes": "includePhonemes",
+      "normalized_text": "normalizedText",
     });
   });
 
@@ -215,6 +221,7 @@ export type APIConvertTextToSpeechUsingCharacterRequest$Outbound = {
   output_format: string;
   voice_settings?: ConvertTextToSpeechParameters$Outbound | undefined;
   include_phonemes: boolean;
+  normalized_text?: string | undefined;
 };
 
 /** @internal */
@@ -235,11 +242,13 @@ export const APIConvertTextToSpeechUsingCharacterRequest$outboundSchema:
         .default("wav"),
     voiceSettings: ConvertTextToSpeechParameters$outboundSchema.optional(),
     includePhonemes: z.boolean().default(false),
+    normalizedText: z.string().optional(),
   }).transform((v) => {
     return remap$(v, {
       outputFormat: "output_format",
       voiceSettings: "voice_settings",
       includePhonemes: "include_phonemes",
+      normalizedText: "normalized_text",
     });
   });
 

@@ -1791,6 +1791,132 @@ async function testCreateSpeechWithSonaSpeech2Flash(
 }
 
 /**
+ * Test TTS with sona_speech_2 model using normalized_text parameter
+ * normalized_text allows specifying the pronunciation explicitly (e.g., kanji -> hiragana)
+ */
+async function testCreateSpeechWithNormalizedTextSonaSpeech2(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log("📝 TTS with normalized_text Parameter Test (sona_speech_2)");
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		// Japanese text with kanji, and normalized_text with hiragana pronunciation
+		const text = "今日はどんな一日だったの？";
+		const normalizedText = "きょうはどんないちにちだったの？";
+
+		console.log(`  🔍 Creating speech with normalized_text`);
+		console.log(`     Original text: ${text}`);
+		console.log(`     Normalized text: ${normalizedText}`);
+		console.log(`     Model: sona_speech_2`);
+		console.log("  ⚠️  This test consumes credits!");
+
+		const startTime = Date.now();
+		const response = await client.textToSpeech.createSpeech({
+			voiceId,
+			apiConvertTextToSpeechUsingCharacterRequest: {
+				text,
+				normalizedText,
+				language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.Ja,
+				outputFormat:
+					models.APIConvertTextToSpeechUsingCharacterRequestOutputFormat.Wav,
+				model:
+					models.APIConvertTextToSpeechUsingCharacterRequestModel.SonaSpeech2,
+			},
+		});
+		const elapsed = Date.now() - startTime;
+
+		console.log(`  ✅ sona_speech_2 with normalized_text success`);
+		console.log(`  ⏱️  Response time: ${elapsed}ms`);
+
+		if (response.result) {
+			const audioData = await extractAudioData(response);
+			const outputFile = "test_normalized_text_sona_speech_2_output.wav";
+			fs.writeFileSync(outputFile, audioData);
+			console.log(
+				`  💾 Audio saved: ${outputFile} (${audioData.length} bytes)`
+			);
+		}
+
+		return [true, response];
+	} catch (e: any) {
+		logDetailedError(e, "sona_speech_2 normalized_text TTS");
+		return [false, e];
+	}
+}
+
+/**
+ * Test TTS with sona_speech_2_flash model using normalized_text parameter
+ * normalized_text allows specifying the pronunciation explicitly (e.g., kanji -> hiragana)
+ */
+async function testCreateSpeechWithNormalizedTextSonaSpeech2Flash(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log("📝 TTS with normalized_text Parameter Test (sona_speech_2_flash)");
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		// Japanese text with kanji, and normalized_text with hiragana pronunciation
+		const text = "今日はどんな一日だったの？";
+		const normalizedText = "きょうはどんないちにちだったの？";
+
+		console.log(`  🔍 Creating speech with normalized_text`);
+		console.log(`     Original text: ${text}`);
+		console.log(`     Normalized text: ${normalizedText}`);
+		console.log(`     Model: sona_speech_2_flash (faster inference)`);
+		console.log("  ⚠️  This test consumes credits!");
+
+		const startTime = Date.now();
+		const response = await client.textToSpeech.createSpeech({
+			voiceId,
+			apiConvertTextToSpeechUsingCharacterRequest: {
+				text,
+				normalizedText,
+				language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.Ja,
+				outputFormat:
+					models.APIConvertTextToSpeechUsingCharacterRequestOutputFormat.Wav,
+				model:
+					models.APIConvertTextToSpeechUsingCharacterRequestModel.SonaSpeech2Flash,
+			},
+		});
+		const elapsed = Date.now() - startTime;
+
+		console.log(`  ✅ sona_speech_2_flash with normalized_text success`);
+		console.log(`  ⏱️  Response time: ${elapsed}ms`);
+
+		if (response.result) {
+			const audioData = await extractAudioData(response);
+			const outputFile = "test_normalized_text_sona_speech_2_flash_output.wav";
+			fs.writeFileSync(outputFile, audioData);
+			console.log(
+				`  💾 Audio saved: ${outputFile} (${audioData.length} bytes)`
+			);
+		}
+
+		return [true, response];
+	} catch (e: any) {
+		logDetailedError(e, "sona_speech_2_flash normalized_text TTS");
+		return [false, e];
+	}
+}
+
+/**
  * Test TTS with unsupported model (should fail with validation error)
  */
 async function testCreateSpeechWithUnsupportedModel(
@@ -3161,6 +3287,13 @@ async function main(): Promise<boolean> {
 		[success, result] = await testCreateSpeechWithSonaSpeech2Flash(voiceIdForTTS);
 		testResults["create_speech_sona_speech_2_flash"] = success;
 
+		// normalized_text parameter tests
+		[success, result] = await testCreateSpeechWithNormalizedTextSonaSpeech2(voiceIdForTTS);
+		testResults["create_speech_normalized_text_sona_speech_2"] = success;
+
+		[success, result] = await testCreateSpeechWithNormalizedTextSonaSpeech2Flash(voiceIdForTTS);
+		testResults["create_speech_normalized_text_sona_speech_2_flash"] = success;
+
 		[success, result] = await testCreateSpeechWithUnsupportedModel(
 			voiceIdForTTS
 		);
@@ -3412,7 +3545,13 @@ async function main(): Promise<boolean> {
 	console.log("");
 	console.log("🤖 New Model & Language Tests:");
 	console.log(
-		"  • New Models: sona_speech_2, supertonic_api_1 (createSpeech & predictDuration)"
+		"  • New Models: sona_speech_2, sona_speech_2_flash, supertonic_api_1 (createSpeech & predictDuration)"
+	);
+	console.log(
+		"  • normalized_text Parameter: Explicit pronunciation control (kanji -> hiragana)"
+	);
+	console.log(
+		"    - Supported models: sona_speech_2, sona_speech_2_flash"
 	);
 	console.log(
 		"  • Unsupported Model Validation: Error handling for invalid model names"

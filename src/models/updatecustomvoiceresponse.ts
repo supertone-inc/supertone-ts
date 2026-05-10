@@ -20,7 +20,7 @@ export type UpdateCustomVoiceResponse = {
   /**
    * Description of the voice
    */
-  description: string;
+  description?: string | null | undefined;
 };
 
 /** @internal */
@@ -31,7 +31,7 @@ export const UpdateCustomVoiceResponse$inboundSchema: z.ZodType<
 > = z.object({
   voice_id: z.string(),
   name: z.string(),
-  description: z.string(),
+  description: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "voice_id": "voiceId",
@@ -42,7 +42,7 @@ export const UpdateCustomVoiceResponse$inboundSchema: z.ZodType<
 export type UpdateCustomVoiceResponse$Outbound = {
   voice_id: string;
   name: string;
-  description: string;
+  description?: string | null | undefined;
 };
 
 /** @internal */
@@ -53,7 +53,7 @@ export const UpdateCustomVoiceResponse$outboundSchema: z.ZodType<
 > = z.object({
   voiceId: z.string(),
   name: z.string(),
-  description: z.string(),
+  description: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     voiceId: "voice_id",

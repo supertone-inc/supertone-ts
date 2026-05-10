@@ -18,7 +18,7 @@ export type Files = {
  */
 export type CreateClonedVoiceRequest = {
   /**
-   * Audio file to clone voice from (WAV/MP3 format, max 3MB)
+   * Audio file to clone voice from (all common audio formats accepted, max 3MB)
    */
   files: Files | Blob;
   /**

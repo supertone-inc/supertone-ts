@@ -26,7 +26,7 @@ export type GetCharacterByIdResponse = {
   /**
    * Description of the voice
    */
-  description: string;
+  description?: string | null | undefined;
   /**
    * Age of the voice
    */
@@ -73,7 +73,7 @@ export const GetCharacterByIdResponse$inboundSchema: z.ZodType<
 > = z.object({
   voice_id: z.string(),
   name: z.string(),
-  description: z.string(),
+  description: z.nullable(z.string()).optional(),
   age: z.string(),
   gender: z.string(),
   use_case: z.string(),
@@ -96,7 +96,7 @@ export const GetCharacterByIdResponse$inboundSchema: z.ZodType<
 export type GetCharacterByIdResponse$Outbound = {
   voice_id: string;
   name: string;
-  description: string;
+  description?: string | null | undefined;
   age: string;
   gender: string;
   use_case: string;
@@ -116,7 +116,7 @@ export const GetCharacterByIdResponse$outboundSchema: z.ZodType<
 > = z.object({
   voiceId: z.string(),
   name: z.string(),
-  description: z.string(),
+  description: z.nullable(z.string()).optional(),
   age: z.string(),
   gender: z.string(),
   useCase: z.string(),

@@ -120,7 +120,6 @@ async function $do(
   } else {
     const contentType = getContentTypeFromFileName(payload.files.fileName)
       || "application/octet-stream";
-    // Handle Uint8Array with ArrayBufferLike by copying to ensure ArrayBuffer compatibility
     const content = payload.files.content instanceof Uint8Array
       ? new Uint8Array(payload.files.content)
       : payload.files.content;

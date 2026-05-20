@@ -1565,6 +1565,8 @@ async function testStreamSpeechWithPhonemes(
  * - sona_speech_2_flash: all languages (23 languages) - faster inference
  * - sona_speech_2t: all languages (23 languages) - turbo variant
  * - supertonic_api_1: ko, en, ja, es, pt
+ * - sona_speech_3t: all languages (31 languages)
+ * - supertonic_api_3: all languages (31 languages)
  */
 const MODEL_LANGUAGE_MATRIX = {
 	sona_speech_1: ["ko", "en", "ja"],
@@ -1619,6 +1621,72 @@ const MODEL_LANGUAGE_MATRIX = {
 		"vi",
 	],
 	supertonic_api_1: ["ko", "en", "ja", "es", "pt"],
+	sona_speech_3t: [
+		"en",
+		"ko",
+		"ja",
+		"bg",
+		"cs",
+		"da",
+		"el",
+		"es",
+		"et",
+		"fi",
+		"hu",
+		"it",
+		"nl",
+		"pl",
+		"pt",
+		"ro",
+		"ar",
+		"de",
+		"fr",
+		"hi",
+		"id",
+		"ru",
+		"vi",
+		"hr",
+		"lt",
+		"lv",
+		"sk",
+		"sl",
+		"sv",
+		"tr",
+		"uk",
+	],
+	supertonic_api_3: [
+		"en",
+		"ko",
+		"ja",
+		"bg",
+		"cs",
+		"da",
+		"el",
+		"es",
+		"et",
+		"fi",
+		"hu",
+		"it",
+		"nl",
+		"pl",
+		"pt",
+		"ro",
+		"ar",
+		"de",
+		"fr",
+		"hi",
+		"id",
+		"ru",
+		"vi",
+		"hr",
+		"lt",
+		"lv",
+		"sk",
+		"sl",
+		"sv",
+		"tr",
+		"uk",
+	],
 } as const;
 
 /**
@@ -1786,6 +1854,117 @@ async function testCreateSpeechWithSonaSpeech2Flash(
 		return [true, response];
 	} catch (e: any) {
 		logDetailedError(e, "sona_speech_2_flash TTS");
+		return [false, e];
+	}
+}
+
+/**
+ * Test TTS with sona_speech_3t model (supports all 31 languages)
+ */
+async function testCreateSpeechWithSonaSpeech3t(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log("🤖 TTS with sona_speech_3t Model Test (31 languages)");
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		const testText =
+			"Hello! Testing sona_speech_3t model for text-to-speech conversion.";
+		console.log(`  🔍 Creating speech with sona_speech_3t model`);
+		console.log(`     Voice ID: ${voiceId}`);
+		console.log(`     Model: sona_speech_3t`);
+		console.log("  ⚠️  This test consumes credits!");
+
+		const response = await client.textToSpeech.createSpeech({
+			voiceId,
+			apiConvertTextToSpeechUsingCharacterRequest: {
+				text: testText,
+				language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.En,
+				outputFormat:
+					models.APIConvertTextToSpeechUsingCharacterRequestOutputFormat.Wav,
+				model:
+					models.APIConvertTextToSpeechUsingCharacterRequestModel.SonaSpeech3t,
+			},
+		});
+
+		console.log(`  ✅ sona_speech_3t TTS success`);
+
+		if (response.result) {
+			const audioData = await extractAudioData(response);
+			const outputFile = "test_sona_speech_3t_output.wav";
+			fs.writeFileSync(outputFile, audioData);
+			console.log(
+				`  💾 Audio saved: ${outputFile} (${audioData.length} bytes)`
+			);
+		}
+
+		return [true, response];
+	} catch (e: any) {
+		logDetailedError(e, "sona_speech_3t TTS");
+		return [false, e];
+	}
+}
+
+/**
+ * Test TTS with supertonic_api_3 model (supports all 31 languages)
+ */
+async function testCreateSpeechWithSupertonicApi3(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log("🤖 TTS with supertonic_api_3 Model Test (31 languages)");
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		const testText =
+			"Hello! Testing supertonic_api_3 model for text-to-speech conversion.";
+		console.log(`  🔍 Creating speech with supertonic_api_3 model`);
+		console.log(`     Voice ID: ${voiceId}`);
+		console.log(`     Model: supertonic_api_3`);
+		console.log("  ⚠️  This test consumes credits!");
+
+		const response = await client.textToSpeech.createSpeech({
+			voiceId,
+			apiConvertTextToSpeechUsingCharacterRequest: {
+				text: testText,
+				language: models.APIConvertTextToSpeechUsingCharacterRequestLanguage.En,
+				outputFormat:
+					models.APIConvertTextToSpeechUsingCharacterRequestOutputFormat.Wav,
+				model:
+					models.APIConvertTextToSpeechUsingCharacterRequestModel
+						.SupertonicApi3,
+			},
+		});
+
+		console.log(`  ✅ supertonic_api_3 TTS success`);
+
+		if (response.result) {
+			const audioData = await extractAudioData(response);
+			const outputFile = "test_supertonic_api_3_output.wav";
+			fs.writeFileSync(outputFile, audioData);
+			console.log(
+				`  💾 Audio saved: ${outputFile} (${audioData.length} bytes)`
+			);
+		}
+
+		return [true, response];
+	} catch (e: any) {
+		logDetailedError(e, "supertonic_api_3 TTS");
 		return [false, e];
 	}
 }
@@ -2083,6 +2262,87 @@ async function testPredictDurationWithSonaSpeech2Flash(
 		return [true, response];
 	} catch (e: any) {
 		logDetailedError(e, "sona_speech_2_flash duration prediction");
+		return [false, e];
+	}
+}
+
+/**
+ * Test prediction with sona_speech_3t model (supports all 31 languages)
+ */
+async function testPredictDurationWithSonaSpeech3t(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log("⏱️  Duration Prediction with sona_speech_3t Model Test");
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		const testText = "Testing duration prediction with sona_speech_3t model.";
+		console.log(`  🔍 Predicting duration with sona_speech_3t model`);
+
+		const response = await client.textToSpeech.predictDuration({
+			voiceId,
+			predictTTSDurationRequest: {
+				text: testText,
+				language: models.PredictTTSDurationRequestLanguage.En,
+				model: models.PredictTTSDurationRequestModel.SonaSpeech3t,
+			},
+		});
+
+		console.log(
+			`  ✅ sona_speech_3t duration prediction: ${response.duration}s`
+		);
+		return [true, response];
+	} catch (e: any) {
+		logDetailedError(e, "sona_speech_3t duration prediction");
+		return [false, e];
+	}
+}
+
+/**
+ * Test prediction with supertonic_api_3 model (supports all 31 languages)
+ */
+async function testPredictDurationWithSupertonicApi3(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log("⏱️  Duration Prediction with supertonic_api_3 Model Test");
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		const testText =
+			"Testing duration prediction with supertonic_api_3 model.";
+		console.log(`  🔍 Predicting duration with supertonic_api_3 model`);
+
+		const response = await client.textToSpeech.predictDuration({
+			voiceId,
+			predictTTSDurationRequest: {
+				text: testText,
+				language: models.PredictTTSDurationRequestLanguage.En,
+				model: models.PredictTTSDurationRequestModel.SupertonicApi3,
+			},
+		});
+
+		console.log(
+			`  ✅ supertonic_api_3 duration prediction: ${response.duration}s`
+		);
+		return [true, response];
+	} catch (e: any) {
+		logDetailedError(e, "supertonic_api_3 duration prediction");
 		return [false, e];
 	}
 }
@@ -2389,6 +2649,175 @@ async function testMultilingualSupertonicApi1(
 		return [allPassed, results];
 	} catch (e: any) {
 		logDetailedError(e, "supertonic_api_1 multilingual");
+		return [false, e];
+	}
+}
+
+/**
+ * 31-language test cases shared by sona_speech_3t and supertonic_api_3.
+ * The 8 new languages (hr, lt, lv, sk, sl, sv, tr, uk) are explicitly included
+ * to verify the newly added language support.
+ */
+const THIRTY_ONE_LANG_TEST_CASES = [
+	{ lang: "Ko" as const, text: "안녕하세요.", label: "Korean" },
+	{ lang: "En" as const, text: "Hello.", label: "English" },
+	{ lang: "Ja" as const, text: "こんにちは。", label: "Japanese" },
+	{ lang: "Bg" as const, text: "Здравейте.", label: "Bulgarian" },
+	{ lang: "Cs" as const, text: "Ahoj.", label: "Czech" },
+	{ lang: "Da" as const, text: "Hej.", label: "Danish" },
+	{ lang: "El" as const, text: "Γειά σας.", label: "Greek" },
+	{ lang: "Es" as const, text: "Hola.", label: "Spanish" },
+	{ lang: "Et" as const, text: "Tere.", label: "Estonian" },
+	{ lang: "Fi" as const, text: "Hei.", label: "Finnish" },
+	{ lang: "Hu" as const, text: "Szia.", label: "Hungarian" },
+	{ lang: "It" as const, text: "Ciao.", label: "Italian" },
+	{ lang: "Nl" as const, text: "Hallo.", label: "Dutch" },
+	{ lang: "Pl" as const, text: "Cześć.", label: "Polish" },
+	{ lang: "Pt" as const, text: "Olá.", label: "Portuguese" },
+	{ lang: "Ro" as const, text: "Salut.", label: "Romanian" },
+	{ lang: "Ar" as const, text: "مرحبا.", label: "Arabic" },
+	{ lang: "De" as const, text: "Hallo.", label: "German" },
+	{ lang: "Fr" as const, text: "Bonjour.", label: "French" },
+	{ lang: "Hi" as const, text: "नमस्ते।", label: "Hindi" },
+	{ lang: "Id" as const, text: "Halo.", label: "Indonesian" },
+	{ lang: "Ru" as const, text: "Привет.", label: "Russian" },
+	{ lang: "Vi" as const, text: "Xin chào.", label: "Vietnamese" },
+	{ lang: "Hr" as const, text: "Bok.", label: "Croatian" },
+	{ lang: "Lt" as const, text: "Labas.", label: "Lithuanian" },
+	{ lang: "Lv" as const, text: "Sveiki.", label: "Latvian" },
+	{ lang: "Sk" as const, text: "Ahoj.", label: "Slovak" },
+	{ lang: "Sl" as const, text: "Živjo.", label: "Slovenian" },
+	{ lang: "Sv" as const, text: "Hej.", label: "Swedish" },
+	{ lang: "Tr" as const, text: "Merhaba.", label: "Turkish" },
+	{ lang: "Uk" as const, text: "Привіт.", label: "Ukrainian" },
+];
+
+/**
+ * Test TTS multilingual support with sona_speech_3t (supports all 31 languages)
+ */
+async function testMultilingualSonaSpeech3t(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log("🌍 Multilingual Test - sona_speech_3t (all 31 languages)");
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		let allPassed = true;
+		const results: any[] = [];
+
+		for (const tc of THIRTY_ONE_LANG_TEST_CASES) {
+			console.log(`  🔍 Testing ${tc.label} (${tc.lang})...`);
+
+			try {
+				const langEnum =
+					models.APIConvertTextToSpeechUsingCharacterRequestLanguage[tc.lang];
+
+				await client.textToSpeech.createSpeech({
+					voiceId,
+					apiConvertTextToSpeechUsingCharacterRequest: {
+						text: tc.text,
+						language: langEnum,
+						outputFormat:
+							models.APIConvertTextToSpeechUsingCharacterRequestOutputFormat
+								.Wav,
+						model:
+							models.APIConvertTextToSpeechUsingCharacterRequestModel
+								.SonaSpeech3t,
+					},
+				});
+
+				console.log(`     ✅ ${tc.label} success`);
+				results.push({ lang: tc.lang, success: true });
+			} catch (e: any) {
+				console.log(
+					`     ❌ ${tc.label} failed: ${e.message?.substring(0, 50)}`
+				);
+				results.push({ lang: tc.lang, success: false, error: e.message });
+				allPassed = false;
+			}
+		}
+
+		console.log(
+			`  📊 Result: ${results.filter((r) => r.success).length}/${
+				THIRTY_ONE_LANG_TEST_CASES.length
+			} languages passed`
+		);
+		return [allPassed, results];
+	} catch (e: any) {
+		logDetailedError(e, "sona_speech_3t multilingual");
+		return [false, e];
+	}
+}
+
+/**
+ * Test TTS multilingual support with supertonic_api_3 (supports all 31 languages)
+ */
+async function testMultilingualSupertonicApi3(
+	voiceId: string | null
+): Promise<[boolean, any]> {
+	console.log("🌍 Multilingual Test - supertonic_api_3 (all 31 languages)");
+
+	if (!voiceId) {
+		console.log("  ⚠️  No voice ID available");
+		return [false, null];
+	}
+
+	try {
+		const { Supertone } = await import("../src/index.js");
+		const models = await import("../src/models/index.js");
+		const client = new Supertone({ apiKey: API_KEY });
+
+		let allPassed = true;
+		const results: any[] = [];
+
+		for (const tc of THIRTY_ONE_LANG_TEST_CASES) {
+			console.log(`  🔍 Testing ${tc.label} (${tc.lang})...`);
+
+			try {
+				const langEnum =
+					models.APIConvertTextToSpeechUsingCharacterRequestLanguage[tc.lang];
+
+				await client.textToSpeech.createSpeech({
+					voiceId,
+					apiConvertTextToSpeechUsingCharacterRequest: {
+						text: tc.text,
+						language: langEnum,
+						outputFormat:
+							models.APIConvertTextToSpeechUsingCharacterRequestOutputFormat
+								.Wav,
+						model:
+							models.APIConvertTextToSpeechUsingCharacterRequestModel
+								.SupertonicApi3,
+					},
+				});
+
+				console.log(`     ✅ ${tc.label} success`);
+				results.push({ lang: tc.lang, success: true });
+			} catch (e: any) {
+				console.log(
+					`     ❌ ${tc.label} failed: ${e.message?.substring(0, 50)}`
+				);
+				results.push({ lang: tc.lang, success: false, error: e.message });
+				allPassed = false;
+			}
+		}
+
+		console.log(
+			`  📊 Result: ${results.filter((r) => r.success).length}/${
+				THIRTY_ONE_LANG_TEST_CASES.length
+			} languages passed`
+		);
+		return [allPassed, results];
+	} catch (e: any) {
+		logDetailedError(e, "supertonic_api_3 multilingual");
 		return [false, e];
 	}
 }
@@ -3272,8 +3701,10 @@ async function main(): Promise<boolean> {
 		[success, result] = await testStreamSpeech(voiceIdForTTS);
 		testResults["stream_speech"] = success;
 
-		// 5.5 New Model Tests (sona_speech_2, supertonic_api_1)
-		console.log("\n🤖 New Model Tests (sona_speech_2, supertonic_api_1)");
+		// 5.5 New Model Tests (sona_speech_2, supertonic_api_1, sona_speech_3t, supertonic_api_3)
+		console.log(
+			"\n🤖 New Model Tests (sona_speech_2, supertonic_api_1, sona_speech_3t, supertonic_api_3)"
+		);
 		console.log("-".repeat(60));
 		console.log("⚠️  These tests consume credits!");
 		console.log("");
@@ -3286,6 +3717,12 @@ async function main(): Promise<boolean> {
 
 		[success, result] = await testCreateSpeechWithSonaSpeech2Flash(voiceIdForTTS);
 		testResults["create_speech_sona_speech_2_flash"] = success;
+
+		[success, result] = await testCreateSpeechWithSonaSpeech3t(voiceIdForTTS);
+		testResults["create_speech_sona_speech_3t"] = success;
+
+		[success, result] = await testCreateSpeechWithSupertonicApi3(voiceIdForTTS);
+		testResults["create_speech_supertonic_api_3"] = success;
 
 		// normalized_text parameter tests
 		[success, result] = await testCreateSpeechWithNormalizedTextSonaSpeech2(voiceIdForTTS);
@@ -3312,6 +3749,16 @@ async function main(): Promise<boolean> {
 		);
 		testResults["predict_duration_sona_speech_2_flash"] = success;
 
+		[success, result] = await testPredictDurationWithSonaSpeech3t(
+			voiceIdForTTS
+		);
+		testResults["predict_duration_sona_speech_3t"] = success;
+
+		[success, result] = await testPredictDurationWithSupertonicApi3(
+			voiceIdForTTS
+		);
+		testResults["predict_duration_supertonic_api_3"] = success;
+
 		[success, result] = await testPredictDurationWithUnsupportedModel(
 			voiceIdForTTS
 		);
@@ -3331,6 +3778,12 @@ async function main(): Promise<boolean> {
 
 		[success, result] = await testMultilingualSupertonicApi1(voiceIdForTTS);
 		testResults["multilingual_supertonic_api_1"] = success;
+
+		[success, result] = await testMultilingualSonaSpeech3t(voiceIdForTTS);
+		testResults["multilingual_sona_speech_3t"] = success;
+
+		[success, result] = await testMultilingualSupertonicApi3(voiceIdForTTS);
+		testResults["multilingual_supertonic_api_3"] = success;
 
 		// 5.7 Unsupported Language Tests
 		console.log("\n🚫 Unsupported Language Tests");
@@ -3545,7 +3998,7 @@ async function main(): Promise<boolean> {
 	console.log("");
 	console.log("🤖 New Model & Language Tests:");
 	console.log(
-		"  • New Models: sona_speech_2, sona_speech_2_flash, supertonic_api_1 (createSpeech & predictDuration)"
+		"  • New Models: sona_speech_2, sona_speech_2_flash, supertonic_api_1, sona_speech_3t, supertonic_api_3 (createSpeech & predictDuration)"
 	);
 	console.log(
 		"  • normalized_text Parameter: Explicit pronunciation control (kanji -> hiragana)"
@@ -3560,6 +4013,12 @@ async function main(): Promise<boolean> {
 	console.log("    - sona_speech_1: ko, en, ja");
 	console.log("    - sona_speech_2: all 23 languages");
 	console.log("    - supertonic_api_1: ko, en, ja, es, pt");
+	console.log(
+		"    - sona_speech_3t: all 31 languages (incl. hr, lt, lv, sk, sl, sv, tr, uk)"
+	);
+	console.log(
+		"    - supertonic_api_3: all 31 languages (incl. hr, lt, lv, sk, sl, sv, tr, uk)"
+	);
 	console.log(
 		"  • Unsupported Language Validation: Error handling for invalid model-language combinations"
 	);

@@ -7,7 +7,7 @@ import { PredictTTSDurationRequest } from "@supertone/supertone/models";
 
 let value: PredictTTSDurationRequest = {
   text: "<value>",
-  language: "nl",
+  language: "ar",
 };
 ```
 

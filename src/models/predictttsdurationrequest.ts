@@ -42,6 +42,14 @@ export const PredictTTSDurationRequestLanguage = {
   Id: "id",
   Ru: "ru",
   Vi: "vi",
+  Hr: "hr",
+  Lt: "lt",
+  Lv: "lv",
+  Sk: "sk",
+  Sl: "sl",
+  Sv: "sv",
+  Tr: "tr",
+  Uk: "uk",
 } as const;
 /**
  * Language code of the voice
@@ -59,6 +67,8 @@ export const PredictTTSDurationRequestModel = {
   SonaSpeech2t: "sona_speech_2t",
   SonaSpeech2Flash: "sona_speech_2_flash",
   SupertonicApi1: "supertonic_api_1",
+  SonaSpeech3t: "sona_speech_3t",
+  SupertonicApi3: "supertonic_api_3",
 } as const;
 /**
  * The model type to use for the text-to-speech conversion

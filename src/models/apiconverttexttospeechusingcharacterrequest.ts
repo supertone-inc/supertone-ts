@@ -42,6 +42,14 @@ export const APIConvertTextToSpeechUsingCharacterRequestLanguage = {
   Id: "id",
   Ru: "ru",
   Vi: "vi",
+  Hr: "hr",
+  Lt: "lt",
+  Lv: "lv",
+  Sk: "sk",
+  Sl: "sl",
+  Sv: "sv",
+  Tr: "tr",
+  Uk: "uk",
 } as const;
 /**
  * The language code of the text
@@ -56,9 +64,11 @@ export type APIConvertTextToSpeechUsingCharacterRequestLanguage = ClosedEnum<
 export const APIConvertTextToSpeechUsingCharacterRequestModel = {
   SonaSpeech1: "sona_speech_1",
   SonaSpeech2: "sona_speech_2",
-  SonaSpeech2Flash: "sona_speech_2_flash",
   SonaSpeech2t: "sona_speech_2t",
+  SonaSpeech2Flash: "sona_speech_2_flash",
   SupertonicApi1: "supertonic_api_1",
+  SonaSpeech3t: "sona_speech_3t",
+  SupertonicApi3: "supertonic_api_3",
 } as const;
 /**
  * The model type to use for the text-to-speech conversion

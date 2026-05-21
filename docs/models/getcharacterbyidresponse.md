@@ -49,10 +49,8 @@ let value: GetCharacterByIdResponse = {
   models: [
     "sona_speech_1",
     "sona_speech_2",
-    "sona_speech_2t",
     "sona_speech_2_flash",
     "supertonic_api_1",
-    "sona_speech_3t",
     "supertonic_api_3",
   ],
   samples: [

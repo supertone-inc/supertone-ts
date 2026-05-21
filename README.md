@@ -8,7 +8,7 @@
 Supertone Public API: Supertone API is a RESTful API for using our state-of-the-art AI voice models.
 <!-- End Summary [summary] -->
 
-<<!-- Start SDK Installation [installation] -->
+<!-- Start SDK Installation [installation] -->
 
 ## SDK Installation
 

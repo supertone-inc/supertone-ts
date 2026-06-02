@@ -22,7 +22,7 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
 typescript:
-  version: 0.2.2
+  version: 0.2.3
   additionalDependencies:
     dependencies:
       dotenv: ^16.4.5

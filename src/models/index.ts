@@ -4,6 +4,7 @@
 
 export * from "./apiconverttexttospeechusingcharacterrequest.js";
 export * from "./apisampledata.js";
+export * from "./badrequesterrorresponse.js";
 export * from "./converttexttospeechparameters.js";
 export * from "./createcustomvoiceresponse.js";
 export * from "./forbiddenerrorresponse.js";
@@ -24,6 +25,7 @@ export * from "./requesttimeouterrorresponse.js";
 export * from "./security.js";
 export * from "./toomanyrequestserrorresponse.js";
 export * from "./unauthorizederrorresponse.js";
+export * from "./unsupportedmediatypeerrorresponse.js";
 export * from "./updatecustomvoicerequest.js";
 export * from "./updatecustomvoiceresponse.js";
 export * from "./usageanalyticsresponse.js";

@@ -20,9 +20,9 @@ export type UsageAnalyticsResponse = {
    */
   data: Array<UsageBucket>;
   /**
-   * Pagination token for next page
+   * Pagination token for next page. Null if no more pages.
    */
-  nextPageToken?: string | undefined;
+  nextPageToken?: string | null | undefined;
   /**
    * Total number of time buckets across all pages
    */
@@ -36,7 +36,7 @@ export const UsageAnalyticsResponse$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   data: z.array(UsageBucket$inboundSchema),
-  next_page_token: z.string().optional(),
+  next_page_token: z.nullable(z.string()).optional(),
   total: z.number(),
 }).transform((v) => {
   return remap$(v, {
@@ -47,7 +47,7 @@ export const UsageAnalyticsResponse$inboundSchema: z.ZodType<
 /** @internal */
 export type UsageAnalyticsResponse$Outbound = {
   data: Array<UsageBucket$Outbound>;
-  next_page_token?: string | undefined;
+  next_page_token?: string | null | undefined;
   total: number;
 };
 
@@ -58,7 +58,7 @@ export const UsageAnalyticsResponse$outboundSchema: z.ZodType<
   UsageAnalyticsResponse
 > = z.object({
   data: z.array(UsageBucket$outboundSchema),
-  nextPageToken: z.string().optional(),
+  nextPageToken: z.nullable(z.string()).optional(),
   total: z.number(),
 }).transform((v) => {
   return remap$(v, {

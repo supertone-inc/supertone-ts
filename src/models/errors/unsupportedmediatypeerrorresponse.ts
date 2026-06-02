@@ -3,6 +3,7 @@
  */
 
 import * as z from "zod";
+import * as models from "../index.js";
 import { SupertoneError } from "./supertoneerror.js";
 
 export type UnsupportedMediaTypeErrorResponseData = {
@@ -11,9 +12,9 @@ export type UnsupportedMediaTypeErrorResponseData = {
    */
   status: string;
   /**
-   * Unsupported media type error message
+   * Unsupported media type error details
    */
-  message: string;
+  message: models.UnsupportedMediaTypeErrorResponseMessage;
 };
 
 export class UnsupportedMediaTypeErrorResponse extends SupertoneError {
@@ -29,7 +30,9 @@ export class UnsupportedMediaTypeErrorResponse extends SupertoneError {
     err: UnsupportedMediaTypeErrorResponseData,
     httpMeta: { response: Response; request: Request; body: string },
   ) {
-    const message = err.message || `API error occurred: ${JSON.stringify(err)}`;
+    const message = "message" in err && typeof err.message === "string"
+      ? err.message
+      : `API error occurred: ${JSON.stringify(err)}`;
     super(message, httpMeta);
     this.data$ = err;
     this.status = err.status;
@@ -45,7 +48,9 @@ export const UnsupportedMediaTypeErrorResponse$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   status: z.string(),
-  message: z.string(),
+  message: z.lazy(() =>
+    models.UnsupportedMediaTypeErrorResponseMessage$inboundSchema
+  ),
   request$: z.instanceof(Request),
   response$: z.instanceof(Response),
   body$: z.string(),
@@ -61,7 +66,7 @@ export const UnsupportedMediaTypeErrorResponse$inboundSchema: z.ZodType<
 /** @internal */
 export type UnsupportedMediaTypeErrorResponse$Outbound = {
   status: string;
-  message: string;
+  message: models.UnsupportedMediaTypeErrorResponseMessage$Outbound;
 };
 
 /** @internal */
@@ -73,7 +78,9 @@ export const UnsupportedMediaTypeErrorResponse$outboundSchema: z.ZodType<
   .transform(v => v.data$)
   .pipe(z.object({
     status: z.string(),
-    message: z.string(),
+    message: z.lazy(() =>
+      models.UnsupportedMediaTypeErrorResponseMessage$outboundSchema
+    ),
   }));
 
 /**

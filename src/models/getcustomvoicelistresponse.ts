@@ -26,7 +26,7 @@ export type GetCustomVoiceListResponse = {
   /**
    * Token for fetching the next page of results. A valid non-negative integer string (e.g., "10", "20"). Null if no more pages.
    */
-  nextPageToken?: string | undefined;
+  nextPageToken?: string | null | undefined;
 };
 
 /** @internal */
@@ -37,7 +37,7 @@ export const GetCustomVoiceListResponse$inboundSchema: z.ZodType<
 > = z.object({
   items: z.array(GetCustomVoiceResponse$inboundSchema),
   total: z.number(),
-  next_page_token: z.string().optional(),
+  next_page_token: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "next_page_token": "nextPageToken",
@@ -48,7 +48,7 @@ export const GetCustomVoiceListResponse$inboundSchema: z.ZodType<
 export type GetCustomVoiceListResponse$Outbound = {
   items: Array<GetCustomVoiceResponse$Outbound>;
   total: number;
-  next_page_token?: string | undefined;
+  next_page_token?: string | null | undefined;
 };
 
 /** @internal */
@@ -59,7 +59,7 @@ export const GetCustomVoiceListResponse$outboundSchema: z.ZodType<
 > = z.object({
   items: z.array(GetCustomVoiceResponse$outboundSchema),
   total: z.number(),
-  nextPageToken: z.string().optional(),
+  nextPageToken: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     nextPageToken: "next_page_token",

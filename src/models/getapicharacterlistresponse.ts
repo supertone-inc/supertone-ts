@@ -24,9 +24,9 @@ export type GetAPICharacterListResponse = {
    */
   total: number;
   /**
-   * Token for fetching the next page of results. Undefined if no more pages.
+   * Token for fetching the next page of results. Null if no more pages.
    */
-  nextPageToken?: string | undefined;
+  nextPageToken?: string | null | undefined;
 };
 
 /** @internal */
@@ -37,7 +37,7 @@ export const GetAPICharacterListResponse$inboundSchema: z.ZodType<
 > = z.object({
   items: z.array(GetAPICharacterResponseData$inboundSchema),
   total: z.number(),
-  next_page_token: z.string().optional(),
+  next_page_token: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "next_page_token": "nextPageToken",
@@ -48,7 +48,7 @@ export const GetAPICharacterListResponse$inboundSchema: z.ZodType<
 export type GetAPICharacterListResponse$Outbound = {
   items: Array<GetAPICharacterResponseData$Outbound>;
   total: number;
-  next_page_token?: string | undefined;
+  next_page_token?: string | null | undefined;
 };
 
 /** @internal */
@@ -59,7 +59,7 @@ export const GetAPICharacterListResponse$outboundSchema: z.ZodType<
 > = z.object({
   items: z.array(GetAPICharacterResponseData$outboundSchema),
   total: z.number(),
-  nextPageToken: z.string().optional(),
+  nextPageToken: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     nextPageToken: "next_page_token",

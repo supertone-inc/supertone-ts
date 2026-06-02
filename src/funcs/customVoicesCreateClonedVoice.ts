@@ -120,13 +120,10 @@ async function $do(
   } else {
     const contentType = getContentTypeFromFileName(payload.files.fileName)
       || "application/octet-stream";
-    const content = payload.files.content instanceof Uint8Array
-      ? new Uint8Array(payload.files.content)
-      : payload.files.content;
     appendForm(
       body,
       "files",
-      new Blob([content], { type: contentType }),
+      new Blob([payload.files.content as BlobPart], { type: contentType }),
       payload.files.fileName,
     );
   }

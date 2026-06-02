@@ -3,6 +3,7 @@
  */
 
 import * as z from "zod";
+import * as models from "../index.js";
 import { SupertoneError } from "./supertoneerror.js";
 
 export type BadRequestErrorResponseData = {
@@ -11,9 +12,9 @@ export type BadRequestErrorResponseData = {
    */
   status: string;
   /**
-   * Bad request error message
+   * Bad request error details
    */
-  message: string;
+  message: models.BadRequestErrorResponseMessage;
 };
 
 export class BadRequestErrorResponse extends SupertoneError {
@@ -29,7 +30,9 @@ export class BadRequestErrorResponse extends SupertoneError {
     err: BadRequestErrorResponseData,
     httpMeta: { response: Response; request: Request; body: string },
   ) {
-    const message = err.message || `API error occurred: ${JSON.stringify(err)}`;
+    const message = "message" in err && typeof err.message === "string"
+      ? err.message
+      : `API error occurred: ${JSON.stringify(err)}`;
     super(message, httpMeta);
     this.data$ = err;
     this.status = err.status;
@@ -45,7 +48,7 @@ export const BadRequestErrorResponse$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   status: z.string(),
-  message: z.string(),
+  message: z.lazy(() => models.BadRequestErrorResponseMessage$inboundSchema),
   request$: z.instanceof(Request),
   response$: z.instanceof(Response),
   body$: z.string(),
@@ -61,7 +64,7 @@ export const BadRequestErrorResponse$inboundSchema: z.ZodType<
 /** @internal */
 export type BadRequestErrorResponse$Outbound = {
   status: string;
-  message: string;
+  message: models.BadRequestErrorResponseMessage$Outbound;
 };
 
 /** @internal */
@@ -73,7 +76,7 @@ export const BadRequestErrorResponse$outboundSchema: z.ZodType<
   .transform(v => v.data$)
   .pipe(z.object({
     status: z.string(),
-    message: z.string(),
+    message: z.lazy(() => models.BadRequestErrorResponseMessage$outboundSchema),
   }));
 
 /**

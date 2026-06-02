@@ -3,9 +3,11 @@
 ![LOGO](https://github.com/supertone-inc/supertone-ts/blob/main/images/hero-light.png?raw=true)
 
 <!-- Start Summary [summary] -->
+
 ## Summary
 
 Supertone Public API: Supertone API is a RESTful API for using our state-of-the-art AI voice models.
+
 <!-- End Summary [summary] -->
 
 <!-- Start SDK Installation [installation] -->
@@ -47,12 +49,15 @@ yarn add @supertone/supertone zod
 <!-- End SDK Installation [installation] -->
 
 <!-- Start Requirements [requirements] -->
+
 ## Requirements
 
 For supported JavaScript runtimes, please consult [RUNTIMES.md](RUNTIMES.md).
+
 <!-- End Requirements [requirements] -->
 
 <!-- Start SDK Example Usage [usage] -->
+
 ## SDK Example Usage
 
 ### Example
@@ -79,9 +84,11 @@ async function run() {
 run();
 
 ```
+
 <!-- End SDK Example Usage [usage] -->
 
 <!-- Start Authentication [security] -->
+
 ## Authentication
 
 ### Per-Client Security Schemes
@@ -93,6 +100,7 @@ This SDK supports the following security scheme globally:
 | `apiKey` | apiKey | API key |
 
 To authenticate with the API the `apiKey` parameter must be set when initializing the SDK client instance. For example:
+
 ```typescript
 import { Supertone } from "@supertone/supertone";
 
@@ -115,6 +123,7 @@ async function run() {
 run();
 
 ```
+
 <!-- End Authentication [security] -->
 
 <!-- Start Models [models] -->
@@ -125,13 +134,13 @@ Supertone’s Text-to-Speech API provides multiple TTS models, each with differe
 
 ### Model Overview
 
-| Model Name              | Identifier            | Streaming Support (`stream_speech`) | Voice Settings Support                                                                                   |
-| ----------------------- | --------------------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| **SONA Speech 2**       | `sona_speech_2`       | ❌ Not supported                    | Supports **all** Voice Settings **except** `subharmonic_amplitude_control`                               |
+| Model Name              | Identifier            | Streaming Support (`stream_speech`) | Voice Settings Support                                                                                    |
+| ----------------------- | --------------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **SONA Speech 2**       | `sona_speech_2`       | ❌ Not supported                    | Supports **all** Voice Settings **except** `subharmonic_amplitude_control`                                |
 | **SONA Speech 2 Flash** | `sona_speech_2_flash` | ❌ Not supported                    | Supports **all** Voice Settings **except** `similarity`, `text_guidance`, `subharmonic_amplitude_control` |
-| **SONA Speech 1**       | `sona_speech_1`       | ✅ Supported                        | Supports **all** Voice Settings                                                                          |
-| **Supertonic API 3**    | `supertonic_api_3`    | ❌ Not supported                    | Supports **only** the `speed` setting (others are ignored)                                               |
-| **Supertonic API 1**    | `supertonic_api_1`    | ❌ Not supported                    | Supports **only** the `speed` setting (others are ignored)                                               |
+| **SONA Speech 1**       | `sona_speech_1`       | ✅ Supported                        | Supports **all** Voice Settings                                                                           |
+| **Supertonic API 3**    | `supertonic_api_3`    | ❌ Not supported                    | Supports **only** the `speed` setting (others are ignored)                                                |
+| **Supertonic API 1**    | `supertonic_api_1`    | ❌ Not supported                    | Supports **only** the `speed` setting (others are ignored)                                                |
 
 > [!NOTE]
 > **Streaming Support**
@@ -199,6 +208,7 @@ Some TTS models support optional voice settings that allow fine control over out
 <!-- End Models [models] -->
 
 <!-- Start Error Handling [errors] -->
+
 ## Error Handling
 
 [`SupertoneError`](./src/models/errors/supertoneerror.ts) is the base class for all HTTP error responses. It has the following properties:
@@ -213,6 +223,7 @@ Some TTS models support optional voice settings that allow fine control over out
 | `error.data$`       |            | Optional. Some errors may contain structured data. [See Error Classes](#error-classes). |
 
 ### Example
+
 ```typescript
 import { Supertone } from "@supertone/supertone";
 import * as errors from "@supertone/supertone/models/errors";
@@ -254,37 +265,41 @@ run();
 ```
 
 ### Error Classes
+
 **Primary error:**
-* [`SupertoneError`](./src/models/errors/supertoneerror.ts): The base class for HTTP error responses.
+
+- [`SupertoneError`](./src/models/errors/supertoneerror.ts): The base class for HTTP error responses.
 
 <details><summary>Less common errors (16)</summary>
 
 <br />
 
 **Network errors:**
-* [`ConnectionError`](./src/models/errors/httpclienterrors.ts): HTTP client was unable to make a request to a server.
-* [`RequestTimeoutError`](./src/models/errors/httpclienterrors.ts): HTTP request timed out due to an AbortSignal signal.
-* [`RequestAbortedError`](./src/models/errors/httpclienterrors.ts): HTTP request was aborted by the client.
-* [`InvalidRequestError`](./src/models/errors/httpclienterrors.ts): Any input used to create a request is invalid.
-* [`UnexpectedClientError`](./src/models/errors/httpclienterrors.ts): Unrecognised or unexpected error.
 
+- [`ConnectionError`](./src/models/errors/httpclienterrors.ts): HTTP client was unable to make a request to a server.
+- [`RequestTimeoutError`](./src/models/errors/httpclienterrors.ts): HTTP request timed out due to an AbortSignal signal.
+- [`RequestAbortedError`](./src/models/errors/httpclienterrors.ts): HTTP request was aborted by the client.
+- [`InvalidRequestError`](./src/models/errors/httpclienterrors.ts): Any input used to create a request is invalid.
+- [`UnexpectedClientError`](./src/models/errors/httpclienterrors.ts): Unrecognised or unexpected error.
 
 **Inherit from [`SupertoneError`](./src/models/errors/supertoneerror.ts)**:
-* [`UnauthorizedErrorResponse`](./src/models/errors/unauthorizederrorresponse.ts): Unauthorized: Invalid API key. Status code `401`. Applicable to 10 of 15 methods.*
-* [`InternalServerErrorResponse`](./src/models/errors/internalservererrorresponse.ts): Status code `500`. Applicable to 10 of 15 methods.*
-* [`NotFoundErrorResponse`](./src/models/errors/notfounderrorresponse.ts): Status code `404`. Applicable to 9 of 15 methods.*
-* [`BadRequestErrorResponse`](./src/models/errors/badrequesterrorresponse.ts): Status code `400`. Applicable to 5 of 15 methods.*
-* [`ForbiddenErrorResponse`](./src/models/errors/forbiddenerrorresponse.ts): Status code `403`. Applicable to 4 of 15 methods.*
-* [`RequestTimeoutErrorResponse`](./src/models/errors/requesttimeouterrorresponse.ts): Status code `408`. Applicable to 4 of 15 methods.*
-* [`TooManyRequestsErrorResponse`](./src/models/errors/toomanyrequestserrorresponse.ts): Status code `429`. Applicable to 4 of 15 methods.*
-* [`PaymentRequiredErrorResponse`](./src/models/errors/paymentrequirederrorresponse.ts): Status code `402`. Applicable to 3 of 15 methods.*
-* [`PayloadTooLargeErrorResponse`](./src/models/errors/payloadtoolargeerrorresponse.ts): Payload Too Large: File size exceeds 3MB limit. Status code `413`. Applicable to 1 of 15 methods.*
-* [`UnsupportedMediaTypeErrorResponse`](./src/models/errors/unsupportedmediatypeerrorresponse.ts): Unsupported Media Type: Invalid audio file format. Status code `415`. Applicable to 1 of 15 methods.*
-* [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
+
+- [`UnauthorizedErrorResponse`](./src/models/errors/unauthorizederrorresponse.ts): Unauthorized: Invalid API key. Status code `401`. Applicable to 10 of 15 methods.\*
+- [`InternalServerErrorResponse`](./src/models/errors/internalservererrorresponse.ts): Status code `500`. Applicable to 10 of 15 methods.\*
+- [`NotFoundErrorResponse`](./src/models/errors/notfounderrorresponse.ts): Status code `404`. Applicable to 9 of 15 methods.\*
+- [`BadRequestErrorResponse`](./src/models/errors/badrequesterrorresponse.ts): Status code `400`. Applicable to 5 of 15 methods.\*
+- [`ForbiddenErrorResponse`](./src/models/errors/forbiddenerrorresponse.ts): Status code `403`. Applicable to 4 of 15 methods.\*
+- [`RequestTimeoutErrorResponse`](./src/models/errors/requesttimeouterrorresponse.ts): Status code `408`. Applicable to 4 of 15 methods.\*
+- [`TooManyRequestsErrorResponse`](./src/models/errors/toomanyrequestserrorresponse.ts): Status code `429`. Applicable to 4 of 15 methods.\*
+- [`PaymentRequiredErrorResponse`](./src/models/errors/paymentrequirederrorresponse.ts): Status code `402`. Applicable to 3 of 15 methods.\*
+- [`PayloadTooLargeErrorResponse`](./src/models/errors/payloadtoolargeerrorresponse.ts): Payload Too Large: File size exceeds 3MB limit. Status code `413`. Applicable to 1 of 15 methods.\*
+- [`UnsupportedMediaTypeErrorResponse`](./src/models/errors/unsupportedmediatypeerrorresponse.ts): Unsupported Media Type: Invalid audio file format. Status code `415`. Applicable to 1 of 15 methods.\*
+- [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
 
 \* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
+
 <!-- End Error Handling [errors] -->
 
 <!-- Start Additional Example Code [examples] -->

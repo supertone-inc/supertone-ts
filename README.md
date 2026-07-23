@@ -1,5 +1,17 @@
 # Supertone TypeScript Library
 
+<!-- ⚠️ SERVICE DISCONTINUATION NOTICE — paste at the very top of the README, right below the title -->
+
+> [!CAUTION]
+> ## ⚠️ Service Discontinuation Notice
+>
+> **The Supertone API will be permanently shut down on August 31, 2026.**
+> After this date, all API requests will stop being served and this package will no longer work.
+>
+> 👉 For the full timeline, refund policy, and details, see the **[End-of-Life Guide](https://docs.supertoneapi.com/en/docs/sunset)**.
+
+
+
 ![LOGO](https://github.com/supertone-inc/supertone-ts/blob/main/images/hero-light.png?raw=true)
 
 <!-- Start Summary [summary] -->
